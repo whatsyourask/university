@@ -1,0 +1,3 @@
+load 'storage.rb'
+
+storage

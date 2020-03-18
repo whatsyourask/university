@@ -1,0 +1,3 @@
+load 'scale.rb'
+
+char
