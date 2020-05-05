@@ -22,9 +22,9 @@ int* arr;
 int n;
 
 // Структура индексов линий, на которых расположено сравнивающее устройство 
-struct CompIndexes{
-	int comp_begin;
-	int comp_end;
+struct LineInd{
+	int begin;
+	int end;
 };
 
 int _tmain() {
@@ -63,7 +63,7 @@ void sorting_network() {
 	HANDLE* hThreadArray = new HANDLE[threads_count];
 
 	// Выделение памяти для массива структур, что передаются для конкретного потока в его функцию
-	CompIndexes* compIndexesArr = new CompIndexes[threads_count];
+	LineInd* lineIndArr = new LineInd[threads_count];
 
 	// Цикл по фазам слияния
 	for (int phase = 1; phase < lines_count; phase += phase) {
@@ -73,37 +73,33 @@ void sorting_network() {
 		int double_phase = (phase + phase);
 
 		// Цикл по длинам сравнивающих устройств, возможных в текущей фазе
-		for (int comp_length = phase; comp_length > 0; comp_length /= 2) {
-			cout << "\tComparator length: " << comp_length << "\n";
+		for (int length = phase; length > 0; length /= 2) {
+			cout << "\tComparator length: " << length << "\n";
 
 			// Цикл по сравнивающим устройствам одинаковой длины,
-			// пока не наступит состояние:
-			// когда номер устройства больше его длины или
-			// когда сумма номера устройства, его длины и начального индекса линии, где расположено устройство, станет равно длине массива
-			for (int comp_number = 0; comp_number < comp_length && comp_number + comp_length % phase + comp_length < n; comp_number++) {
-				cout << "\t\tComparator number: " << comp_number << "\n";
+			for (int number = 0; number < length && number + length % phase + length < n; number++) {
+				cout << "\t\tComparator number: " << number << "\n";
 
 				// Индекс нового потока в массиве дескрипторов потоков
 				int handle = 0;
 
 				// Цикл, что идёт по чётным или нечётным линиям в зависимости от длины устройства и фазы,
-				// на которых есть сравнивающее устройство, до состояния,
-				// когда сумма индекса линии, номера устройства и его длины станет больше длины массива
-				for (int line_ind = comp_length % phase; line_ind + comp_number + comp_length < n; line_ind += comp_length + comp_length) {
+				// на которых есть сравнивающее устройство
+				for (int line = length % phase; line + number + length < n; line += length + length) {
 					// Вычисление индексов линии, где начало и конец устройства
-					int comp_begin = line_ind + comp_number;
-					int comp_end = comp_begin + comp_length;
+					int begin = line + number;
+					int end = begin + length;
 
 					// Вычисление целого от начала и конца устройства, для проверки того, что начало и конец принадлежат одному устройству
-					if (comp_begin / double_phase == comp_end / double_phase) {
+					if (begin / double_phase == end / double_phase) {
 						// Если линии совпадают, то создать поток и передать ему данные для сравнения
-						compIndexesArr[handle].comp_begin = comp_begin;
-						compIndexesArr[handle].comp_end = comp_end;
+						lineIndArr[handle].begin = begin;
+						lineIndArr[handle].end = end;
 						hThreadArray[handle] = CreateThread(
 							NULL,
 							0,
 							exchange,
-							(LPVOID)&compIndexesArr[handle],
+							(LPVOID)&lineIndArr[handle],
 							0,
 							0
 							);
@@ -124,7 +120,7 @@ void sorting_network() {
 	delete[] hThreadArray;
 
 	// Удаление выделенной памяти под массив структур
-	delete[] compIndexesArr;
+	delete[] lineIndArr;
 }
 
 void print_arr() {
@@ -135,20 +131,20 @@ void print_arr() {
 }
 
 DWORD WINAPI exchange(LPVOID lp_param) {
-	CompIndexes* indexes = (CompIndexes*)lp_param;
+	LineInd* indexes = (LineInd*)lp_param;
 
 	// Перестановка значений элементов, если наверх сравнивающего устройства пришло большее число, чем вниз
-	if (arr[indexes->comp_begin] > arr[indexes->comp_end]) {
-		int temp = arr[indexes->comp_begin];
-		arr[indexes->comp_begin] = arr[indexes->comp_end];
-		arr[indexes->comp_end] = temp;
+	if (arr[indexes->begin] > arr[indexes->end]) {
+		int temp = arr[indexes->begin];
+		arr[indexes->begin] = arr[indexes->end];
+		arr[indexes->end] = temp;
 	}
 
 	// Массив для строки в консоль
 	char msgBuf[BUF_SIZE];
 
 	// Вывод индексов линии, где конец и начало устройства
-	sprintf_s(msgBuf, BUF_SIZE, "\t\t\tExchange: %d, %d\n", indexes->comp_begin, indexes->comp_end);
+	sprintf_s(msgBuf, BUF_SIZE, "\t\t\tExchange: %d, %d\n", indexes->begin, indexes->end);
 
 	// Вывод получившейся строки в консоль
 	printf("%s", msgBuf);
