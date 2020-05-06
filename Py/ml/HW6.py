@@ -4,8 +4,8 @@ import numpy as np
 
 
 class Node:
-    depth = 0
-    max_depth = None
+    __depth = 0
+    __max_depth = None
     def __init__(self, data, labels):
         self.__x = data
         self.__labels = labels
@@ -18,7 +18,7 @@ class Node:
 
     def set_max_depth(self, tree_depth):
         # Сеттер для максимальной глубины дерева
-        max_depth = tree_depth
+        Node.__max_depth = tree_depth
 
 
     def __entropy(self, s, labels):
@@ -26,9 +26,17 @@ class Node:
         entropy = 0
         for i in range(0, 10):
             s_len = len(s)
+            #print(f's len: {s_len}')
             k_len = len([label for label in labels if label == i])
-            div = k_len/s_len
+            #print(f'k len: {k_len}')
+            div = np.float128(k_len/s_len)
             entropy -= div * np.log(div)
+        #if np.isnan(entropy):
+        #    print(f's len: {s_len}')
+        #    if k_len == 0:
+         #       print("K LEN ZERO")
+         #   print(f'k_len: {k_len}')
+          #  print(f"entropy: {entropy}")
         return entropy
 
 
@@ -36,10 +44,12 @@ class Node:
         # Вычисление прироста информации
         sum_child_entropy = 0
         for i in range(2):
-            sum_child_entropy -= self.__entropy(child_x[i], child_x[i+2])
+            if child_x[i]:
+                sum_child_entropy -= self.__entropy(child_x[i], child_x[i+2])
         gain = self.__entropy(x_i, self.__labels) + sum_child_entropy
         return gain
-        
+
+
     def __confidence(self):
         # Вычисление вектора уверенности на основе меток, переданных в конструктор
         conf_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -52,7 +62,8 @@ class Node:
         # Деление в узле
         # Если не максимальная глубина, делить
         # Надо добавить ещё 2 критерия остановки
-        if depth != max_depth:
+        if Node.__depth != Node.__max_depth:
+            print("divide")
             best_gain = 0
             # Цикл по столбцам матрицы данных
             # или по координатам данных,
@@ -60,31 +71,37 @@ class Node:
             for column in range(len(self.__x[0])):
                 # Цикл перебора t
                 for t in range(0, 17):
+                    left_x, right_x = [], []
+                    left_labels, right_labels = [], []
                     # Цикл перебора координат 0 для каждого объекта
                     for i in range(self.__n):
-                        if i < t:
+                        if i == 1400:
+                            print(i)
+                        if self.__x[:,column][i] < t:
                             left_x.append(self.__x[i])
                             left_labels.append(self.__labels[i])
                         else:
                             right_x.append(self.__x[i])
                             right_labels.append(self.__labels[i])
-                        gain = self.__information_gain(self.__x[:,column],
-                                left_x, right_x, left_labels, right_labels)
-                        better = gain > best_gain
-                        # Если прирост информации лучше, чем был, то 
-                        # Сохранить все лучшие параметры
-                        # Возможно, best_left_x, best_right_x не нужны
-                        if better:
-                            best_gain = gain
-                            best_left_x = left_x
-                            best_right_x = right_x
-                            best_column = column
+                    gain = self.__information_gain(self.__x[:,column], 
+                            left_x, right_x, left_labels, right_labels)
+                    # print(f"gain = {gain}")
+                    better = gain > best_gain
+                    # Если прирост информации лучше, чем был, то 
+                    # Сохранить все лучшие параметры
+                    # Возможно, best_left_x, best_right_x не нужны
+                    if better:
+                        best_gain = gain
+                        best_left_x = left_x
+                        best_right_x = right_x
+                        best_column = column
+            print(f"best gain: {best_gain}")
             # Увеличение глубины всего дерева
-            depth += 1
-            # Создание потомков и запуск деления данных
-            self.left = Node(left_x, left_labels)
+            Node.__depth += 1
+            # Создание потомков и запуск деления данныx
+            self.left = Node(np.array(left_x), np.array(left_labels))
             self.left.divide_data()
-            self.right = Node(right_x, right_labels)
+            self.right = Node(np.array(right_x), np.array(right_labels))
             self.right.divide_data()
         else:
             # Вычислить вектор уверенности в терминальном узле
@@ -111,21 +128,25 @@ class DecisionTree:
         indexes_len = len(indexes)
         self.__train_indexes = indexes[:np.int32(0.8 * indexes_len)]
         self.__test_indexes = indexes[np.int32(0.8 * indexes_len):
-                np.ind32(indexes_len)]
+                np.int32(indexes_len)]
 
     
     def __build(self):
         # Построение дерева
         # Создание корня дерева
-        self.__main_root = Node(self.__data[self.__train_indexes],
+        self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
+        self.__main_root.set_max_depth(1)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
 
 
-    def teach(self, t_begin, t_end):
+    def teach(self):
         # Обучение дерева
-        self.__t_begin = t_begin
-        self.__t_end = t_begin
         self.__shuffle()
         self.__build()
+
+
+data = load_digits()
+tree = DecisionTree(data.data, data.target, data.target_names)
+tree.teach()
