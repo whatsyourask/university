@@ -14,6 +14,7 @@ class Node:
         self.__child_count = 2
         self.__conf_vector = None
         self.__is_terminal = False
+        self.__this_depth = Node.__depth
 
 
     def set_max_depth(self, tree_depth):
@@ -58,12 +59,16 @@ class Node:
         # Деление в узле
         # Если не максимальная глубина, делить
         # Надо добавить ещё 2 критерия остановки
-        if Node.__depth != Node.__max_depth:
+        if self.__this_depth != Node.__max_depth:
             print("divide")
+            print(f"begin x: {np.shape(self.__x)}")
             best_gain = 0
+            best_left_x = []
+            best_right_x = []
             # Цикл по столбцам матрицы данных
             # или по координатам данных,
             # Например, координата 0 для всех данных
+            # print(f'length x[0]: {len(self.__x[0])}')
             for column in range(len(self.__x[0])):
                 # Цикл перебора t
                 for t in range(0, 17):
@@ -77,7 +82,7 @@ class Node:
                         else:
                             right_x.append(self.__x[row])
                             right_labels.append(self.__labels[row])
-                    print(f"")
+                    # print(f"left len {len(left_x)} right len {len(right_x)}")
                     gain = self.__information_gain(self.__x[:,column], 
                             left_x, right_x, left_labels, right_labels)
                     better = gain > best_gain
@@ -87,16 +92,24 @@ class Node:
                     if better:
                         best_gain = gain
                         best_left_x = left_x
+                        best_left_labels = left_labels
                         best_right_x = right_x
+                        best_right_labels = right_labels
                         best_column = column
-            print(f"best gain: {best_gain}") 
+            print(f"depth: {self.__this_depth}")
+            print(f"best gain: {best_gain}")
             # Увеличение глубины всего дерева
             Node.__depth += 1
             # Создание потомков и запуск деления данныx
-            self.left = Node(np.array(left_x), np.array(left_labels))
-            self.right = Node(np.array(right_x), np.array(right_labels))
-            self.left.divide_data()
-            self.right.divide_data()
+            # если в потомки передаются не пустые массивы
+            print(f"best left length {np.shape((np.array(best_left_x)))}\n"
+                   f"best right length {np.shape((np.array(best_right_x)))}\n")
+            if best_right_x:
+                self.right = Node(np.array(best_right_x), np.array(best_right_labels))
+                self.right.divide_data()
+            if best_left_x:
+                self.left = Node(np.array(best_left_x), np.array(best_left_labels))
+                self.left.divide_data()
         else:
             # Вычислить вектор уверенности в терминальном узле
             self.__conf_vector = self.__confidence()
@@ -130,7 +143,7 @@ class DecisionTree:
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
-        self.__main_root.set_max_depth(4)
+        self.__main_root.set_max_depth(10)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
 
