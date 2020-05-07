@@ -24,27 +24,39 @@ class Node:
 
     def __entropy(self, s, labels):
         # Вычисление энтропии
+        #if s is []:
+        #    print("EMPTY")
+        #if self.__this_depth == 1:
+        #    print(f"s = {s}")
+        #    print(f"labels = {labels}")
         entropy = 0
         s_len = len(s)
+        if self.__this_depth == 1:
+            print(f"s_len: {s_len}")
         for i in range(0, 10):
             k_len = len([label for label in labels if label == i])
+            if self.__this_depth == 1:
+                print(f"k_len: {k_len}")
             if k_len == 0:
                 continue
             div = np.float128(k_len/s_len)
             entropy -= div * np.log(div)
-        # print(f"entropy: {entropy}")
+        #if self.__this_depth == 1:
+        #    print(f"entropy: {entropy}")
         return entropy
 
 
-    def __information_gain(self, x_i, *child_x):
+    def __information_gain(self, *child_indexes):
+        #if self.__this_depth == 1:
+            #print(f"\t\tlen x_i: {len(x_i)}")
         # Вычисление прироста информации
         sum_child_entropy = 0
         for i in range(2):
-            if child_x[i]:
-                sum_child_entropy -= self.__entropy(child_x[i], child_x[i+2])
-        gain = self.__entropy(x_i, self.__labels) + sum_child_entropy
-        #print(f'\tgain = {gain}')
+            if child_indexes[i]:
+                sum_child_entropy -= self.__entropy(self.__x[child_indexes[i]], self.__labels[child_indexes[i]])
+        gain = self.__entropy(self.__x, self.__labels) + sum_child_entropy
         return gain
+
 
 
     def __confidence(self):
@@ -65,6 +77,9 @@ class Node:
             best_gain = 0
             best_left_x = []
             best_right_x = []
+            print(self.__x)
+            print(np.shape(self.__labels))
+            print(self.__labels)
             # Цикл по столбцам матрицы данных
             # или по координатам данных,
             # Например, координата 0 для всех данных
@@ -72,29 +87,27 @@ class Node:
             for column in range(len(self.__x[0])):
                 # Цикл перебора t
                 for t in range(0, 17):
-                    left_x, right_x = [], []
-                    left_labels, right_labels = [], []
+                    left, right = [], []
                     # Цикл перебора координат 0 для каждого объекта
                     for row in range(len(self.__x[:,column])):
+                        if self.__this_depth == 1:
+                            print(row)
                         if self.__x[row, column] < t:
-                            left_x.append(self.__x[row])
-                            left_labels.append(self.__labels[row])
+                            left.append(row)
                         else:
-                            right_x.append(self.__x[row])
-                            right_labels.append(self.__labels[row])
+                            right.append(row)
                     # print(f"left len {len(left_x)} right len {len(right_x)}")
-                    gain = self.__information_gain(self.__x[:,column], 
-                            left_x, right_x, left_labels, right_labels)
+                    gain = self.__information_gain(left, right)
+                    #if self.__this_depth == 1:
+                    #    print(f'\tgain = {gain}')
                     better = gain > best_gain
                     # Если прирост информации лучше, чем был, то 
                     # Сохранить все лучшие параметры
                     # Возможно, best_left_x, best_right_x не нужны
                     if better:
                         best_gain = gain
-                        best_left_x = left_x
-                        best_left_labels = left_labels
-                        best_right_x = right_x
-                        best_right_labels = right_labels
+                        best_left = left
+                        best_right = right
                         best_column = column
             print(f"depth: {self.__this_depth}")
             print(f"best gain: {best_gain}")
@@ -105,10 +118,10 @@ class Node:
             print(f"best left length {np.shape((np.array(best_left_x)))}\n"
                    f"best right length {np.shape((np.array(best_right_x)))}\n")
             if best_right_x:
-                self.right = Node(np.array(best_right_x), np.array(best_right_labels))
+                self.right = Node(self.__x[best_right], self.__labels[best_right])
                 self.right.divide_data()
             if best_left_x:
-                self.left = Node(np.array(best_left_x), np.array(best_left_labels))
+                self.left = Node(self.__x[best_left], self.__labels[best_left])
                 self.left.divide_data()
         else:
             # Вычислить вектор уверенности в терминальном узле
@@ -143,7 +156,7 @@ class DecisionTree:
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
-        self.__main_root.set_max_depth(10)
+        self.__main_root.set_max_depth(3)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
 
