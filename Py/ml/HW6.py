@@ -24,19 +24,14 @@ class Node:
     def __entropy(self, s, labels):
         # Вычисление энтропии
         entropy = 0
+        s_len = len(s)
         for i in range(0, 10):
-            s_len = len(s)
-            #print(f's len: {s_len}')
             k_len = len([label for label in labels if label == i])
-            #print(f'k len: {k_len}')
+            if k_len == 0:
+                continue
             div = np.float128(k_len/s_len)
             entropy -= div * np.log(div)
-        #if np.isnan(entropy):
-        #    print(f's len: {s_len}')
-        #    if k_len == 0:
-         #       print("K LEN ZERO")
-         #   print(f'k_len: {k_len}')
-          #  print(f"entropy: {entropy}")
+        # print(f"entropy: {entropy}")
         return entropy
 
 
@@ -47,6 +42,7 @@ class Node:
             if child_x[i]:
                 sum_child_entropy -= self.__entropy(child_x[i], child_x[i+2])
         gain = self.__entropy(x_i, self.__labels) + sum_child_entropy
+        #print(f'\tgain = {gain}')
         return gain
 
 
@@ -74,18 +70,16 @@ class Node:
                     left_x, right_x = [], []
                     left_labels, right_labels = [], []
                     # Цикл перебора координат 0 для каждого объекта
-                    for i in range(self.__n):
-                        if i == 1400:
-                            print(i)
-                        if self.__x[:,column][i] < t:
-                            left_x.append(self.__x[i])
-                            left_labels.append(self.__labels[i])
+                    for row in range(len(self.__x[:,column])):
+                        if self.__x[row, column] < t:
+                            left_x.append(self.__x[row])
+                            left_labels.append(self.__labels[row])
                         else:
-                            right_x.append(self.__x[i])
-                            right_labels.append(self.__labels[i])
+                            right_x.append(self.__x[row])
+                            right_labels.append(self.__labels[row])
+                    print(f"")
                     gain = self.__information_gain(self.__x[:,column], 
                             left_x, right_x, left_labels, right_labels)
-                    # print(f"gain = {gain}")
                     better = gain > best_gain
                     # Если прирост информации лучше, чем был, то 
                     # Сохранить все лучшие параметры
@@ -95,13 +89,13 @@ class Node:
                         best_left_x = left_x
                         best_right_x = right_x
                         best_column = column
-            print(f"best gain: {best_gain}")
+            print(f"best gain: {best_gain}") 
             # Увеличение глубины всего дерева
             Node.__depth += 1
             # Создание потомков и запуск деления данныx
             self.left = Node(np.array(left_x), np.array(left_labels))
-            self.left.divide_data()
             self.right = Node(np.array(right_x), np.array(right_labels))
+            self.left.divide_data()
             self.right.divide_data()
         else:
             # Вычислить вектор уверенности в терминальном узле
@@ -136,7 +130,7 @@ class DecisionTree:
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
-        self.__main_root.set_max_depth(1)
+        self.__main_root.set_max_depth(4)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
 
