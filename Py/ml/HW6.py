@@ -15,6 +15,7 @@ class Node:
     # Кол-во возможных классов(в нашем случае 10)
     __class_count = None
     __confusion_matrix = None
+    __matrix_copy = None
     def __init__(self, data, labels):
         self.__x = data
         self.__labels = labels
@@ -71,6 +72,17 @@ class Node:
                         )
         gain = self.__parent_entropy + sum_child_entropy
         return gain
+    
+
+    def __iter_divide(self, t, column):
+        left, right = [], []
+        # Цикл перебора координат 0 для каждого объекта
+        for row in range(len(self.__x[:,column])):
+            if self.__x[row, column] < t:
+                left.append(row)
+            else:
+                right.append(row)
+        return left, right
 
 
     def __confidence(self):
@@ -83,6 +95,7 @@ class Node:
 
 
     def __create_childs(self):
+        # Создание потомков
         # Увеличение глубины дерева, т.к. появляются новые потомки
         Node.__depth += 1 
         # Если поделенные части не пустые, то создать потомков
@@ -104,12 +117,8 @@ class Node:
         # Для соблюдения условий построения дерева в остальных ветках
         Node.__depth -= 1
         
-
-    def __assign_terminal(self):
-        # Вычислить вектор уверенности в терминальном узле
-        self.__conf_vector = self.__confidence()
-        # Обозначить, что этот узел терминальный
-        self.__is_terminal = True
+    
+    def __calculate_matrix_elements(self):
         # Вычислить какой класс является предсказанным в этом узле
         conf_class = np.argmax(self.__conf_vector)
         # Вычислить кол-во каждого класса в узле
@@ -118,6 +127,17 @@ class Node:
         for i in range(len(class_counts[0])):
             Node.__confusion_matrix[conf_class, 
                     class_counts[0][i]] += np.float64(class_counts[1][i])
+
+
+    def __assign_terminal(self):
+        # Назначение терминальным узлом
+        # и подсчёт соответствующих элементов confusion matrix
+        # Вычислить вектор уверенности в терминальном узле
+        self.__conf_vector = self.__confidence()
+        # Обозначить, что этот узел терминальный
+        self.__is_terminal = True
+        # Вычислить элементы матрицы для этого узла
+        self.__calculate_matrix_elements()
 
 
     def divide_data(self):
@@ -139,13 +159,7 @@ class Node:
             for column in range(len(self.__x[0])):
                 # Цикл перебора t
                 for t in range(17):
-                    left, right = [], []
-                    # Цикл перебора координат 0 для каждого объекта
-                    for row in range(len(self.__x[:,column])):
-                        if self.__x[row, column] < t:
-                            left.append(row)
-                        else:
-                            right.append(row)
+                    left, right = self.__iter_divide(t, column)
                     gain = self.__information_gain(left, right)
                     better = gain > self.__best_gain
                     # Если прирост информации лучше, чем был, то 
@@ -153,9 +167,9 @@ class Node:
                     if better:
                         self.__best_gain = gain
                         self.__best_left = left
-                        self.__best_right = right
-                        self.__best_column = column
+                        self.__best_right = right 
                         self.__best_t = t
+                        self.__best_column = column
             self.__create_childs()
         else:
             self.__assign_terminal()   
@@ -181,6 +195,31 @@ class Node:
     def print_confusion_matrix(self):
         # Вывод матрицы
         print(Node.__confusion_matrix)
+        if Node.__matrix_copy:
+            Node.__confusion_matrix = Node.__matrix_copy
+
+
+    def copy_matrix(self):
+        Node.__matrix_copy = Node.__confusion_matrix
+        Node.__confusion_matrix = np.zeros((Node.__class_count,
+            Node.__class_count))
+    
+
+    def walk(self, data, labels):
+        self.__x = data
+        self.__labels = labels
+        self.__n = len(labels)
+        if not self.__is_terminal:
+            left, right = self.__iter_divide(self.__best_t,
+                    self.__best_column
+                    )
+            if self.left:
+                self.left.walk(self.__x[left], self.__labels[left])
+            if self.right:
+                self.right.walk(self.__x[right], self.__labels[right])
+        else:
+            self.__calculate_matrix_elements()
+        return
 
 
 class DecisionTree:
@@ -206,7 +245,8 @@ class DecisionTree:
         # Построение дерева
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
-                self.__labels[self.__train_indexes])
+                self.__labels[self.__train_indexes]
+                )
         self.__main_root.set_class_count(self.__class_count)
         # Назначить границы остановок
         self.__main_root.set_max_depth(15)
@@ -226,9 +266,19 @@ class DecisionTree:
 
 
     def test(self):
-        return
+        mode = 1
+        self.__main_root.copy_matrix()
+        self.__main_root.walk(self.__x[self.__test_indexes], mode, 
+                self.__labels[self.__test_indexes])
+        self.__main_root.print_accuracy()
+        self.__main_root.print_confusion_matrix()
+
+
+    def classify(self, data):
+        self.__main_root.walk()
 
 
 data = load_digits()
 tree = DecisionTree(data.data, data.target, data.target_names)
 tree.teach()
+tree.test()
