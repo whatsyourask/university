@@ -94,32 +94,36 @@ class Node:
                         self.__best_column = column
                         self.__best_t = t
             print(f"best gain: {best_gain}")
+            print(f"\tthis_depth: {self.__this_depth}")
+            print(f"\t__depth: {Node.__depth}")
             # Создание потомков и запуск деления данныx
             # если в потомки передаются не пустые массивы
             print(f"best left length {np.shape(self.__x[self.__best_left])}\n"
-                f"best right length {np.shape(self.__x[self.__best_right])}")
-            if self.__this_depth >= Node.__depth:
-                Node.__depth += 1 
-            print(f"depth: {self.__this_depth}\n")
+                f"best right length {np.shape(self.__x[self.__best_right])}\n")
+            Node.__depth += 1 
             if self.__best_left:
                 self.left = Node(self.__x[self.__best_left],
                         self.__labels[self.__best_left]
                         )
-                self.left.divide_data()
-                print(f'this_depth: {self.__this_depth} back')
-            if self.right is None:
-                if self.__best_right:
-                    self.right = Node(self.__x[self.__best_right],
-                            self.__labels[self.__best_right]
-                            )
-                    self.right.divide_data()
+            if self.__best_right:
+                self.right = Node(self.__x[self.__best_right],
+                        self.__labels[self.__best_right]
+                        )
+            if self.left:
+                self.left.divide_data() 
+            if self.right:
+                self.right.divide_data()
+            Node.__depth -= 1
         else:
             # Вычислить вектор уверенности в терминальном узле
             self.__conf_vector = self.__confidence()
             # Обозначить, что этот узел терминальный
             # для будущего метода прохода по дереву
             self.__is_terminal = True
+            print(self.__conf_vector)
             # Дальше поведение ещё не определено
+            print("is terminal")
+        return
 
 
 class DecisionTree:
