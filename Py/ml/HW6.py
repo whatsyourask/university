@@ -6,6 +6,7 @@ import numpy as np
 class Node:
     __depth = 0
     __max_depth = None
+    __confusion_matrix = np.zeros((10, 10))
     def __init__(self, data, labels):
         self.__x = data
         self.__labels = labels
@@ -30,7 +31,7 @@ class Node:
             k_len = len([label for label in labels if label == i])
             if k_len == 0:
                 continue
-            div = np.float128(k_len/s_len)
+            div = k_len/s_len
             entropy -= div * np.log(div)
         return entropy
 
@@ -57,7 +58,7 @@ class Node:
         conf_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for label in self.__labels:
             conf_vector[label] += 1
-        return conf_vector
+        return np.array(conf_vector)/self.__n
 
 
     def divide_data(self):
@@ -66,6 +67,8 @@ class Node:
         # Надо добавить ещё 2 критерия остановки
         if self.__this_depth < Node.__max_depth:
             print("divide")
+            #print(f"x: {self.__x}")
+            #print(f"x: {self.__labels}")
             best_gain = 0
             self.__best_left = []
             self.__best_right = []
@@ -94,12 +97,15 @@ class Node:
                         self.__best_column = column
                         self.__best_t = t
             print(f"best gain: {best_gain}")
-            print(f"\tthis_depth: {self.__this_depth}")
-            print(f"\t__depth: {Node.__depth}")
+            #if best_gain == 0:
+            #    print(f"left labels: {self.__best_left}")
+            #    print(f"right labels: {self.__best_right}")
+            #print(f"\tthis_depth: {self.__this_depth}")
+            #print(f"\t__depth: {Node.__depth}")
             # Создание потомков и запуск деления данныx
             # если в потомки передаются не пустые массивы
-            print(f"best left length {np.shape(self.__x[self.__best_left])}\n"
-                f"best right length {np.shape(self.__x[self.__best_right])}\n")
+            #print(f"best left length {np.shape(self.__x[self.__best_left])}\n"
+            #    f"best right length {np.shape(self.__x[self.__best_right])}\n")
             Node.__depth += 1 
             if self.__best_left:
                 self.left = Node(self.__x[self.__best_left],
@@ -120,10 +126,30 @@ class Node:
             # Обозначить, что этот узел терминальный
             # для будущего метода прохода по дереву
             self.__is_terminal = True
-            print(self.__conf_vector)
-            # Дальше поведение ещё не определено
-            print("is terminal")
-        return
+            conf_class = np.argmax(self.__conf_vector)
+            class_counts = np.unique(self.__labels, return_counts=True)
+            for i in range(len(class_counts[0])):
+                Node.__confusion_matrix[conf_class,
+                        class_counts[0][i]]+=np.float64(class_counts[1][i])
+            return
+
+
+    def __calculate_acc(self):
+        true_positive = 0
+        for i in range(10):
+            for j in range(10):
+                if i == j:
+                    true_positive += Node.__confusion_matrix[i,j]
+        self.__acc = true_positive/self.__n
+
+    
+    def print_accuracy(self):
+        self.__calculate_acc()
+        print(self.__acc)
+
+
+    def print_confusion_matrix(self):
+        print(Node.__confusion_matrix)
 
 
 class DecisionTree:
@@ -149,9 +175,11 @@ class DecisionTree:
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
-        self.__main_root.set_max_depth(3)
+        self.__main_root.set_max_depth(10)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
+        self.__main_root.print_accuracy()
+        self.__main_root.print_confusion_matrix()
 
 
     def teach(self):
