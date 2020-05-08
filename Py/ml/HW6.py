@@ -31,12 +31,12 @@ class Node:
         #    print(f"labels = {labels}")
         entropy = 0
         s_len = len(s)
-        if self.__this_depth == 1:
-            print(f"s_len: {s_len}")
-        for i in range(0, 10):
+        #if self.__this_depth == 1:
+        #    print(f"s_len: {s_len}")
+        for i in range(10):
             k_len = len([label for label in labels if label == i])
-            if self.__this_depth == 1:
-                print(f"k_len: {k_len}")
+            #if self.__this_depth == 1:
+            #    print(f"k_len: {k_len}")
             if k_len == 0:
                 continue
             div = np.float128(k_len/s_len)
@@ -51,12 +51,17 @@ class Node:
             #print(f"\t\tlen x_i: {len(x_i)}")
         # Вычисление прироста информации
         sum_child_entropy = 0
+        s_len = len(self.__x)
         for i in range(2):
             if child_indexes[i]:
-                sum_child_entropy -= self.__entropy(self.__x[child_indexes[i]], self.__labels[child_indexes[i]])
+                child_len = len(self.__labels[child_indexes[i]])
+                div = child_len/s_len
+                sum_child_entropy -= div * self.__entropy(
+                        self.__x[child_indexes[i]],
+                        self.__labels[child_indexes[i]]
+                        )
         gain = self.__entropy(self.__x, self.__labels) + sum_child_entropy
         return gain
-
 
 
     def __confidence(self):
@@ -75,11 +80,11 @@ class Node:
             print("divide")
             print(f"begin x: {np.shape(self.__x)}")
             best_gain = 0
-            best_left_x = []
-            best_right_x = []
-            print(self.__x)
+            best_left = []
+            best_right = []
+            #print(self.__x)
             print(np.shape(self.__labels))
-            print(self.__labels)
+            #print(self.__labels)
             # Цикл по столбцам матрицы данных
             # или по координатам данных,
             # Например, координата 0 для всех данных
@@ -90,12 +95,21 @@ class Node:
                     left, right = [], []
                     # Цикл перебора координат 0 для каждого объекта
                     for row in range(len(self.__x[:,column])):
-                        if self.__this_depth == 1:
-                            print(row)
+                        #if self.__this_depth == 1:
+                        #    print(row)
                         if self.__x[row, column] < t:
                             left.append(row)
+                            #print(f"left label: {self.__labels[row]})")
                         else:
                             right.append(row)
+                            #print(f"right label: {self.__labels[row]})")
+                        #if self.__this_depth == 0:
+                            #print(row)
+                            #print(column)
+                            #print(f"left_labels = {self.__labels[left]}")
+                    #if self.__this_depth == 0:
+                    #    print(f"left_labels = {self.__labels[left]}")
+                    #    print(f"right_labels = {self.__labels[right]}")
                     # print(f"left len {len(left_x)} right len {len(right_x)}")
                     gain = self.__information_gain(left, right)
                     #if self.__this_depth == 1:
@@ -107,20 +121,25 @@ class Node:
                     if better:
                         best_gain = gain
                         best_left = left
+                        #print(f"best_left_labels in better: {self.__labels[best_left]}")
                         best_right = right
-                        best_column = column
+                        #print(f"best_right_labels in better: {self.__labels[best_right]}")
+                        self.__best_column = column
+                        self.__best_t = t
             print(f"depth: {self.__this_depth}")
             print(f"best gain: {best_gain}")
             # Увеличение глубины всего дерева
             Node.__depth += 1
             # Создание потомков и запуск деления данныx
             # если в потомки передаются не пустые массивы
-            print(f"best left length {np.shape((np.array(best_left_x)))}\n"
-                   f"best right length {np.shape((np.array(best_right_x)))}\n")
-            if best_right_x:
+            print(f"best left length {np.shape(self.__x[best_left])}\n"
+                   f"best right length {np.shape(self.__x[best_right])}")
+            #print(f"right labels: {self.__labels[best_right]}")
+            #print(f"left labels: {self.__labels[best_left]}\n")
+            if best_right:
                 self.right = Node(self.__x[best_right], self.__labels[best_right])
                 self.right.divide_data()
-            if best_left_x:
+            if best_left:
                 self.left = Node(self.__x[best_left], self.__labels[best_left])
                 self.left.divide_data()
         else:
