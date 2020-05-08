@@ -5,8 +5,6 @@
 #include <algorithm>
 using namespace std;
 
-#define BUF_SIZE 255
-
 // Заполнить массив случайными числами
 void set_random_arr();
 
