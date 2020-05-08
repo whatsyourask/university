@@ -14,8 +14,17 @@ class Node:
     __count_bound = None
     # Кол-во возможных классов(в нашем случае 10)
     __class_count = None
+    # Инициализация матрицы
     __confusion_matrix = None
+    # Для хранения старой матрицы для обучающей выборки
     __matrix_copy = None
+    # Для сбора информации для гистограммы
+    __true_chart = []
+    __false_chart = []
+    # Для храненяи старых уверенностей для обучающей выборки
+    __true_chart_copy = None
+    __false_chart_copy = None
+    fig, ax = plt.subplots(2, 2)
     def __init__(self, data, labels):
         self.__x = data
         self.__labels = labels
@@ -140,6 +149,19 @@ class Node:
         self.__calculate_matrix_elements()
 
 
+    def __bar_chart(self):
+        # Сбор информации для гистограммы
+        # Найти индекс максимальной уверенности в векторе
+        max_conf = np.argmax(self.__conf_vector)
+        # Если угадали, сложить в правильно угаданных,
+        # если нет, то в неправильно угаданные
+        for label in self.__labels:
+            if max_conf == label:
+                Node.__true_chart.append(self.__conf_vector[max_conf])
+            else:
+                Node.__false_chart.append(self.__conf_vector[max_conf])
+
+
     def divide_data(self):
         # Деление в узле
         # Если не максимальная глубина и 
@@ -173,6 +195,7 @@ class Node:
             self.__create_childs()
         else:
             self.__assign_terminal()   
+            self.__bar_chart()
         return
 
 
@@ -195,32 +218,96 @@ class Node:
     def print_confusion_matrix(self):
         # Вывод матрицы
         print(Node.__confusion_matrix)
-        if Node.__matrix_copy:
+        if Node.__matrix_copy is not None:
             Node.__confusion_matrix = Node.__matrix_copy
+        if Node.__true_chart_copy is not None:
+            Node.__true_chart = Node.__true_chart_copy
+        if Node.__false_chart_copy is not None:
+            Noode_false_chart = Node.__false_chart_copy
 
 
-    def copy_matrix(self):
+    def copy_matrix_and_chart(self):
+        # Копирование матрицы,
+        # пока выполняется матрицы для тестовой выборки
+        # Костыль, чтобы использовать одни и те же функции на разные данные
         Node.__matrix_copy = Node.__confusion_matrix
         Node.__confusion_matrix = np.zeros((Node.__class_count,
             Node.__class_count))
-    
+        Node.__true_chart_copy = Node.__true_chart
+        Node.__false_chart_copy = Node.__false_chart
+        Node.__true_chart = []
+        Node.__false_chart = []
 
-    def walk(self, data, labels):
+
+    def walk(self, data, mode, labels=None):
+        # Проход по дереву
+        # Взять данные для прохода
         self.__x = data
         self.__labels = labels
-        self.__n = len(labels)
         if not self.__is_terminal:
-            left, right = self.__iter_divide(self.__best_t,
-                    self.__best_column
-                    )
-            if self.left:
-                self.left.walk(self.__x[left], self.__labels[left])
-            if self.right:
-                self.right.walk(self.__x[right], self.__labels[right])
+            # Попытался реализовать функцию для тестовой выборки
+            # и для обычного предсказания
+            # уже времени нет ещё подумать =)
+            if mode:
+                self.__n = len(labels)
+                left, right = self.__iter_divide(self.__best_t,
+                        self.__best_column
+                        )
+                if self.left:
+                    self.left.walk(self.__x[left],
+                            True, self.__labels[left]
+                            )
+                if self.right:
+                    self.right.walk(self.__x[right],
+                            True, self.__labels[right]
+                            )
+                return
+            else:
+                left, right = self.__iter_divide(self.__best_t,
+                        self.__best_column
+                        )
+                if self.left:
+                    return self.left.walk(self.__x[left], False)
+                if self.right:
+                    return self.right.walk(self.__x[right], False)
         else:
-            self.__calculate_matrix_elements()
-        return
+            if mode:
+                self.__n = len(labels)
+                self.__calculate_matrix_elements()
+                self.__bar_chart()
+                return
+            else:
+                return self.__conf_vector
+        
 
+    def build_chart(self, mode):
+        # Построение гистограмм
+        i = 1 if mode == 1 else 0
+        # Для корректных столбцов
+        w = 0.001 * Node.__count_bound
+        value, counts = np.unique(np.array(Node.__true_chart),
+                return_counts=True
+                )
+        if mode == 1:
+            Node.ax[0+i, 0].set_title('Тестовая выборка '
+                    'Правильно распознанные')
+            Node.ax[0+i, 1].set_title('Тестовая выборка '
+                    'неправильно распознанные')
+        else:
+            Node.ax[0+i, 0].set_title('Обучающая выборка '
+                    'Правильно распознанные')
+            Node.ax[0+i, 1].set_title('Обучающая выборка '
+                    'Неправильно распознанные')
+        Node.ax[0+i, 0].set_xlabel('Уверенность')
+        Node.ax[0+i, 0].set_ylabel('Кол-во угаданных')
+        Node.ax[0+i, 0].bar(value, counts, width=w)
+        value, counts = np.unique(np.array(Node.__false_chart),
+                return_counts=True
+                )
+        Node.ax[0+i, 1].set_xlabel('Уверенность')
+        Node.ax[0+i, 1].set_ylabel('Кол-во неугаданных')
+        Node.ax[0+i, 1].bar(value, counts, width=w)
+        
 
 class DecisionTree:
     def __init__(self, data, labels, labels_name):
@@ -249,9 +336,9 @@ class DecisionTree:
                 )
         self.__main_root.set_class_count(self.__class_count)
         # Назначить границы остановок
-        self.__main_root.set_max_depth(15)
+        self.__main_root.set_max_depth(35)
         self.__main_root.set_min_entropy(0.1)
-        self.__main_root.set_min_data_count(5)
+        self.__main_root.set_min_data_count(35)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
 
@@ -263,22 +350,31 @@ class DecisionTree:
         # Вывести значение accuracy и confusion matrix
         self.__main_root.print_accuracy()
         self.__main_root.print_confusion_matrix()
+        self.__main_root.build_chart(0)
 
 
     def test(self):
-        mode = 1
-        self.__main_root.copy_matrix()
+        mode = True
+        # Скопировать матрицу, чтобы вычислить новую для тестовой выборки
+        self.__main_root.copy_matrix_and_chart()
+        # Запустить проход по дереву
         self.__main_root.walk(self.__x[self.__test_indexes], mode, 
                 self.__labels[self.__test_indexes])
+        # Напечатать нужные данные
         self.__main_root.print_accuracy()
         self.__main_root.print_confusion_matrix()
+        self.__main_root.build_chart(1)
 
 
     def classify(self, data):
-        self.__main_root.walk()
+        mode = False
+        return self.__main_root.walk(data, mode)
 
 
 data = load_digits()
 tree = DecisionTree(data.data, data.target, data.target_names)
 tree.teach()
 tree.test()
+conf_vector = tree.classify(data.data[:1])
+print(np.argmax(conf_vector))
+plt.show()
