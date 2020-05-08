@@ -4,9 +4,17 @@ import numpy as np
 
 
 class Node:
+    # Промежуточная глубина дерева
     __depth = 0
+    # Максимальная глубина дерева
     __max_depth = None
-    __confusion_matrix = np.zeros((10, 10))
+    # Граница по энтропии
+    __entropy_bound = None
+    # Граница по кол-ву входящих данных в узел
+    __count_bound = None
+    # Кол-во возможных классов(в нашем случае 10)
+    __class_count = None
+    __confusion_matrix = None
     def __init__(self, data, labels):
         self.__x = data
         self.__labels = labels
@@ -18,20 +26,34 @@ class Node:
         self.__this_depth = Node.__depth
 
 
-    def set_max_depth(self, tree_depth):
+    def set_max_depth(self, depth):
         # Сеттер для максимальной глубины дерева
-        Node.__max_depth = tree_depth
+        Node.__max_depth = depth
+
+
+    def set_min_entropy(self, entropy):
+        # Сеттер для минимальной энтропии
+        Node.__entropy_bound = entropy
+
+    
+    def set_min_data_count(self, count):
+        # Сеттер для минимального кол-ва входных данных в узел
+        Node.__count_bound = count;
+
+    
+    def set_class_count(self, count):
+        # Сеттер для кол-ва классов для классификации
+        Node.__class_count = count
+        Node.__confusion_matrix = np.zeros((count, count))
 
 
     def __entropy(self, s, labels):
         # Вычисление энтропии
         entropy = 0
         s_len = len(s)
-        for i in range(10):
-            k_len = len([label for label in labels if label == i])
-            if k_len == 0:
-                continue
-            div = k_len/s_len
+        class_counts = np.unique(labels, return_counts=True)
+        for counts in class_counts[1]:
+            div = counts/s_len 
             entropy -= div * np.log(div)
         return entropy
 
@@ -39,46 +61,84 @@ class Node:
     def __information_gain(self, *child_indexes):
         # Вычисление прироста информации
         sum_child_entropy = 0
-        s_len = len(self.__x)
-        for i in range(2):
+        for i in range(self.__child_count):
             if child_indexes[i]:
                 child_len = len(self.__labels[child_indexes[i]])
-                div = child_len/s_len
+                div = child_len/self.__n
                 sum_child_entropy -= div * self.__entropy(
                         self.__x[child_indexes[i]],
                         self.__labels[child_indexes[i]]
                         )
-        gain = self.__entropy(self.__x, self.__labels) + sum_child_entropy
+        gain = self.__parent_entropy + sum_child_entropy
         return gain
 
 
     def __confidence(self):
         # Вычисление вектора уверенности на основе меток,
         # переданных в конструктор
-        conf_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        conf_vector = np.zeros(Node.__class_count)
         for label in self.__labels:
             conf_vector[label] += 1
         return np.array(conf_vector)/self.__n
 
 
+    def __create_childs(self):
+        # Увеличение глубины дерева, т.к. появляются новые потомки
+        Node.__depth += 1 
+        # Если поделенные части не пустые, то создать потомков
+        if self.__best_left:
+            self.left = Node(self.__x[self.__best_left],
+                    self.__labels[self.__best_left]
+                    )
+        if self.__best_right:
+            self.right = Node(self.__x[self.__best_right],
+                    self.__labels[self.__best_right]
+                    )
+        # Рекурсивно делить данные в потомках
+        if self.left:
+            self.left.divide_data() 
+        if self.right:
+            self.right.divide_data()
+        # Уменьшить глубину дерева, 
+        # т.к. после деления у потомков идёт возврат к родителю
+        # Для соблюдения условий построения дерева в остальных ветках
+        Node.__depth -= 1
+        
+
+    def __assign_terminal(self):
+        # Вычислить вектор уверенности в терминальном узле
+        self.__conf_vector = self.__confidence()
+        # Обозначить, что этот узел терминальный
+        self.__is_terminal = True
+        # Вычислить какой класс является предсказанным в этом узле
+        conf_class = np.argmax(self.__conf_vector)
+        # Вычислить кол-во каждого класса в узле
+        class_counts = np.unique(self.__labels, return_counts=True)
+        # Суммировать в матрицу
+        for i in range(len(class_counts[0])):
+            Node.__confusion_matrix[conf_class, 
+                    class_counts[0][i]] += np.float64(class_counts[1][i])
+
+
     def divide_data(self):
         # Деление в узле
-        # Если не максимальная глубина, делить
-        # Надо добавить ещё 2 критерия остановки
-        if self.__this_depth < Node.__max_depth:
-            print("divide")
-            #print(f"x: {self.__x}")
-            #print(f"x: {self.__labels}")
-            best_gain = 0
+        # Если не максимальная глубина и 
+        # eсли энтропия от данных не меньше или не равна границе и
+        # если кол-во данных не является минимальным, то делить
+        reached_depth  = self.__this_depth < Node.__max_depth
+        self.__parent_entropy = self.__entropy(self.__x, self.__labels)
+        entropy_is_greater = self.__parent_entropy > Node.__entropy_bound
+        count_is_greater = self.__n > Node.__count_bound
+        if reached_depth and entropy_is_greater and count_is_greater:
+            self.__best_gain = 0
             self.__best_left = []
             self.__best_right = []
-            print(np.shape(self.__labels))
             # Цикл по столбцам матрицы данных
             # или по координатам данных,
-            # Например, координата 0 для всех данных
+            # например, координата 0 для всех данных
             for column in range(len(self.__x[0])):
                 # Цикл перебора t
-                for t in range(0, 17):
+                for t in range(17):
                     left, right = [], []
                     # Цикл перебора координат 0 для каждого объекта
                     for row in range(len(self.__x[:,column])):
@@ -87,68 +147,39 @@ class Node:
                         else:
                             right.append(row)
                     gain = self.__information_gain(left, right)
-                    better = gain > best_gain
+                    better = gain > self.__best_gain
                     # Если прирост информации лучше, чем был, то 
                     # Сохранить все лучшие параметры
                     if better:
-                        best_gain = gain
+                        self.__best_gain = gain
                         self.__best_left = left
                         self.__best_right = right
                         self.__best_column = column
                         self.__best_t = t
-            print(f"best gain: {best_gain}")
-            #if best_gain == 0:
-            #    print(f"left labels: {self.__best_left}")
-            #    print(f"right labels: {self.__best_right}")
-            #print(f"\tthis_depth: {self.__this_depth}")
-            #print(f"\t__depth: {Node.__depth}")
-            # Создание потомков и запуск деления данныx
-            # если в потомки передаются не пустые массивы
-            #print(f"best left length {np.shape(self.__x[self.__best_left])}\n"
-            #    f"best right length {np.shape(self.__x[self.__best_right])}\n")
-            Node.__depth += 1 
-            if self.__best_left:
-                self.left = Node(self.__x[self.__best_left],
-                        self.__labels[self.__best_left]
-                        )
-            if self.__best_right:
-                self.right = Node(self.__x[self.__best_right],
-                        self.__labels[self.__best_right]
-                        )
-            if self.left:
-                self.left.divide_data() 
-            if self.right:
-                self.right.divide_data()
-            Node.__depth -= 1
+            self.__create_childs()
         else:
-            # Вычислить вектор уверенности в терминальном узле
-            self.__conf_vector = self.__confidence()
-            # Обозначить, что этот узел терминальный
-            # для будущего метода прохода по дереву
-            self.__is_terminal = True
-            conf_class = np.argmax(self.__conf_vector)
-            class_counts = np.unique(self.__labels, return_counts=True)
-            for i in range(len(class_counts[0])):
-                Node.__confusion_matrix[conf_class,
-                        class_counts[0][i]]+=np.float64(class_counts[1][i])
-            return
+            self.__assign_terminal()   
+        return
 
 
     def __calculate_acc(self):
+        # Вычисление точности 
         true_positive = 0
-        for i in range(10):
-            for j in range(10):
-                if i == j:
-                    true_positive += Node.__confusion_matrix[i,j]
+        # Вычислить кол-во правильно предсказанных
+        for i in range(Node.__class_count):
+            true_positive += Node.__confusion_matrix[i,i]
+        # Поделить на общее кол-во предсказаний
         self.__acc = true_positive/self.__n
 
     
     def print_accuracy(self):
+        # Вывод точности
         self.__calculate_acc()
         print(self.__acc)
 
 
     def print_confusion_matrix(self):
+        # Вывод матрицы
         print(Node.__confusion_matrix)
 
 
@@ -157,6 +188,7 @@ class DecisionTree:
         self.__x = data
         self.__labels = labels
         self.__n = len(labels)
+        self.__class_count = len(labels_name)
         self.__main_root = None
     
     
@@ -175,17 +207,26 @@ class DecisionTree:
         # Создание корня дерева
         self.__main_root = Node(self.__x[self.__train_indexes],
                 self.__labels[self.__train_indexes])
-        self.__main_root.set_max_depth(10)
+        self.__main_root.set_class_count(self.__class_count)
+        # Назначить границы остановок
+        self.__main_root.set_max_depth(15)
+        self.__main_root.set_min_entropy(0.1)
+        self.__main_root.set_min_data_count(5)
         # Запуск деления данных, рекурсивно
         self.__main_root.divide_data()
-        self.__main_root.print_accuracy()
-        self.__main_root.print_confusion_matrix()
 
 
     def teach(self):
         # Обучение дерева
         self.__shuffle()
         self.__build()
+        # Вывести значение accuracy и confusion matrix
+        self.__main_root.print_accuracy()
+        self.__main_root.print_confusion_matrix()
+
+
+    def test(self):
+        return
 
 
 data = load_digits()
