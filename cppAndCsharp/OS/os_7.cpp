@@ -1,7 +1,5 @@
 ﻿#include <windows.h>
 #include <iostream>
-#include <tchar.h>
-#include <strsafe.h>
 using namespace std;
 
 // Функция для всех философов
@@ -27,11 +25,11 @@ int _tmain() {
 }
 
 void philosophers() {
-	// Создать массив дескрипторов потоков размера ph_count
+	// Массив дескрипторов потоков размера ph_count
 	HANDLE* hThreadArray = new HANDLE[ph_count];
-	// Создать массив дескрипторов мьютексов размера ph_count
+	// Массив дескрипторов мьютексов размера ph_count
 	hMutexArray = new HANDLE[ph_count];
-	// Создать семафор с начальным значением ph_count - 1 
+	// Семафор с начальным значением ph_count - 1 
 	semaphore = CreateSemaphore(
 		NULL,
 		ph_count - 1,
@@ -40,12 +38,12 @@ void philosophers() {
 		);
 	// цикл по каждому философу
 	for (int handle = 0; handle < ph_count; handle++) {
-		// Создать i-ый мьютекс,
+		// Инициализировать i-ый мьютекс,
 		// не позволяя наследовать процесс, 
 		// не позволяя процессу владеть мьютексом, 
 		// без имени
 		hMutexArray[handle] = CreateMutex(NULL, FALSE, NULL);
-		// Создать потоки для философов
+		// Потоки для философов
 		// Передать функцию обеда для философа
 		hThreadArray[handle] = CreateThread(
 			NULL,
@@ -64,6 +62,8 @@ void philosophers() {
 		CloseHandle(hThreadArray[i]);
 		CloseHandle(hMutexArray[i]);
 	}
+	// Закрыть дескриптор семафора
+	CloseHandle(semaphore);
 	// Очистить память
 	delete[] hThreadArray;
 	delete[] hMutexArray;
@@ -82,7 +82,6 @@ DWORD WINAPI activity(LPVOID lp_param) {
 	for (int dinner = 0; dinner < iterations; dinner++) {
 		// Размышление философа
 		int think_time = (rand() % 5 + 1)*1000;
-		// Печать сообщения, что философ размышляет
 		printf("%d's thinking\n", philosoph_number);
 		Sleep(think_time);
 		// Обед
@@ -92,15 +91,12 @@ DWORD WINAPI activity(LPVOID lp_param) {
 		// Если вошёл(сел за стол)
 		// Поток ожидает получение мьютекса левой палочки
 		WaitForSingleObject(hMutexArray[left_stick], INFINITE);
-		// Печать сообщения, что философ взял левую палочку
 		printf("%d took left stick\n", philosoph_number);
 		// Поток ожидает получение мьютекса правой палочки
 		WaitForSingleObject(hMutexArray[right_stick], INFINITE);
-		// Печать сообщения, что философ взял правую палочку
 		printf("%d took right stick\n", philosoph_number);
 		// Начать обедать, если обе палочки свободны
 		int lunch_time = (rand() % 3 + 1)*1000;
-		// Печать сообщения, что философ ест
 		printf("%d's eating\n", philosoph_number);
 		Sleep(lunch_time);
 		// Освобождение потока от мьютекса левой палочки
