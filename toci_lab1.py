@@ -22,6 +22,22 @@ class Ring:
     def __mul__(self, other):
         return Ring(self._n, (self._num * other.num) % self._n)
 
+    def _lines_count(self):
+        a = self._n
+        b = self._num
+        lines_count = 1
+        while True:
+            mod = a % b
+            if not mod:
+                break
+            a = b
+            b = mod
+            lines_count += 1
+        return lines_count
+
+    def invert(self):
+        self._lines_count()
+
 
 def some_code():
     a = Ring(26, 22)
@@ -32,6 +48,7 @@ def some_code():
     print(f'{a.num} - {b.num} = {c.num}')
     c = a * b
     print(f'{a.num} * {b.num} = {c.num}')
+    b.invert()
 
 
 some_code()
