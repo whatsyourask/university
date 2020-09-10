@@ -1,31 +1,31 @@
 class Ring:
-    def __init__(self, n, num):
+    def __init__(self, n: int, num: int) -> None:
         self._n = n
         self._num = num
 
     @property
-    def num(self):
+    def num(self) -> int:
         return self._num
 
     @num.setter
-    def num(self, num):
+    def num(self, num: int) -> None:
         self._num = num
 
-    def __add__(self, other):
+    def __add__(self, other: Ring) -> Ring:
         # + operator overload
         return Ring(self._n, (self._num + other.num) % self._n)
 
-    def __sub__(self, other):
+    def __sub__(self, other: Ring) -> Ring:
         # - operator overload
         if other.num < 0:
             other.num += self._n
         return Ring(self._n, (self._num - other.num) % self._n)
 
-    def __mul__(self, other):
+    def __mul__(self, other: Ring) -> Ring:
         # * operator overload
         return Ring(self._n, (self._num * other.num) % self._n)
 
-    def _lines_count(self):
+    def _lines_count(self) -> int:
         # Compute lines count
         a = self._n
         b = self._num
@@ -44,7 +44,7 @@ class Ring:
         self._divs.pop()
         return lines_count
 
-    def invert(self):
+    def invert(self) -> Ring:
         # Find a invert of current num
         count = self._lines_count()
         x = 0
@@ -56,13 +56,14 @@ class Ring:
             y = temp - y * last
         return Ring(self._n, y)
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: Ring) -> Ring:
         # / operator overload
         invert_other = other.invert()
         return self.__mul__(invert_other)
 
 
-def some_code():
+def test(self) -> None:
+    # Method to test class
     a = Ring(26, 22)
     b = Ring(26, 15)
     c = a + b
@@ -73,8 +74,5 @@ def some_code():
     print(f'{a.num} * {b.num} = {c.num}')
     c = b.invert()
     print(f'invert of {b.num} = {c.num}')
-    c = a/b
+    c = a / b
     print(f'{a.num} / {b.num} = {c.num}')
-
-
-some_code()
