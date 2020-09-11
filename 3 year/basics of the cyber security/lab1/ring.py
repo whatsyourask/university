@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 class Ring:
     def __init__(self, n: int, num: int) -> None:
         self._n = n
@@ -62,7 +64,7 @@ class Ring:
         return self.__mul__(invert_other)
 
 
-def test(self) -> None:
+def test():
     # Method to test class
     a = Ring(26, 22)
     b = Ring(26, 15)
@@ -72,6 +74,8 @@ def test(self) -> None:
     print(f'{a.num} - {b.num} = {c.num}')
     c = a * b
     print(f'{a.num} * {b.num} = {c.num}')
+    c = b.invert()
+    print(f'invert of {b.num} = {c.num}')
     c = b.invert()
     print(f'invert of {b.num} = {c.num}')
     c = a / b

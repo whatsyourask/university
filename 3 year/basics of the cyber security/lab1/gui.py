@@ -12,6 +12,7 @@ class GraphicUI:
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.__mainframe.rowconfigure(1, weight=1)
+        self.__entries = {}
 
     def label(self, text, column, row, sticky) -> None:
         ttk.Label(self.__mainframe, text=text).grid(column=column,
@@ -21,6 +22,7 @@ class GraphicUI:
         field = type
         entry = ttk.Entry(self.__mainframe, text=field, width=width)
         entry.grid(column=column, row=row, sticky=sticky)
+        return field
 
     def button(self, text, column, row, width, sticky, func) -> None:
         button = ttk.Button(self.__mainframe, text=text,
@@ -29,19 +31,3 @@ class GraphicUI:
 
     def start(self) -> None:
         self.__root.mainloop()
-
-
-class Var:
-    @classmethod
-    def int(self):
-        return IntVar()
-
-    @classmethod
-    def str(self):
-        return StringVar()
-
-
-class Sticky:
-    @classmethod
-    def W(self):
-        return W
