@@ -80,3 +80,7 @@ def test():
     print(f'invert of {b.num} = {c.num}')
     c = a / b
     print(f'{a.num} / {b.num} = {c.num}')
+
+
+if __name__=='__main__':
+    test()

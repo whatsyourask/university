@@ -2,11 +2,12 @@ from gui import *
 import ring
 from ring import Ring
 from typing import Tuple
+from euler import euler_func
+from fast_powers_mod import fast_powers_mod
+
 
 class Application:
     def run(self) -> None:
-        # To test
-        ring.test()
         gui = GraphicUI()
         gui.label('n ', 1, 1, W)
         self.__n_entry = gui.entry(IntVar(), 2, 1, 7, W)
@@ -16,11 +17,13 @@ class Application:
         self.__b_entry = gui.entry(IntVar(), 2, 3, 7, W)
         gui.label('result ', 1, 4, W)
         self.__result_entry = gui.entry(IntVar(), 2, 4, 7, W)
-        gui.button('+', 1, 5, 7, W, self.__addition)
-        gui.button('-', 2, 5, 7, W, self.__substraction)
-        gui.button('*', 3, 5, 7, W, self.__multiplication)
-        gui.button('/', 4, 5, 7, W, self.__division)
-        gui.button('Invert a', 1, 6, 7, W, self.__invert)
+        gui.button('+', 1, 5, 9, W, self.__addition)
+        gui.button('-', 2, 5, 9, W, self.__substraction)
+        gui.button('*', 3, 5, 9, W, self.__multiplication)
+        gui.button('/', 4, 5, 9, W, self.__division)
+        gui.button('Invert a', 1, 6, 9, W, self.__invert)
+        gui.button('Euler func', 2, 6, 9, W, self.__calculate_euler_func)
+        gui.button('Mod', 3, 6, 9, W, self.__mod_powers)
         gui.start()
 
     def __get_all(self) -> Tuple:
@@ -63,3 +66,17 @@ class Application:
         if n and a:
             c = a.invert()
             self.__result_entry.set(c.num)
+
+    def __calculate_euler_func(self) -> None:
+        n = self.__n_entry.get()
+        if n:
+            result = euler_func(n)
+            self.__result_entry.set(result)
+
+    def __mod_powers(self) -> None:
+        n = self.__n_entry.get()
+        a = self.__a_entry.get()
+        b = self.__b_entry.get()
+        if n and a and b:
+            c = fast_mod_powers(n, a, b)
+            self.__result_entry.set(c)
