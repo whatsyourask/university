@@ -13,16 +13,16 @@ def to_binary(b) -> List:
 
 def fast_mod_powers(n, a, b) -> int:
     binary = to_binary(b)
-    temp = a
+    temp   = a
     for e in binary[1:]:
         temp = (a * (temp ** 2)) % n if e else (temp ** 2) % n
     return temp
 
 
 def test():
-    n = 527
-    a = 24
-    b = 117
+    n      = 527
+    a      = 24
+    b      = 117
     result = fast_mod_powers(n, a, b)
     answer = 232
     if result == answer:

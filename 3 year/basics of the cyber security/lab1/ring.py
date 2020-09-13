@@ -2,7 +2,7 @@ from __future__ import annotations
 
 class Ring:
     def __init__(self, n: int, num: int) -> None:
-        self._n = n
+        self._n   = n
         self._num = num
 
     @property
@@ -29,11 +29,11 @@ class Ring:
 
     def _lines_count(self) -> int:
         # Compute lines count
-        a = self._n
-        b = self._num
+        a           = self._n
+        b           = self._num
         lines_count = 0
         # To save divs or a/b
-        self._divs = []
+        self._divs  = []
         while True:
             mod = a % b
             div = a // b
@@ -53,9 +53,9 @@ class Ring:
         y = 1
         while self._divs:
             temp = x
-            x = y
+            x    = y
             last = self._divs.pop()
-            y = temp - y * last
+            y    = temp - y * last
         return Ring(self._n, y)
 
     def __truediv__(self, other: Ring) -> Ring:
