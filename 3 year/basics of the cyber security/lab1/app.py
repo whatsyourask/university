@@ -56,7 +56,7 @@ class Application:
 
     def __division(self) -> None:
         n, a, b = self.__get_all()
-        if n and (a or b):
+        if n and a and b > 0:
             c = a / b
             self.__result_entry.set(c.num)
 

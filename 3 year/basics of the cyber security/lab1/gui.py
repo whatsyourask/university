@@ -12,22 +12,26 @@ class GraphicUI:
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.__mainframe.rowconfigure(1, weight=1)
-        self.__entries = {}
 
     def label(self, text, column, row, sticky) -> None:
+        # Create a new label with text and at column, row
         ttk.Label(self.__mainframe, text=text).grid(column=column,
                                                         row=row, sticky=sticky)
 
     def entry(self, type: Variable, column, row, width, sticky) -> None:
+        # Create a new entry with specified type and at column, row
         field = type
         entry = ttk.Entry(self.__mainframe, text=field, width=width)
         entry.grid(column=column, row=row, sticky=sticky)
+        # Return a field through which we have an access to value of entry
         return field
 
     def button(self, text, column, row, width, sticky, func) -> None:
+        # Create a new button with text and at column, row
         button = ttk.Button(self.__mainframe, text=text,
                                 command=func, width=width)
         button.grid(column=column, row=row, sticky=sticky)
 
     def start(self) -> None:
+        # Start mainloop
         self.__root.mainloop()
