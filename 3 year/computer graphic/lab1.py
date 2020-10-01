@@ -3,9 +3,13 @@ from typing import Tuple, List
 
 
 def get_file_data(filename) -> str:
-    f    = open(filename, 'r')
-    data = f.read()
-    return data
+    data = open(filename, 'r').read().split('\n')
+    # Split data and cast it to list
+    data = [elem.split(' ') for elem in data]
+    # Remova emptry strings
+    data.remove([''])
+    data.remove([''])
+    return np.array(data)
 
 
 def get_max_min(points) -> Tuple:
@@ -35,6 +39,11 @@ def find_start_f(data) -> int:
         else:
             line_number += 1
     return line_number
+
+
+def get_points_and_edges(data):
+    start_f = find_start_f(data)
+    return data[:start_f], data[start_f:]
 
 
 def surface_area(points) -> int:
@@ -77,17 +86,9 @@ def surface_area_all(points, edges) -> int:
 
 def main():
     filename = 'teapot.obj'
-    data     = get_file_data(filename).split('\n')
-    # Split data and cast it to list
-    data     = [elem.split(' ') for elem in data]
-    # Remova emptry strings
-    data.remove([''])
-    data.remove([''])
-    data    = np.array(data)
-    start_f = find_start_f(data)
+    data     = get_file_data(filename)
     # Separate data like points and edges
-    points  = data[:start_f]
-    edges   = data[start_f:]
+    points, edges = get_points_and_edges(data)
     points_count, edges_count = len(points), len(edges)
     print(f'points count: {points_count}')
     print(f'edges count: {edges_count}')
