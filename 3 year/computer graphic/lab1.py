@@ -2,7 +2,7 @@ import numpy as np
 from typing import Tuple, List
 
 
-def get_file_data(filename) -> str:
+def get_file_data(filename):
     data = open(filename, 'r').read().split('\n')
     # Split data and cast it to list
     data = [elem.split(' ') for elem in data]
@@ -13,20 +13,12 @@ def get_file_data(filename) -> str:
 
 
 def get_max_min(points) -> Tuple:
-    x = []
-    y = []
-    z = []
-    for point in points:
-        # Put all x in the list of x and so on with y and z
-        x.append(point[1])
-        y.append(point[2])
-        z.append(point[3])
-    max_x = max(x)
-    min_x = min(x)
-    max_y = max(y)
-    min_y = min(y)
-    max_z = max(z)
-    min_z = min(z)
+    max_x = np.max(points[0:,0])
+    min_x = np.min(points[0:,0])
+    max_y = np.max(points[0:,1])
+    min_y = np.min(points[0:,1])
+    max_z = np.max(points[0:,2])
+    min_z = np.min(points[0:,2])
     return max_x, min_x, max_y, min_y, max_z, min_z
 
 
@@ -43,10 +35,12 @@ def find_start_f(data) -> int:
 
 def get_points_and_edges(data):
     start_f = find_start_f(data)
-    return data[:start_f], data[start_f:]
+    # Divide into 2 parts
+    return (np.array(data[:start_f][:,1:], dtype=np.float64),
+                    np.array(data[start_f:][:,1:], dtype=np.int32))
 
 
-def surface_area(points) -> int:
+def surface_area(points: List) -> int:
     # Create matrices with ones
     matrix1 = np.ones((3, 3))
     matrix2 = np.ones((3, 3))
@@ -75,12 +69,10 @@ def surface_area(points) -> int:
 def surface_area_all(points, edges) -> int:
     all = 0
     for edge in edges:
-        ind1 = int(edge[1]) - 1
-        ind2 = int(edge[2]) - 1
-        ind3 = int(edge[3]) - 1
-        all += surface_area([points[ind1][1:],
-                             points[ind2][1:],
-                             points[ind3][1:]])
+        ind1 = edge[0] - 1
+        ind2 = edge[1] - 1
+        ind3 = edge[2] - 1
+        all += surface_area([points[ind1], points[ind2], points[ind3]])
     return all
 
 
