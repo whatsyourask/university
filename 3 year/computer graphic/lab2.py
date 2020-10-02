@@ -1,88 +1,104 @@
-from lab1 import np
+from lab1 import np, List
 from lab1 import get_file_data, get_points_and_edges
 import matplotlib.pyplot as plt
 
 
-def get_triangle_x_y(points, indexes):
+def get_triangle_x_y(points, indexes) -> List:
     coords = []
-    for i in range(1, 4):
-        point = points[int(indexes[i]) - 1]
+    for i in range(0, 3):
+        point = points[indexes[i] - 1]
         coords.append(point)
     return coords
 
 
-# def draw_triangles(points, edges, ax):
-#     print(len(edges))
-#     step = 0
-#     for edge in edges[:1]:
-#         x, y = get_triangle_x_y(points, edge)
-#         ax.scatter(x, y, color='red', s=1)
+def set_pixel(pixels, y, x, color):
+    pixels[y, x, :] = color
 
 
-def bresenham(x0, y0, x1, y1):
-    dx = abs(x1 - x0)
-    dy = abs(y1 - y0)
-    condition = dy/dx
-    if condition:
-        x0, y0 = y0, x0
-        x1, y1 = y1, x1
-    if x0 > x1:
-        x0, x1 = x1, x0
-        y0, y1 = y1, y0
-    delta = dy/dx
-    #print(delta)
-    error = 0.0
-    ystep = 1 if y0 < y1 else -1
-    y = y0
-    points = []
-    #print(x0_x1)
-    print(x0)
-    print(x1)
-    for x in range(x0, x1):
-        #print(f'x = {x}')
-        points.append((y if condition else x, x if condition else y))
-        #print(points)
-        error += delta
-        #print(error)
-        if error >= 0.5:
-            y += ystep
-            error -= 1.0
-    return np.array(points)
+def bresenham(x0, y0, x1, y1, pixels, x_map_shift, y_map_shift):
+    # Projections
+    dx = x1 - x0
+    dy = y1 - y0
+    # Choose direction to draw
+    x_direction = 1 if dx > 0 else -1 if dx < 0 else 0
+    y_direction = 1 if dy > 0 else -1 if dy < 0 else 0
+    # Need to make the signs x and y equal
+    if dx < 0:
+        dx = -dx
+    if dy < 0:
+        dy = -dy
+    # Then we can compare them to define the incline of line
+    if dx > dy:
+        # The line is long
+        # That means that we need to draw it along X
+        x_shift, y_shift = x_direction, 0
+        min_d, max_d     = dy, dx
+    else:
+        # The line is high
+        x_shift, y_shift = 0, y_direction
+        min_d, max_d     = dx, dy
+    # Initial values of x and y
+    x, y             = x0, y0
+    error, iteration = max_d/2, 0
+    # Set a first pixel with appropriate shift in map
+    set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 255, 0])
+    # While we don't get a iteration equal to max of dx and dy
+    while iteration < max_d:
+        # Reduce the error on min delta of dx and dy
+        error -= min_d
+        if error < 0:
+            # Shift both x and y
+            # and increase error on max delta of dx and dy
+            error += max_d
+            x     += x_direction
+            y     += y_direction
+        else:
+            # Shift either x or y
+            x += x_shift
+            y += y_shift
+        iteration += 1
+        # Set a pixel in map
+        set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 255, 0])
 
 
-def draw_line(coords, ax, ind1, ind2):
-    points = bresenham(coords[ind1][0], coords[ind1][1],
-                       coords[ind2][0], coords[ind2][1]);
-    #print(points)
-    ax.scatter(points[:,0], points[:,1], s=1, c='r')
+def draw_triangle(coords, ax, pixels, x_shift, y_shift):
+    bresenham(coords[0][0], coords[0][1],
+              coords[1][0], coords[1][1],
+              pixels, x_shift, y_shift)
+    bresenham(coords[1][0], coords[1][1],
+              coords[2][0], coords[2][1],
+              pixels, x_shift, y_shift)
+    bresenham(coords[2][0], coords[2][1],
+              coords[0][0], coords[0][1],
+              pixels, x_shift, y_shift)
 
 
-def draw_triangles(coords, ax):
-    print(f'point1 = {coords[0]}')
-    print(f'point2 = {coords[1]}')
-    print(f'point3 = {coords[2]}')
-    draw_line(coords, ax, 0, 1)
-    draw_line(coords, ax, 1, 2)
-    draw_line(coords, ax, 2, 0)
-    # ax.scatter(coords[0][0], coords[0][1],c='b',s = 5)
+def draw_teapot(points, edges, ax, scale, dimension, x_shift, y_shift):
+    # Take all x and y
+    # And scale them
+    points = (points[:,0:-1] * scale).astype(np.int64)
+    # Create a pixels map
+    pixels = np.zeros(dimension, dtype=np.uint8)
+    for edge in edges:
+        # For each edge in edges
+        # Find corresponding coordinates and draw triangle
+        coords = get_triangle_x_y(points, edge)
+        draw_triangle(coords, ax, pixels, x_shift, y_shift)
+    ax.imshow(pixels)
+    plt.show()
+    plt.imsave('teapot.png', pixels)
 
 
 def main():
-    filename = 'teapot.obj'
-    data = get_file_data(filename)
+    filename      = 'teapot.obj'
+    data          = get_file_data(filename)
     points, edges = get_points_and_edges(data)
-    print(points)
-    # Take all x and y
-    points = (points[:,1:-1].astype(float) * 100000).astype(int)
-    print(points)
-    fig, ax = plt.subplots()
-    for edge in edges[:1]:
-        coords = get_triangle_x_y(points, edge)
-        draw_triangles(coords, ax)
-    # draw_triangles(points, edges, ax)
-    # ax.set_xbound(-4.0, 4.0)
-    # ax.set_ybound(-4.0, 4.0)
-    plt.show()
+    fig, ax       = plt.subplots()
+    scale         = 300
+    dimension     = (1950, 1950, 3)
+    x_shift       = 1030
+    y_shift       = 1030
+    draw_teapot(points, edges, ax, scale, dimension, x_shift, y_shift)
 
 
 main()
