@@ -101,4 +101,5 @@ def main():
     draw_teapot(points, edges, ax, scale, dimension, x_shift, y_shift)
 
 
-main()
+if __name__=='__main__':
+    main()
