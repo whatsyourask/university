@@ -41,7 +41,7 @@ def bresenham(x0, y0, x1, y1, pixels, x_map_shift, y_map_shift):
     x, y             = x0, y0
     error, iteration = max_d/2, 0
     # Set a first pixel with appropriate shift in map
-    set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 255, 0])
+    set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 0, 0])
     # While we don't get a iteration equal to max of dx and dy
     while iteration < max_d:
         # Reduce the error on min delta of dx and dy
@@ -58,7 +58,7 @@ def bresenham(x0, y0, x1, y1, pixels, x_map_shift, y_map_shift):
             y += y_shift
         iteration += 1
         # Set a pixel in map
-        set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 255, 0])
+        set_pixel(pixels, -y + y_map_shift, -x + x_map_shift, [0, 0, 0])
 
 
 def draw_triangle(coords, ax, pixels, x_shift, y_shift):
@@ -78,7 +78,7 @@ def draw_teapot(points, edges, ax, scale, dimension, x_shift, y_shift):
     # And scale them
     points = (points[:,0:-1] * scale).astype(np.int64)
     # Create a pixels map
-    pixels = np.zeros(dimension, dtype=np.uint8)
+    pixels = np.full(dimension, [255, 255, 255], dtype=np.uint8)
     for edge in edges:
         # For each edge in edges
         # Find corresponding coordinates and draw triangle
