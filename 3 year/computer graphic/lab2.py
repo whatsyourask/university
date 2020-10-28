@@ -46,7 +46,6 @@ class Lab2:
         self._draw_color = draw_color
 
     def draw_teapot(self) -> None:
-        self._get_scalable_points()
         self.pixels = np.full((self.size, self.size, 3),
                               self.bg_color,
                               dtype=np.uint8)
@@ -55,12 +54,8 @@ class Lab2:
             # Find corresponding coordinates and draw triangle
             coords = self._get_triangle_x_y(edge)
             self._draw_triangle(coords)
-        fig, ax = plt.subplots()
-        ax.imshow(self.pixels)
-        plt.show()
-        plt.imsave('teapot.png', self.pixels)
 
-    def _get_scalable_points(self) -> None:
+    def get_scalable_points(self) -> None:
         # Get abs of minimum x
         x_min_abs = np.fabs(self.points[:, 0].min())
         self.points[:, 0] += x_min_abs
@@ -140,6 +135,12 @@ class Lab2:
             # Set a pixel in map
             self.pixels[y, x, :] = self.draw_color
 
+    def display(self) -> None:
+        fig, ax = plt.subplots()
+        ax.imshow(self.pixels)
+        plt.show()
+        plt.imsave('teapot.png', self.pixels)
+
 
 def main():
     filename           = 'teapot.obj'
@@ -150,7 +151,9 @@ def main():
     lab2.size          = 2500
     lab2.bg_color      = [255, 255, 255]
     lab2.draw_color    = [255, 0, 0]
+    lab2.get_scalable_points()
     lab2.draw_teapot()
+    lab2.display()
 
 
 if __name__=='__main__':
