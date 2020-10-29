@@ -1,7 +1,6 @@
 from lab2 import np, plt, Lab2, get_file_data, get_points_and_edges
 import matplotlib.animation as anim
 from matplotlib.animation import PillowWriter
-import thread
 
 
 class Lab3(Lab2):
@@ -14,53 +13,37 @@ class Lab3(Lab2):
 
     def animation(self, frames_count) -> None:
         self.get_scalable_points()
-        zone = frames_count // 2
+        self.frames_count = frames_count
+        zone = self.frames_count // 2
         # Get the shift matrix
-        T = self._shift_matrix()
+        self.T = self._shift_matrix()
         # Transposition
         x = self.points.T
         # Cast to projective coordinates
-        proj_x = self._to_proj_coords(x)
+        self.proj_x = self._to_proj_coords(x)
         # Linspace to reduce the size of teapot
         reduce = np.linspace(2, 1, zone)
         # Linspace to increase the size of teapot
         increase = np.linspace(1, 2, zone)
         # coefficients to
-        coefficients  = np.concatenate((increase, reduce))
+        self.coefficients  = np.concatenate((increase, reduce))
         figure = plt.figure()
-        frames = []
+        self.frames = []
         # Linspace from read color to green color in pixels
         r_to_g = np.array(np.linspace(255, 0, zone, dtype=np.int32))
         # Linspace from green color to red color in pixels
         g_to_r = np.array(np.linspace(0, 255, zone, dtype=np.int32))
         # Get the various forms of color in pixels
-        color = np.array(np.concatenate((np.concatenate((r_to_g, g_to_r)).reshape(-1, 1),
+        self.color = np.array(np.concatenate((np.concatenate((r_to_g, g_to_r)).reshape(-1, 1),
                                          np.concatenate((g_to_r, r_to_g)).reshape(-1, 1),
                                          np.zeros(frames_count).reshape(-1, 1)), axis=1))
         plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
         print('# Frame generation started')
-        for frame in range(frames_count):
-            # Calculate the angle of rotation
-            angle = frame * 4 * np.pi / frames_count
-            # Calculate the diagonal matrix from coefficient
-            A = self._diag_matrix(coefficients[frame])
-            # Calculate the rotate matrix from angle
-            R = self._rot_matrix(angle)
-            # X' = T^(-1) * A * R * T * X
-            new_proj_x = np.linalg.inv(T) @ A @ R @ T @ proj_x
-            # Cast to cartesian coordinates
-            new_x = self._to_cart_coords(new_proj_x)
-            self.points = np.int32(np.round(new_x.T))
-            self.draw_color = color[frame]
-            self.draw_teapot()
-            # Get frame
-            temp_frame = plt.imshow(self.pixels)
-            # Put the frame to the frames list
-            frames.append([temp_frame])
-            print(f'[{frame + 1}]')
+        for frame in range(self.frames_count):
+            self._generate_one_frame(frame)
         print('## Frame generation finished')
         print('### Saving in teapot.gif')
-        animation = anim.ArtistAnimation(figure, frames, interval=40,
+        animation = anim.ArtistAnimation(figure, self.frames, interval=40,
                                          blit=True, repeat_delay=0)
         writer = PillowWriter(fps=24)
         animation.save("teapot.gif", writer=writer)
@@ -90,22 +73,22 @@ class Lab3(Lab2):
 
     def _generate_one_frame(self, frame):
         # Calculate the angle of rotation
-        angle = frame * 4 * np.pi / frames_count
+        angle = frame * 4 * np.pi / self.frames_count
         # Calculate the diagonal matrix from coefficient
-        A = self._diag_matrix(coefficients[frame])
+        A = self._diag_matrix(self.coefficients[frame])
         # Calculate the rotate matrix from angle
         R = self._rot_matrix(angle)
         # X' = T^(-1) * A * R * T * X
-        new_proj_x = np.linalg.inv(T) @ A @ R @ T @ proj_x
+        new_proj_x = np.linalg.inv(self.T) @ A @ R @ self.T @ self.proj_x
         # Cast to cartesian coordinates
         new_x = self._to_cart_coords(new_proj_x)
         self.points = np.int32(np.round(new_x.T))
-        self.draw_color = color[frame]
+        self.draw_color = self.color[frame]
         self.draw_teapot()
         # Get frame
         temp_frame = plt.imshow(self.pixels)
         # Put the frame to the frames list
-        frames.append([temp_frame])
+        self.frames.append([temp_frame])
         print(f'[{frame + 1}]')
 
     def _to_cart_coords(self, new_proj_x):
