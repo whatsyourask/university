@@ -27,7 +27,6 @@ class Lab3(Lab2):
         increase = np.linspace(1, 2, zone)
         # coefficients to
         self.coefficients  = np.concatenate((increase, reduce))
-        figure = plt.figure()
         self.frames = []
         # Linspace from read color to green color in pixels
         r_to_g = np.array(np.linspace(255, 0, zone, dtype=np.int32))
@@ -37,18 +36,11 @@ class Lab3(Lab2):
         self.color = np.array(np.concatenate((np.concatenate((r_to_g, g_to_r)).reshape(-1, 1),
                                          np.concatenate((g_to_r, r_to_g)).reshape(-1, 1),
                                          np.zeros(frames_count).reshape(-1, 1)), axis=1))
-        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
+        self.figure = plt.figure()
         print('# Frame generation started')
         for frame in range(self.frames_count):
             self._generate_one_frame(frame)
         print('## Frame generation finished')
-        print('### Saving in teapot.gif')
-        animation = anim.ArtistAnimation(figure, self.frames, interval=40,
-                                         blit=True, repeat_delay=0)
-        writer = PillowWriter(fps=24)
-        animation.save("teapot.gif", writer=writer)
-        print('#### Saved!')
-        plt.show()
 
     def _shift_matrix(self):
         # Center shift matrix
@@ -61,17 +53,7 @@ class Lab3(Lab2):
         proj_x = np.concatenate([x, np.ones((1, c))], axis = 0)
         return proj_x
 
-    def _diag_matrix(self, coef):
-        diagonal = np.array([[coef, 0, 0],[0, coef, 0], [0, 0, 1]])
-        return diagonal
-
-    def _rot_matrix(self, angle):
-        rot = np.array([[np.cos(angle), -np.sin(angle), 0],
-                        [np.sin(angle), np.cos(angle), 0],
-                        [0, 0, 1]])
-        return rot
-
-    def _generate_one_frame(self, frame):
+    def _generate_one_frame(self, frame) -> None:
         # Calculate the angle of rotation
         angle = frame * 4 * np.pi / self.frames_count
         # Calculate the diagonal matrix from coefficient
@@ -91,9 +73,29 @@ class Lab3(Lab2):
         self.frames.append([temp_frame])
         print(f'[{frame + 1}]')
 
+    def _diag_matrix(self, coef):
+        diagonal = np.array([[coef, 0, 0],[0, coef, 0], [0, 0, 1]])
+        return diagonal
+
+    def _rot_matrix(self, angle):
+        rot = np.array([[np.cos(angle), -np.sin(angle), 0],
+                        [np.sin(angle), np.cos(angle), 0],
+                        [0, 0, 1]])
+        return rot
+
     def _to_cart_coords(self, new_proj_x):
         new_proj_x = new_proj_x[:-1] / new_proj_x[-1]
         return new_proj_x
+
+    def save_gif(self, filename) -> None:
+        plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
+        print('### Saving in ' + filename)
+        animation = anim.ArtistAnimation(self.figure, self.frames, interval=40,
+                                         blit=True, repeat_delay=0)
+        writer = PillowWriter(fps=24)
+        animation.save(filename, writer=writer)
+        print('#### Saved!')
+        plt.show()
 
 
 def main():
@@ -106,6 +108,7 @@ def main():
     lab3.bg_color      = [255, 255, 255]
     lab3.draw_color    = [255, 0, 0]
     lab3.animation(100)
+    lab3.save_gif('teapot.gif')
 
 
 if __name__=="__main__":
