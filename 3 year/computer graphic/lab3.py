@@ -13,38 +13,42 @@ class Lab3(Lab2):
 
     def animation(self, frames_count) -> None:
         self.get_scalable_points()
-        self.frames_count = frames_count
-        zone = self.frames_count // 2
+        self._frames_count = frames_count
+        zone = self._frames_count // 2
         # Get the shift matrix
-        self.T = self._shift_matrix()
+        self._T = self._shift_matrix()
         # Transposition
-        x = self.points.T
+        x = self._points.T
         # Cast to projective coordinates
-        self.proj_x = self._to_proj_coords(x)
+        self._proj_x = self._to_proj_coords(x)
         # Linspace to reduce the size of teapot
         reduce = np.linspace(2, 1, zone)
         # Linspace to increase the size of teapot
         increase = np.linspace(1, 2, zone)
         # coefficients to
-        self.coefficients  = np.concatenate((increase, reduce))
-        self.frames = []
+        self._coefficients  = np.concatenate((increase, reduce))
+        self._frames = []
         # Linspace from read color to green color in pixels
         r_to_g = np.array(np.linspace(255, 0, zone, dtype=np.int32))
         # Linspace from green color to red color in pixels
         g_to_r = np.array(np.linspace(0, 255, zone, dtype=np.int32))
         # Get the various forms of color in pixels
-        self.color = np.array(np.concatenate((np.concatenate((r_to_g, g_to_r)).reshape(-1, 1),
-                                         np.concatenate((g_to_r, r_to_g)).reshape(-1, 1),
-                                         np.zeros(frames_count).reshape(-1, 1)), axis=1))
-        self.figure = plt.figure()
+        self._color = np.array(
+                                np.concatenate(
+                                (np.concatenate((r_to_g, g_to_r)).reshape(-1, 1),
+                                 np.concatenate((g_to_r, r_to_g)).reshape(-1, 1),
+                                 np.zeros(frames_count).reshape(-1, 1)),
+                                 axis=1)
+                              )
+        self._figure = plt.figure()
         print('# Frame generation started')
-        for frame in range(self.frames_count):
+        for frame in range(self._frames_count):
             self._generate_one_frame(frame)
         print('## Frame generation finished')
 
     def _shift_matrix(self):
         # Center shift matrix
-        center = -self.center
+        center = -self._center
         shift = np.array([[1, 0, center[0]], [0, 1, center[1]], [0, 0, 1]])
         return shift
 
@@ -55,22 +59,22 @@ class Lab3(Lab2):
 
     def _generate_one_frame(self, frame) -> None:
         # Calculate the angle of rotation
-        angle = frame * 4 * np.pi / self.frames_count
+        angle = frame * 4 * np.pi / self._frames_count
         # Calculate the diagonal matrix from coefficient
-        A = self._diag_matrix(self.coefficients[frame])
+        A = self._diag_matrix(self._coefficients[frame])
         # Calculate the rotate matrix from angle
         R = self._rot_matrix(angle)
         # X' = T^(-1) * A * R * T * X
-        new_proj_x = np.linalg.inv(self.T) @ A @ R @ self.T @ self.proj_x
+        new_proj_x = np.linalg.inv(self._T) @ A @ R @ self._T @ self._proj_x
         # Cast to cartesian coordinates
         new_x = self._to_cart_coords(new_proj_x)
-        self.points = np.int32(np.round(new_x.T))
-        self.draw_color = self.color[frame]
+        self._points = np.int32(np.round(new_x.T))
+        self._draw_color = self._color[frame]
         self.draw_teapot()
         # Get frame
-        temp_frame = plt.imshow(self.pixels)
+        temp_frame = plt.imshow(self._pixels)
         # Put the frame to the frames list
-        self.frames.append([temp_frame])
+        self._frames.append([temp_frame])
         print(f'[{frame + 1}]')
 
     def _diag_matrix(self, coef):
@@ -90,7 +94,7 @@ class Lab3(Lab2):
     def save_gif(self, filename) -> None:
         plt.rcParams['animation.ffmpeg_path'] = 'ffmpeg.exe'
         print('### Saving in ' + filename)
-        animation = anim.ArtistAnimation(self.figure, self.frames, interval=40,
+        animation = anim.ArtistAnimation(self._figure, self._frames, interval=40,
                                          blit=True, repeat_delay=0)
         writer = PillowWriter(fps=24)
         animation.save(filename, writer=writer)

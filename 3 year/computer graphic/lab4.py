@@ -1,4 +1,4 @@
-from lab3 import np, plt, Lab3, anim, PillowWriter
+from lab3 import np, plt, Lab3
 import json
 from typing import List, Dict
 
@@ -12,21 +12,23 @@ class Lab4(Lab3):
     def _get_centered_coords(self):
         self._get_all_coords_in_one_matrix()
         # Calculate the center of x and y
-        x_center, y_center = np.mean(np.mean(self.points, axis=1), axis=0)
+        x_center, y_center = np.mean(np.mean(self._points, axis=1), axis=0)
         # Then calculate the difference between
         # center on the frame and centers of coordinates
-        self._center  = self.size // 2
+        self._center  = self._size // 2
         self._d_x = self._center - x_center
         self._d_y = self._center - y_center
 
     def _get_all_coords_in_one_matrix(self):
-        self.points = []
+        self._points = []
+        # Take the digit that will be as { 'digit_0' : { ... }}
         for digit in self._digits.values():
-            self.points.append(self._get_all_segments_coords(digit))
-        self.points = np.array(self.points).reshape(10, 16, 2)
+            self._points.append(self._get_all_segments_coords(digit))
+        self._points = np.array(self._points).reshape(10, 16, 2)
 
-    def _get_all_segments_coords(self, digit):
+    def _get_all_segments_coords(self, digit: Dict):
         all_digit_points = []
+        # Take the segment that will be as { 'segment_0': [ points ]}
         for segment in digit.values():
             all_digit_points.append(segment)
         return np.array(all_digit_points)
@@ -34,14 +36,14 @@ class Lab4(Lab3):
     def animation(self) -> None:
         self._get_centered_coords()
         t           = np.linspace(0, 1, 20)
-        length      = len(self.points)
-        self.frames = []
-        self.figure = plt.figure()
+        length      = len(self._points)
+        self._frames = []
+        self._figure = plt.figure()
         print('# Frame generation started')
         for i in range(length):
             for t_i in t:
-                intermediate_points = self.points[i] * (1 - t_i) + \
-                       self.points[(i + 1) % length] * t_i
+                intermediate_points = self._points[i] * (1 - t_i) + \
+                       self._points[(i + 1) % length] * t_i
                 digit_points = self._get_digit_coords(intermediate_points)
                 # Shift them to the center
                 digit_points[:, 0] += self._d_x
@@ -63,20 +65,20 @@ class Lab4(Lab3):
                                     self._p_count
                                     )
                              )
-        matrix = np.array(coords).reshape(self._count * self._p_count, 2)
-        return matrix
+        return np.array(coords).reshape(self._count * self._p_count, 2)
 
     def _de_castlejau(self, segment, t, n):
         # Algorithm De Castlejau to find the point to draw the line.
         for i in range(1, n):
             for j in range(0, n - i):
-                segment[j] = (1 - t) * np.array(segment[j]) + t * np.array(segment[j + 1])
+                segment[j] = (1 - t) * np.array(segment[j]) + \
+                             t * np.array(segment[j + 1])
         return np.array(segment[0])
 
     def _draw_digit(self, digit_points):
         # Set the frame in color
-        self.pixels = np.full((self._size, self._size, 3),
-                              self.bg_color, dtype=np.uint8)
+        self._pixels = np.full((self._size, self._size, 3),
+                              self._bg_color, dtype=np.uint8)
         for i in range(len(digit_points) - 1):
             # Call the method bresenham from class lab2
             super()._bresenham(digit_points[i][0],
@@ -84,8 +86,8 @@ class Lab4(Lab3):
                                digit_points[i + 1][0],
                                digit_points[i + 1][1])
         # Put the frame to the frames list
-        temp_frame = plt.imshow(self.pixels)
-        self.frames.append([temp_frame])
+        temp_frame = plt.imshow(self._pixels)
+        self._frames.append([temp_frame])
 
 
 def main():

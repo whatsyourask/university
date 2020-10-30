@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 class Lab2:
     """Class to draw the teapot"""
     def __init__(self, points, edges) -> None:
-        self.points      = points[:,:2]
-        self.edges       = edges
+        self._points     = points[:,:2]
+        self._edges       = edges
         self._scale      = None
         self._size       = None
         self._bg_color   = None
@@ -46,10 +46,10 @@ class Lab2:
         self._draw_color = draw_color
 
     def draw_teapot(self) -> None:
-        self.pixels = np.full((self.size, self.size, 3),
-                              self.bg_color,
+        self._pixels = np.full((self.size, self.size, 3),
+                              self._bg_color,
                               dtype=np.uint8)
-        for edge in self.edges:
+        for edge in self._edges:
             # For each edge in edges
             # Find corresponding coordinates and draw triangle
             coords = self._get_triangle_x_y(edge)
@@ -57,28 +57,28 @@ class Lab2:
 
     def get_scalable_points(self) -> None:
         # Get abs of minimum x
-        x_min_abs = np.fabs(self.points[:, 0].min())
-        self.points[:, 0] += x_min_abs
-        self.points[:, 1] *= -1
+        x_min_abs = np.fabs(self._points[:, 0].min())
+        self._points[:, 0] += x_min_abs
+        self._points[:, 1] *= -1
         # Get abs of minimum y
-        y_min_abs          = np.fabs(self.points[:, 1].min())
-        self.points[:, 1] += y_min_abs
+        y_min_abs          = np.fabs(self._points[:, 1].min())
+        self._points[:, 1] += y_min_abs
         # Scale the coordinates
-        self.points        = (self.points * self.scale).astype(np.int32)
+        self._points        = (self._points * self._scale).astype(np.int32)
         # Calculate center from size of figure
-        self.center        = self.size // 2
+        self._center        = self._size // 2
         # Calculate center of x and y on the picture
-        x_center, y_center = np.mean(self.points, axis=0, dtype=np.int32)
+        x_center, y_center = np.mean(self._points, axis=0, dtype=np.int32)
         # Shifting them to corresponded center
-        self.points[:, 0] += self.center - x_center
-        self.points[:, 1] += self.center - y_center
+        self._points[:, 0] += self._center - x_center
+        self._points[:, 1] += self._center - y_center
         # Get the point of the center
-        self.center        = np.array([self.center, self.center])
+        self._center        = np.array([self._center, self._center])
 
     def _get_triangle_x_y(self, indexes) -> List:
         coords = []
         for i in range(3):
-            point = self.points[indexes[i] - 1]
+            point = self._points[indexes[i] - 1]
             coords.append(point)
         return coords
 
@@ -116,7 +116,7 @@ class Lab2:
         x, y             = x0, y0
         error, iteration = max_d/2, 0
         # Set a first pixel with appropriate shift in map
-        self.pixels[y, x, :] = self.draw_color
+        self._pixels[y, x, :] = self._draw_color
         # While we don't get a iteration equal to max of dx and dy
         while iteration < max_d:
             # Reduce the error on min delta of dx and dy
@@ -133,13 +133,13 @@ class Lab2:
                 y += y_shift
             iteration += 1
             # Set a pixel in map
-            self.pixels[y, x, :] = self.draw_color
+            self._pixels[y, x, :] = self._draw_color
 
     def display(self) -> None:
         fig, ax = plt.subplots()
-        ax.imshow(self.pixels)
+        ax.imshow(self._pixels)
         plt.show()
-        plt.imsave('teapot.png', self.pixels)
+        plt.imsave('teapot.png', self._pixels)
 
 
 def main():
