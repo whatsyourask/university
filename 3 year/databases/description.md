@@ -2,4 +2,4 @@
 
 ## My Scheme
 
-[scheme](scheme.jpg)
+![scheme](scheme.jpg)
