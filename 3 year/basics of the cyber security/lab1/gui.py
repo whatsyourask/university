@@ -13,10 +13,12 @@ class GraphicUI:
         self.__root.rowconfigure(0, weight=1)
         self.__mainframe.rowconfigure(1, weight=1)
 
-    def label(self, text, column, row, sticky) -> None:
+    def label(self, text, column, row, sticky, columnspan=None) -> None:
         # Create a new label with text and at column, row
         ttk.Label(self.__mainframe, text=text).grid(column=column,
-                                                        row=row, sticky=sticky)
+                                                    row=row,
+                                                    sticky=sticky,
+                                                    columnspan=columnspan)
 
     def entry(self, type: Variable, column, row, width, sticky) -> None:
         # Create a new entry with specified type and at column, row

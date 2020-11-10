@@ -27,35 +27,48 @@ class Ring:
         # * operator overload
         return Ring(self._n, (self._num * other.num) % self._n)
 
-    def _lines_count(self) -> int:
-        # Compute lines count
-        a           = self._n
-        b           = self._num
-        lines_count = 0
+    def _euclid_algorithm(self) -> int:
+        a = self._n
+        b = self._num
         # To save divs or a/b
-        self._divs  = []
+        div_arr = []
+        a_arr   = [a]
+        b_arr   = [b]
+        mod_arr = []
         while True:
             mod = a % b
+            mod_arr.append(mod)
             div = a // b
-            self._divs.append(div)
+            div_arr.append(div)
             if not mod:
                 break
             a = b
             b = mod
-            lines_count += 1
-        self._divs.pop()
-        return lines_count
+            a_arr.append(a)
+            b_arr.append(b)
+        div_arr[-1] = None
+        return a_arr, b_arr, mod_arr, div_arr
 
     def invert(self) -> Ring:
         # Find a invert of current num
-        count = self._lines_count()
+        a_arr, b_arr, mod_arr, div_arr = self._euclid_algorithm()
         x = 0
         y = 1
-        while self._divs:
-            temp = x
-            x    = y
-            last = self._divs.pop()
-            y    = temp - y * last
+        x_arr = [x]
+        y_arr = [y]
+        copy_div_arr = div_arr[:]
+        copy_div_arr.pop()
+        while copy_div_arr:
+            last = copy_div_arr.pop()
+            x, y = y, x - y * last
+            x_arr.append(x)
+            y_arr.append(y)
+        print(len(a_arr))
+        print(len(b_arr))
+        print(len(mod_arr))
+        print(len(div_arr))
+        print(len(x_arr))
+        print(len(y_arr))
         return Ring(self._n, y)
 
     def __truediv__(self, other: Ring) -> Ring:
@@ -76,8 +89,8 @@ def test():
     print(f'{a.num} * {b.num} = {c.num}')
     c = b.invert()
     print(f'invert of {b.num} = {c.num}')
-    c = b.invert()
-    print(f'invert of {b.num} = {c.num}')
+    c = a.invert()
+    print(f'invert of {a.num} = {c.num}')
     c = a / b
     print(f'{a.num} / {b.num} = {c.num}')
 
