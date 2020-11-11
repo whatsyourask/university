@@ -1,39 +1,73 @@
 from tkinter import *
 from tkinter import ttk
+from typing import Tuple
 
 
 class GraphicUI:
+    """Класс, для создания интерфейса,
+    его элементов:кнопок, меток полей.
+    Также отвечает за все действия с интерфейсом,
+    в том числе обновление и запуск."""
     def __init__(self) -> None:
+        # Конструктор класса
+        # self - переменная, что даёт доступ к атрибутам и методам класса
+        # Создать главный объект модуля для создания интерфейса
         self.__root = Tk()
-        self.__root.title('Lab №1')
+        # Сделать окно неизменяемым по размеру
         self.__root.resizable(0, 0)
+        # Создать фрейм, на котором будут располагаться элементы
+        # padding - отступы с разных сторон в рамке
         self.__mainframe = ttk.Frame(self.__root, padding="40 20 40 20")
         self.__mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-        self.__root.columnconfigure(0, weight=1)
-        self.__root.rowconfigure(0, weight=1)
-        self.__mainframe.rowconfigure(1, weight=1)
 
-    def label(self, text, column, row, sticky, columnspan=None) -> None:
-        # Create a new label with text and at column, row
-        ttk.Label(self.__mainframe, text=text).grid(column=column,
-                                                    row=row,
-                                                    sticky=sticky,
-                                                    columnspan=columnspan)
+    def set_title(self, text) -> None:
+        # Назначение названия программе
+        self.__root.title(text)
 
-    def entry(self, type: Variable, column, row, width, sticky) -> None:
-        # Create a new entry with specified type and at column, row
+    def label(self, text, column, row, sticky, columnspan=None):
+        # Созданиe метки с текстом text на сетке в ячейке column, row
+        # tkinter позволяет размещать элементы наподобие таблицы
+        # т.е. в каждой ячейке элемент интерфейса
+        # sticky - указать направление, к какой стороне ячейки приклеить элемент
+        # Создание метки, указывается объект фрейма, на который её поставить и текст
+        label = ttk.Label(self.__mainframe, text=text)
+        # Размещение метки в ячейку
+        # columnspan - для объединения ячеек таблицы и лучшего размещения,
+        # Допустим метки с длинным текстом или аналогично с кнопкой
+        # В этом методе, columnspan имеет параметр по умолчанию, если он не назначен,
+        # то ячейки не объединяются
+        label.grid(column=column, row=row, sticky=sticky, columnspan=columnspan)
+        # Возвращает объект метки
+        return label
+
+    def entry(self, type: Variable, column, row, width, sticky) -> Tuple:
+        # Созданиe поля ввода
+        # type - указать тип данных, что будет хранить поле
+        # Запись type: Variable - статическая типизация в питоне
+        # Variable в данном случае тип переменной type
+        # field - объект типа для поля tkinter
         field = type
+        # Создание поля, указывается объект фрейма, как и раньше
+        # text с переменной field
+        # width - ширина элемента
         entry = ttk.Entry(self.__mainframe, text=field, width=width)
         entry.grid(column=column, row=row, sticky=sticky)
-        # Return a field through which we have an access to value of entry
-        return field
+        # Возвращает кортеж, т.е. неизменяемый массив
+        # запись -> Tuple - статическая типизация для указания того,
+        # что возвращает функция
+        return field, entry
 
     def button(self, text, column, row, width, sticky, func) -> None:
-        # Create a new button with text and at column, row
+        # Созданиe кнопки
+        # func - функция, которая должна отработать при нажатии на кнопку
         button = ttk.Button(self.__mainframe, text=text,
                                 command=func, width=width)
         button.grid(column=column, row=row, sticky=sticky)
 
     def start(self) -> None:
-        # Start mainloop
+        # Запустить интерфейс
         self.__root.mainloop()
+
+    def update(self) -> None:
+        # Обновить интерфейс
+        self.__root.update()
