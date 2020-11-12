@@ -40,7 +40,8 @@ class GraphicUI:
         # Возвращает объект метки
         return label
 
-    def entry(self, type: Variable, column, row, width, sticky) -> Tuple:
+    def entry(self, type: Variable, column, row, width,
+                                             sticky, columnspan=None) -> Tuple:
         # Созданиe поля ввода
         # type - указать тип данных, что будет хранить поле
         # Запись type: Variable - статическая типизация в питоне
@@ -51,7 +52,7 @@ class GraphicUI:
         # text с переменной field
         # width - ширина элемента
         entry = ttk.Entry(self.__mainframe, text=field, width=width)
-        entry.grid(column=column, row=row, sticky=sticky)
+        entry.grid(column=column, row=row, sticky=sticky, columnspan=columnspan)
         # Возвращает кортеж, т.е. неизменяемый массив
         # запись -> Tuple - статическая типизация для указания того,
         # что возвращает функция
