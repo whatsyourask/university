@@ -50,7 +50,7 @@ class Application:
                                                     self._calculate_euler_func)
         # Позиция таблицы для промежуточных вычисления
         # при быстром возведении в степень по модулю
-        self._mod_table_pos = [7, 1]
+        self._mod_table_pos = [1, 7]
         self._gui.button('Мод', 3, 6, self._width, W, self._mod_powers)
 
     def _get_all(self) -> Tuple:
