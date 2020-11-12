@@ -9,6 +9,12 @@ class Application:
     def run(self) -> None:
         # Создание всех необходимых элементов интерфейса и запуск цикла интерфейса
         self._create_all_elements()
+        # Для хранения значений в таблицах промежуточных вычислений
+        self._fields  = None
+        # Для хранения объектов-ячеек таблиц
+        self._entries = None
+        # Для хранения объектов меток и обозначений столбцов для таблиц
+        self._table_first_entries = []
         # Отобразить интерфейс
         self._gui.start()
 
@@ -19,12 +25,6 @@ class Application:
         self._gui.set_title('Lab №1')
         # Ширина элементов интерфейса
         self._width   = 8
-        # Для хранения значений в таблицах промежуточных вычислений
-        self._fields  = None
-        # Для хранения объектов-ячеек таблиц
-        self._entries = None
-        # Для хранения объектов меток и обозначений столбцов для таблиц
-        self._table_first_entries = []
         # Ставим метку для n
         self._gui.label('n ', 1, 1, W)
         # Создаём поле для ввода n
@@ -204,7 +204,7 @@ class Application:
             self._create_table(arr, self._mod_table_pos)
             # Сбросить позицию для таблицы, чтобы при новом создании,
             # она создавалась на том же месте
-            self._mod_table_pos = [7, 1]
+            self._mod_table_pos = [1, 7]
 
     def _create_table(self, arr, position: Tuple[int, int]):
         # Поставить ячейки таблицы на фрейм интерфейса
