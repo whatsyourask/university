@@ -2,6 +2,7 @@ from rsa import *
 from lab1.gui import *
 from time import time
 
+
 class Application:
     def run(self) -> None:
         # Создать все элементы
