@@ -72,3 +72,10 @@ class GraphicUI:
     def update(self) -> None:
         # Обновить интерфейс
         self.__root.update()
+
+    def text(self, column, row, width, height, sticky, columnspan=None):
+        # Создание текстового поля
+        text = Text(self.__mainframe, width=width, height=height)
+        text.grid(column=column, row=row, sticky=sticky, columnspan=columnspan)
+        # Возврат объекта элемента
+        return text
