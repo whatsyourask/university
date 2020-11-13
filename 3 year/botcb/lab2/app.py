@@ -48,6 +48,9 @@ class Application:
                                              self._width, W)
         # Создание кнопки с передачей ей функции
         # которую она будет выполнять при нажатии
+        # Переменная для хранения объекта интерфейса, где выводятся возможные e
+        self._text        = None
+        self._pos_e_label = None
         self._gui.button('Генерация ключей шифрования', 2, 12,
                          self._width, W, self._generate_keys_event)
         # Переменная для сохранения элемента интерфейса с предупреждением
@@ -78,6 +81,19 @@ class Application:
             self._e_field.set(self._rsa.e)
             self._rsa.generate_private_key()
             self._d_field.set(self._rsa.d)
+            # Берём возможные ключи из класса RSA
+            e_arr = self._rsa._e_arr
+        # Создаем объект интерфейса с текстом
+        if self._text:
+            self._text.grid_remove()
+        if self._pos_e_label:
+            self._pos_e_label.grid_remove()
+        self._pos_e_label = self._gui.label('Возможные е', 1, 15, W)
+
+        self._text = self._gui.text(1, 16, (self._width + 4) * 3,
+                                                len(e_arr) // self._width, W, 4)
+        # Заполняем его возможными ключами
+        self._text.insert(INSERT, e_arr)
 
     def _encrypt_message_event(self) -> None:
         # Для кнопки шифрования сообщения
