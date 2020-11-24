@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, '..')
 import lab1
 import math
-from typing import Tuple
+from typing import Tuple, List
 
 
 class Fermat:
