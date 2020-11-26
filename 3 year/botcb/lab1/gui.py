@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from typing import Tuple
+import matplotlib.pyplot as plt
 
 
 class GraphicUI:
@@ -58,12 +59,12 @@ class GraphicUI:
         # что возвращает функция
         return field, entry
 
-    def button(self, text, column, row, width, sticky, func) -> None:
+    def button(self, text, column, row, width, sticky, func, columnspan=None) -> None:
         # Созданиe кнопки
         # func - функция, которая должна отработать при нажатии на кнопку
         button = ttk.Button(self.__mainframe, text=text,
                                 command=func, width=width)
-        button.grid(column=column, row=row, sticky=sticky)
+        button.grid(column=column, row=row, sticky=sticky, columnspan=columnspan)
 
     def start(self) -> None:
         # Запустить интерфейс
@@ -79,3 +80,11 @@ class GraphicUI:
         text.grid(column=column, row=row, sticky=sticky, columnspan=columnspan)
         # Возврат объекта элемента
         return text
+
+    def graphic(self, x, y) -> None:
+        fig, ax = plt.subplots()
+        ax.plot(x, y)
+        ax.set(xlabel='Число', ylabel='Время',
+                         title='График зависимости времени разложения от числа')
+        ax.grid()
+        plt.show()
