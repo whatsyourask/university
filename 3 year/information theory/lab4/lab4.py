@@ -57,12 +57,11 @@ class LogisticRegression:
 
     def _gradient_descent(self, iter_count: int) -> None:
         # Инициализация весов
-        self._b = self._sigma * np.random.rand(self._k)
+        self._b = np.float64(self._sigma * np.random.rand(self._k))
         # Вычисляем начальную функцию правдоподобия и объявляем её максимальной
         self._calculate_y()
         self._b += self._gamma * self._grad_l_b()
         max_likelihood_func = self._likelihood_func()
-        #max_likelihood_func = (-1) * pow(10, 15)
         print(f'Max likelihood function = {max_likelihood_func}')
         print(self._b)
         # Это считается за 1 итерацию, поэтому остаётся на 1 итерацию меньше
@@ -73,13 +72,11 @@ class LogisticRegression:
             self._b += self._gamma * self._grad_l_b()
             cur_likelihood_func = self._likelihood_func()
             print(cur_likelihood_func)
-            #print(self._b)
             if cur_likelihood_func > max_likelihood_func:
                 print('Found MAX')
                 max_likelihood_func = cur_likelihood_func
                 self._best_b = np.copy(self._b)
             iter_count -= 1
-            #print(iter_count)
         print(f'Max likelihood function = {max_likelihood_func}')
         print(f'Best B = {self._best_b}')
 
@@ -112,13 +109,12 @@ def get_data_from_csv(filename: str):
 
 def main():
     data = get_data_from_csv('titanic.csv')
-    print(data)
     labels = data[:, 0]
     data = data[:,1:]
     l = LogisticRegression(data, labels)
-    gamma = 0.001
+    gamma = 0.1
     sigma = 0.01
-    l.teach(gamma, sigma, 30)
+    l.teach(gamma, sigma, 1000)
 
 
 main()
