@@ -5,18 +5,39 @@ from typing import List
 
 class LogisticRegression:
     def __init__(self, data, labels) -> None:
-        self._x      = data
-        self._labels = labels
-        self._n      = len(labels)
-        self._k      = len(data[0])
+        # Конструктор, что принимает данные и метки
+        self._x = data
+        self._t = labels
+        # Кол-во данных
+        self._n = labels.shape[0]
+        # Кол-во свойств (???)
+        self._k = data.shape[1]
 
     def teach(self, gamma: float, sigma: float, iter_count: int) -> None:
+        # Метод для обучения модели
+        # Нормализация данных
         self._normalization()
+        # Рандомизация данных
         self._shuffle()
-        self._gradient_descent(gamma, sigma, iter_count)
+        self._gamma   = gamma
+        self._sigma   = sigma
+        # Берём обучающую выборку
+        self._ind_arr = self._train_ind_arr
+        # Делаем градиентный спуск
+        self._gradient_descent(iter_count)
+        # Вычисляем точность
+        train_accuracy = self._calculate_accuracy()
+        print(f'train accuracy = {train_accuracy}')
+        # Берём тестовую выборку
+        self._ind_arr = self._test_ind_arr
+        # Вычисляем точность
+        test_accuracy = self._calculate_accuracy()
+        print(f'test accuracy = {test_accuracy}')
 
     def _normalization(self):
+        # Находим среднее
         mean = np.mean(self._x, 0)
+        # Находим вектор стандартных отклонений
         std  = np.std(self._x, 0)
         self._x -= mean
         self._x /= std
@@ -34,46 +55,48 @@ class LogisticRegression:
         self._test_ind_arr = self._ind_arr[np.int32(0.8
             * ind_arr_len):np.int32(ind_arr_len)]
 
-    def _gradient_descent(self, gamma: float, sigma: float, iter_count: int) -> None:
-        self._b = np.float128(sigma * np.random.rand(self._k))
-        self._calculate_y(self._train_ind_arr)
-        self._b += gamma * self._grad_l_b(self._train_ind_arr)
-        max_likelihood_func = self._likelihood_func(self._train_ind_arr)
+    def _gradient_descent(self, iter_count: int) -> None:
+        # Инициализация весов
+        self._b = self._sigma * np.random.rand(self._k)
+        # Вычисляем начальную функцию правдоподобия и объявляем её максимальной
+        self._calculate_y()
+        self._b += self._gamma * self._grad_l_b()
+        max_likelihood_func = self._likelihood_func()
+        #max_likelihood_func = (-1) * pow(10, 15)
         print(f'Max likelihood function = {max_likelihood_func}')
+        print(self._b)
+        # Это считается за 1 итерацию, поэтому остаётся на 1 итерацию меньше
         iter_count -= 1
-        best_b = self._b
+        self._best_b = np.copy(self._b)
         while iter_count:
-            self._calculate_y(self._train_ind_arr)
-            self._b += gamma * self._grad_l_b(self._train_ind_arr)
-            cur_likelihood_func = self._likelihood_func(self._train_ind_arr)
+            self._calculate_y()
+            self._b += self._gamma * self._grad_l_b()
+            cur_likelihood_func = self._likelihood_func()
             print(cur_likelihood_func)
+            #print(self._b)
             if cur_likelihood_func > max_likelihood_func:
                 print('Found MAX')
                 max_likelihood_func = cur_likelihood_func
-                best_b = self._b
+                self._best_b = np.copy(self._b)
             iter_count -= 1
-            print(iter_count)
+            #print(iter_count)
         print(f'Max likelihood function = {max_likelihood_func}')
+        print(f'Best B = {self._best_b}')
 
-    def _calculate_y(self, ind_arr: List) -> None:
-        self._temp = 1 / (1 + np.exp(-self._b.T @ self._x[ind_arr].T))
-        print(self._temp)
-        self._temp2 = np.ones(self._x[ind_arr].shape[0]) - self._temp
-        print(self._temp2)
-        self._y    = [1 if item > 0.5 else 0 for item in self._temp]
-        print(self._y)
-        print(len(self._y))
-        print(self._labels[ind_arr])
-        print(len(self._labels[ind_arr]))
+    def _calculate_y(self) -> None:
+        self._temp = 1 / (1 + np.exp(-self._x[self._ind_arr] @ self._b))
+        self._y    = np.array([1 if item > 0.5 else 0 for item in self._temp])
 
-    def _grad_l_b(self, ind_arr: List):
-        return (self._y - self._labels[ind_arr]).T @ self._x[ind_arr]
+    def _grad_l_b(self):
+        return (self._t[self._ind_arr] - self._y).T @ self._x[self._ind_arr]
 
-    def _likelihood_func(self, ind_arr):
-        return np.sum(np.log((self._temp ** self._labels[ind_arr]) * ((1 - self._temp) ** self._labels[ind_arr])))
+    def _likelihood_func(self):
+        return np.sum(np.log((self._temp ** self._t[self._ind_arr]) * ((1 - self._temp) ** (1 - self._t[self._ind_arr]))))
 
-    def _calculate_accuracy(self, ind_arr: List):
-        return np.sum(self._y == self._labels) / self._x[ind_arr].shape[0]
+    def _calculate_accuracy(self):
+        self._b = np.copy(self._best_b)
+        self._calculate_y()
+        return np.sum(self._y == self._t[self._ind_arr]) / self._x[self._ind_arr].shape[0]
 
 
 def get_data_from_csv(filename: str):
@@ -95,7 +118,7 @@ def main():
     l = LogisticRegression(data, labels)
     gamma = 0.001
     sigma = 0.01
-    l.teach(gamma, sigma, 1)
+    l.teach(gamma, sigma, 30)
 
 
 main()
