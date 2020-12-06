@@ -16,6 +16,7 @@ class LogisticRegression:
 
     def teach(self, gamma: float, sigma: float, iter_count: int) -> None:
         # Метод для обучения модели
+        start_time = time()
         # Нормализация данных
         self._normalization()
         # Рандомизация данных
@@ -30,6 +31,10 @@ class LogisticRegression:
         # Вычисляем точность
         train_accuracy = self._calculate_accuracy()
         print(f'train accuracy = {train_accuracy}')
+        end_time = time()
+        print(f'Time = {end_time - start_time} sec')
+
+    def test(self) -> None:
         # Берём тестовую выборку
         self._x = self._data[self._test_ind_arr]
         self._t = self._labels[self._test_ind_arr]
@@ -134,6 +139,7 @@ def main():
     gamma  = 0.001
     sigma  = 0.01
     l.teach(gamma, sigma, 1000)
+    l.test()
     print(l.predict([3, 0, 20, 0, 0, 70]))
 
 main()
