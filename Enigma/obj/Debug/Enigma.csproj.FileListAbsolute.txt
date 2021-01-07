@@ -1,0 +1,10 @@
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\bin\Debug\Enigma.exe.config
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\bin\Debug\Enigma.exe
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\bin\Debug\Enigma.pdb
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.csprojAssemblyReference.cache
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.Form1.resources
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.Properties.Resources.resources
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.csproj.GenerateResource.cache
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.csproj.CoreCompileInputs.cache
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.exe
+C:\Users\retribution_401_1\source\repos\Enigma\Enigma\obj\Debug\Enigma.pdb
