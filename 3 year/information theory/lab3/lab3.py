@@ -119,7 +119,7 @@ def encode(sequence: List, codes: Dict) -> str:
 
 
 def estimate(codes: Dict, syms_frequencies: Dict, count: int) -> Tuple:
-    # Оценка качества кодировани
+    # Оценка качества кодирования
     # Берём из словаря только частоты
     frequencies = list(syms_frequencies.values())
     # Вычисляем энтропию
