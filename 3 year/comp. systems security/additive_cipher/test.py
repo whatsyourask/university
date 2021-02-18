@@ -4,7 +4,7 @@ from backend import AdditiveCipher
 
 class TestBackend(unittest.TestCase):
     def test_crypt_smaller_key(self):
-        self.__check('HELLOWORLD1231231232', 'HELLO', 'en',
+        self.__check('HELLOWORLDZZZZZ1231231232', 'HELLO', 'en',
                         'KEY SMALLER THAN PLAINTEXT')
 
     def test_crypt_bigger_key(self):
@@ -45,8 +45,11 @@ class TestBackend(unittest.TestCase):
                             'PUNCTUATION & LANGUAGE')
 
     def test_crypt_different_cases(self):
-        self.__check_raise('HELLOWORLD111' , 'WORLDHELLO111', 'ru',
+        self.__check_raise('HELLOWORLD111' , 'worldhello222', 'en',
                             'CASES ARE NOT EQUALS')
+
+    def test_crypt_without_keyword(self):
+        self.__check_raise('HELLOasdfdsaf', None, 'en', 'WITHOUT KEYWORD')
 
     def __check(self, plaintext: str, keyword: str, lang: str, log_message:str):
         answer = self.__execute_method(plaintext, keyword, lang)
