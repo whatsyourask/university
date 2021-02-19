@@ -48,8 +48,11 @@ class TestBackend(unittest.TestCase):
         self.__check_raise('HELLOWORLD111' , 'worldhello222', 'en',
                             'CASES ARE NOT EQUALS')
 
-    def test_crypt_without_keyword(self):
-        self.__check_raise('HELLOasdfdsaf', None, 'en', 'WITHOUT KEYWORD')
+    def test_crypt_ruslan(self):
+        self.__check('Z9', '99', 'en', 'RUSLAN TEST')
+
+    # def test_crypt_without_keyword(self):
+    #     self.__check_raise('HELLOasdfdsaf', None, 'en', 'WITHOUT KEYWORD')
 
     def __check(self, plaintext: str, keyword: str, lang: str, log_message:str):
         answer = self.__execute_method(plaintext, keyword, lang)
@@ -59,11 +62,11 @@ class TestBackend(unittest.TestCase):
     def __execute_method(self, plaintext: str, keyword: str, lang: str) -> str:
         cipher = AdditiveCipher(lang)
         ciphertext = cipher.crypt(plaintext, keyword)
-        answer = cipher.crypt(ciphertext, keyword)
+        answer = cipher.crypt(ciphertext, keyword, AdditiveCipher.DECRYPT_MODE)
         return answer
 
     def __check_raise(self, plaintext: str, keyword: str,
                         lang: str, log_message: str):
         self.assertRaises(ValueError, self.__execute_method, plaintext, keyword,
-                            lang, )
+                            lang)
         print('\n[+] ' + log_message)

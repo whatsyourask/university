@@ -1,11 +1,15 @@
 from typing import List
 import re
 import string
+import random
 
 
 class AdditiveCipher:
     __EN_ALPH_LEN = 26
     __RU_ALPH_LEN = 33
+    __ALPH_ONE_CHR = 6
+    ENCRYPT_MODE = 0
+    DECRYPT_MODE = 1
     def __init__(self, lang: str) -> None:
         self.__create_trans_table(lang)
 
@@ -18,15 +22,20 @@ class AdditiveCipher:
             self.__alphabet.insert(letter_index, 'Ё')
         self.__chosen_lang = lang
         self.__alphabet.extend([str(num) for num in range(0, 10)])
+        self.__alph_len = len(self.__alphabet)
+        # self.__alphabet += string.punctuation[:64 - len(self.__alphabet)]
+        # print(self.__alphabet)
+        # print(len(self.__alphabet))
 
     def __load_alphabet(self, first_letter: str, alph_len: int) -> List:
         first_num = ord(first_letter)
         return [chr(char_num) for char_num in range(first_num,
                                                     first_num + alph_len)]
 
-    def crypt(self, plaintext: str, keyword: str=None) -> str:
-        print(f'plaintext = {plaintext}\n')
-        self.__valid_punctutation(plaintext, keyword)
+    def crypt(self, plaintext: str, keyword: str=None,
+                mode=ENCRYPT_MODE) -> str:
+        #print(f'plaintext = {plaintext}\n')
+        #self.__valid_punctutation(plaintext, keyword)
         self.__valid_language(plaintext, keyword)
         self.__valid_case(plaintext, keyword)
         to_lower = False
@@ -34,18 +43,18 @@ class AdditiveCipher:
             plaintext = plaintext.upper()
             to_lower = True
         if keyword:
-            ciphertext = self.__crypt_with_keyword(plaintext, keyword)
+            ciphertext = self.__crypt_with_keyword(plaintext, keyword, mode)
         else:
-            ciphertext = self.__crypt_without_keyword(plaintext)
+            ciphertext = self.__crypt_without_keyword(plaintext, mode)
         if to_lower:
             ciphertext = ciphertext.lower()
         return ciphertext
 
-    def __crypt_with_keyword(self, plaintext: str, keyword: str) -> str:
+    def __crypt_with_keyword(self, plaintext: str, keyword: str, mode) -> str:
         if keyword.islower():
             keyword = keyword.upper()
         keyword = self.__modify_keyword(plaintext, keyword)
-        ciphertext = self.__crypto_algorithm(plaintext, keyword)
+        ciphertext = self.__crypto_algorithm(plaintext, keyword, mode)
         return ciphertext
 
     def __valid_punctutation(self, plaintext: str, keyword: str) -> None:
@@ -56,6 +65,7 @@ class AdditiveCipher:
             raise ValueError
 
     def __valid_language(self, plaintext: str, keyword: str) -> None:
+        #print(plaintext)
         en_lang = re.compile('[a-zA-Z]')
         ru_lang = re.compile('[а-яА-Я]')
         en_rules = [self.__chosen_lang == 'en',
@@ -73,7 +83,7 @@ class AdditiveCipher:
             not_equals = [plaintext.isupper() and keyword.islower(),
                           plaintext.islower() and keyword.isupper()]
         else:
-            not_equals = [plaintext.isupper(), ]
+            not_equals = [plaintext.isupper()]
         if any(not_equals):
             raise ValueError
 
@@ -86,12 +96,30 @@ class AdditiveCipher:
             keyword = keyword * count + keyword[:mod]
         return keyword
 
-    def __crypto_algorithm(self, plaintext: str, keyword: str) -> str:
+    def __crypto_algorithm(self, plaintext: str, keyword: str, mode: int) -> str:
         ciphertext = []
+        print('plain = ', plaintext)
+        print(len(plaintext))
+        print('keyword = ', keyword)
+        print(len(keyword))
+        print(self.__alph_len)
         for plain, key in zip(plaintext, keyword):
-            cipher = self.__alphabet.index(plain) ^ self.__alphabet.index(key)
-            ciphertext.append(self.__alphabet[cipher])
+            plain_ind = self.__alphabet.index(plain) + 1
+            key_ind = self.__alphabet.index(key) + 1
+            print(plain_ind)
+            print(key_ind)
+            if not mode:
+                cipher = (plain_ind ^ key_ind)
+            else:
+                cipher = (plain_ind ^ key_ind)
+            if not cipher:
+                cipher = self.__alph_len
+            if cipher > self.__alph_len:
+                cipher -= self.__alph_len
+            print('cipher = ', cipher)
+            ciphertext.append(self.__alphabet[cipher - 1])
         ciphertext = ''.join(ciphertext)
+        print(ciphertext)
         return ciphertext
 
     def __crypt_without_keyword(self, plaintext: str) -> str:
@@ -99,5 +127,9 @@ class AdditiveCipher:
 
     def __create_keyword(self, plaintext_len: int) -> str:
         half = plaintext_len // 2
-        keyword = '0' * half + '1' * (plaintext_len - half)
+        zeros = '0' * half * self.__ALPH_ONE_CHR
+        ones = '1' * (plaintext_len - half) * self.__ALPH_ONE_CHR
+        keyword = list(zeros + ones)
         print(keyword)
+        random.shuffle(keyword)
+        ''.join(keyword)
