@@ -10,8 +10,10 @@ class AdditiveCipher:
     __ALPH_ONE_CHR = 6
     ENCRYPT_MODE = 0
     DECRYPT_MODE = 1
-    def __init__(self, lang: str) -> None:
+    def __init__(self, lang: str, letter_case: str) -> None:
         self.__create_trans_table(lang)
+        self.__chosen_case = letter_case
+        self.__alph_len = len(self.__alphabet)
 
     def __create_trans_table(self, lang: str) -> None:
         if lang == 'en':
@@ -22,7 +24,6 @@ class AdditiveCipher:
             self.__alphabet.insert(letter_index, 'Ё')
         self.__chosen_lang = lang
         self.__alphabet.extend([str(num) for num in range(0, 10)])
-        self.__alph_len = len(self.__alphabet)
         # self.__alphabet += string.punctuation[:64 - len(self.__alphabet)]
         # print(self.__alphabet)
         # print(len(self.__alphabet))
@@ -35,9 +36,9 @@ class AdditiveCipher:
     def crypt(self, plaintext: str, keyword: str=None,
                 mode=ENCRYPT_MODE) -> str:
         #print(f'plaintext = {plaintext}\n')
-        #self.__valid_punctutation(plaintext, keyword)
-        self.__valid_language(plaintext, keyword)
-        self.__valid_case(plaintext, keyword)
+        self.__punctuation_validation(plaintext, keyword)
+        self.__language_validation(plaintext, keyword)
+        self.__case_validation(plaintext, keyword)
         to_lower = False
         if plaintext.islower():
             plaintext = plaintext.upper()
@@ -57,14 +58,14 @@ class AdditiveCipher:
         ciphertext = self.__crypto_algorithm(plaintext, keyword, mode)
         return ciphertext
 
-    def __valid_punctutation(self, plaintext: str, keyword: str) -> None:
+    def __punctuation_validation(self, plaintext: str, keyword: str) -> None:
         no_punct = re.compile(f'[{re.escape(string.punctuation)}\s]')
         in_plaintext = no_punct.findall(plaintext)
         in_keyword = no_punct.findall(keyword) if keyword is not None else False
         if in_plaintext or in_keyword:
             raise ValueError
 
-    def __valid_language(self, plaintext: str, keyword: str) -> None:
+    def __language_validation(self, plaintext: str, keyword: str) -> None:
         #print(plaintext)
         en_lang = re.compile('[a-zA-Z]')
         ru_lang = re.compile('[а-яА-Я]')
@@ -78,13 +79,20 @@ class AdditiveCipher:
         if all(en_rules) and all(ru_rules):
             raise ValueError
 
-    def __valid_case(self, plaintext: str, keyword: str) -> None:
+    def __case_validation(self, plaintext: str, keyword: str) -> None:
+        plain_upper_or_digit = [plaintext.isupper(), plaintext.isdigit()]
+        plain_upper = [self.__chosen_case == 'upper', any(plain_upper_or_digit)]
+        plain_lower_or_digit = [plaintext.islower(), plaintext.isdigit()]
+        plain_lower = [self.__chosen_case == 'lower', any(plain_lower_or_digit)]
         if keyword:
-            not_equals = [plaintext.isupper() and keyword.islower(),
-                          plaintext.islower() and keyword.isupper()]
+            key_upper_or_digit = [keyword.isupper(), keyword.isdigit()]
+            key_upper = [all(plain_upper), any(key_upper_or_digit)]
+            key_lower_or_digit = [keyword.islower(), keyword.isdigit()]
+            key_lower = [all(plain_lower), any(key_lower_or_digit)]
+            check_case = [all(key_upper), all(key_lower)]
         else:
-            not_equals = [plaintext.isupper()]
-        if any(not_equals):
+            check_case = [all(plain_lower), all(plain_upper)]
+        if not any(check_case):
             raise ValueError
 
     def __modify_keyword(self, plaintext: str, keyword: str) -> str:
@@ -98,38 +106,46 @@ class AdditiveCipher:
 
     def __crypto_algorithm(self, plaintext: str, keyword: str, mode: int) -> str:
         ciphertext = []
-        print('plain = ', plaintext)
-        print(len(plaintext))
-        print('keyword = ', keyword)
-        print(len(keyword))
-        print(self.__alph_len)
+        # print('plain = ', plaintext)
+        # print(len(plaintext))
+        # print('keyword = ', keyword)
+        # print(len(keyword))
+        # print(self.__alph_len)
         for plain, key in zip(plaintext, keyword):
             plain_ind = self.__alphabet.index(plain) + 1
             key_ind = self.__alphabet.index(key) + 1
-            print(plain_ind)
-            print(key_ind)
+            # print(plain_ind)
+            # print(key_ind)
             if not mode:
-                cipher = (plain_ind ^ key_ind)
+                cipher = (plain_ind + key_ind) % self.__alph_len
             else:
-                cipher = (plain_ind ^ key_ind)
+                cipher = (plain_ind - key_ind + self.__alph_len) % self.__alph_len
             if not cipher:
                 cipher = self.__alph_len
-            if cipher > self.__alph_len:
-                cipher -= self.__alph_len
-            print('cipher = ', cipher)
+            # print('cipher = ', cipher)
             ciphertext.append(self.__alphabet[cipher - 1])
         ciphertext = ''.join(ciphertext)
-        print(ciphertext)
+        #print(ciphertext)
         return ciphertext
 
-    def __crypt_without_keyword(self, plaintext: str) -> str:
+    def __crypt_without_keyword(self, plaintext: str, mode: int) -> str:
         keyword = self.__create_keyword(len(plaintext))
+        self.__key_validation(keyword)
 
-    def __create_keyword(self, plaintext_len: int) -> str:
+    def __create_keyword(self, plaintext_len: int) -> List:
         half = plaintext_len // 2
         zeros = '0' * half * self.__ALPH_ONE_CHR
         ones = '1' * (plaintext_len - half) * self.__ALPH_ONE_CHR
         keyword = list(zeros + ones)
         print(keyword)
         random.shuffle(keyword)
-        ''.join(keyword)
+        print(keyword)
+        return keyword
+
+    def __key_validation(self, keyword: List) -> str:
+        keyword_parts = []
+        for i in range(0, len(keyword), self.__ALPH_ONE_CHR):
+            keyword_parts.append(keyword[i: i + self.__ALPH_ONE_CHR])
+        for part in keyword_parts:
+            num = int(''.join(part), 2)
+            print(num)
