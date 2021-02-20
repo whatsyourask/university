@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import re
 import string
 import random
@@ -8,11 +8,9 @@ class AdditiveCipher:
     __EN_ALPH_LEN = 26
     __RU_ALPH_LEN = 33
     __ALPH_ONE_CHR = 6
-    ENCRYPT_MODE = 0
-    DECRYPT_MODE = 1
-    def __init__(self, lang: str, letter_case: str) -> None:
+    def __init__(self, lang: str) -> None:
         self.__create_trans_table(lang)
-        self.__chosen_case = letter_case
+        # self.__chosen_case = letter_case
         self.__alph_len = len(self.__alphabet)
 
     def __create_trans_table(self, lang: str) -> None:
@@ -24,7 +22,7 @@ class AdditiveCipher:
             self.__alphabet.insert(letter_index, 'Ё')
         self.__chosen_lang = lang
         self.__alphabet.extend([str(num) for num in range(0, 10)])
-        # self.__alphabet += string.punctuation[:64 - len(self.__alphabet)]
+        self.__alphabet += string.punctuation[:64 - len(self.__alphabet)]
         # print(self.__alphabet)
         # print(len(self.__alphabet))
 
@@ -33,29 +31,28 @@ class AdditiveCipher:
         return [chr(char_num) for char_num in range(first_num,
                                                     first_num + alph_len)]
 
-    def crypt(self, plaintext: str, keyword: str=None,
-                mode=ENCRYPT_MODE) -> str:
+    def crypt(self, plaintext: str, keyword: str=None) -> str:
         #print(f'plaintext = {plaintext}\n')
-        self.__punctuation_validation(plaintext, keyword)
+        #self.__punctuation_validation(plaintext, keyword)
         self.__language_validation(plaintext, keyword)
-        self.__case_validation(plaintext, keyword)
+        #self.__case_validation(plaintext, keyword)
         to_lower = False
         if plaintext.islower():
             plaintext = plaintext.upper()
             to_lower = True
         if keyword:
-            ciphertext = self.__crypt_with_keyword(plaintext, keyword, mode)
+            ciphertext = self.__crypt_with_keyword(plaintext, keyword)
         else:
-            ciphertext = self.__crypt_without_keyword(plaintext, mode)
+            ciphertext = self.__crypt_without_keyword(plaintext)
         if to_lower:
             ciphertext = ciphertext.lower()
         return ciphertext
 
-    def __crypt_with_keyword(self, plaintext: str, keyword: str, mode) -> str:
+    def __crypt_with_keyword(self, plaintext: str, keyword: str) -> str:
         if keyword.islower():
             keyword = keyword.upper()
         keyword = self.__modify_keyword(plaintext, keyword)
-        ciphertext = self.__crypto_algorithm(plaintext, keyword, mode)
+        ciphertext = self.__crypto_algorithm(plaintext, keyword)
         return ciphertext
 
     def __punctuation_validation(self, plaintext: str, keyword: str) -> None:
@@ -104,48 +101,72 @@ class AdditiveCipher:
             keyword = keyword * count + keyword[:mod]
         return keyword
 
-    def __crypto_algorithm(self, plaintext: str, keyword: str, mode: int) -> str:
+    def __crypto_algorithm(self, plaintext: str, keyword: str) -> str:
         ciphertext = []
-        # print('plain = ', plaintext)
-        # print(len(plaintext))
-        # print('keyword = ', keyword)
-        # print(len(keyword))
-        # print(self.__alph_len)
+        self.__bin_plain = []
+        self.__bin_key = []
+        self.__bin_cipher = []
         for plain, key in zip(plaintext, keyword):
-            plain_ind = self.__alphabet.index(plain) + 1
-            key_ind = self.__alphabet.index(key) + 1
-            # print(plain_ind)
-            # print(key_ind)
-            if not mode:
-                cipher = (plain_ind + key_ind) % self.__alph_len
-            else:
-                cipher = (plain_ind - key_ind + self.__alph_len) % self.__alph_len
-            if not cipher:
-                cipher = self.__alph_len
-            # print('cipher = ', cipher)
-            ciphertext.append(self.__alphabet[cipher - 1])
+            plain_ind = self.__alphabet.index(plain)
+            self.__bin_plain.append(self.__to_binary(plain_ind))
+            key_ind = self.__alphabet.index(key)
+            self.__bin_key.append(self.__to_binary(key_ind))
+            cipher_ind = plain_ind ^ key_ind
+            self.__bin_cipher.append(self.__to_binary(cipher_ind))
+            ciphertext.append(self.__alphabet[cipher_ind])
         ciphertext = ''.join(ciphertext)
-        #print(ciphertext)
+        self.__bin_plain = '|'.join(self.__bin_plain)
+        self.__bin_key = '|'.join(self.__bin_key)
+        self.__bin_cipher = '|'.join(self.__bin_cipher)
         return ciphertext
 
-    def __crypt_without_keyword(self, plaintext: str, mode: int) -> str:
+    def __crypt_without_keyword(self, plaintext: str) -> str:
         keyword = self.__create_keyword(len(plaintext))
-        self.__key_validation(keyword)
+        #self.__key_validation(keyword)
+        return self.__crypto_algorithm(plaintext, keyword)
 
     def __create_keyword(self, plaintext_len: int) -> List:
         half = plaintext_len // 2
         zeros = '0' * half * self.__ALPH_ONE_CHR
         ones = '1' * (plaintext_len - half) * self.__ALPH_ONE_CHR
         keyword = list(zeros + ones)
-        print(keyword)
         random.shuffle(keyword)
-        print(keyword)
-        return keyword
-
-    def __key_validation(self, keyword: List) -> str:
         keyword_parts = []
         for i in range(0, len(keyword), self.__ALPH_ONE_CHR):
             keyword_parts.append(keyword[i: i + self.__ALPH_ONE_CHR])
+        binary_view = keyword_parts
+        keyword = []
         for part in keyword_parts:
-            num = int(''.join(part), 2)
-            print(num)
+            cipher_ind = int(''.join(part), 2)
+            keyword.append(self.__alphabet[cipher_ind])
+        self.__bin_keyword = '|'.join(keyword)
+        return keyword
+
+    # def __key_validation(self, keyword: List) -> List:
+    #     keyword_parts = []
+    #     for i in range(0, len(keyword), self.__ALPH_ONE_CHR):
+    #         keyword_parts.append(keyword[i: i + self.__ALPH_ONE_CHR])
+    #     binary_view = keyword_parts
+    #     for part in keyword_parts:
+    #         num = int(''.join(part), 2)
+    #     return binary_view
+
+    def __to_binary(self, number: int) -> List:
+        # # Конвертирование числа в бинарное представление
+        # binary = []
+        # # Пока не получим единицу при делении на 2
+        # while b != 1:
+        #     # Добавляем остаток в список
+        #     binary.append(b % 2)
+        #     # Делим нацело
+        #     b //= 2
+        # # В конце добавляем единицу
+        # binary.append(b)
+        # # Переворачиваем список и получаем бинарный вид
+        # binary.reverse()
+        # # Вид в списке поэтому -> List
+        # return binary
+        return str(bin(number))[2:]
+
+    def __get_all_binary(self) -> Tuple:
+        return self.__bin_plain, self.__bin_key, self.__bin_cipher
