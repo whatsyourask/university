@@ -5,168 +5,150 @@ import random
 
 
 class AdditiveCipher:
+    """Class which perform XOR or Additive encryption and decryption"""
     __EN_ALPH_LEN = 26
     __RU_ALPH_LEN = 33
     __ALPH_ONE_CHR = 6
     def __init__(self, lang: str) -> None:
+        # Constructor
         self.__create_trans_table(lang)
-        # self.__chosen_case = letter_case
         self.__alph_len = len(self.__alphabet)
 
     def __create_trans_table(self, lang: str) -> None:
+        # Create translate table
         if lang == 'en':
-            self.__alphabet = self.__load_alphabet('A', self.__EN_ALPH_LEN)
+            self.__alphabet = string.ascii_uppercase
         if lang == 'ru':
             self.__alphabet = self.__load_alphabet('А', self.__RU_ALPH_LEN - 1)
+            # Put an additional russian letter to alphabet
             letter_index = self.__alphabet.index('Ж')
-            self.__alphabet.insert(letter_index, 'Ё')
+            self.__alphabet = self.__alphabet[:letter_index] + 'Ё' \
+                                                + self.__alphabet[letter_index:]
         self.__chosen_lang = lang
-        self.__alphabet.extend([str(num) for num in range(0, 10)])
+        self.__alphabet += string.digits
         self.__alphabet += string.punctuation[:64 - len(self.__alphabet)]
-        # print(self.__alphabet)
-        # print(len(self.__alphabet))
 
-    def __load_alphabet(self, first_letter: str, alph_len: int) -> List:
+    def __load_alphabet(self, first_letter: str, alph_len: int) -> str:
+        # Method to generate russian alphabet
         first_num = ord(first_letter)
-        return [chr(char_num) for char_num in range(first_num,
-                                                    first_num + alph_len)]
+        return ''.join([chr(char_num) for char_num in range(first_num,
+                                                    first_num + alph_len)])
 
-    def crypt(self, plaintext: str, keyword: str=None) -> str:
-        #print(f'plaintext = {plaintext}\n')
-        #self.__punctuation_validation(plaintext, keyword)
-        self.__language_validation(plaintext, keyword)
-        #self.__case_validation(plaintext, keyword)
-        to_lower = False
-        if plaintext.islower():
-            plaintext = plaintext.upper()
-            to_lower = True
-        if keyword:
-            ciphertext = self.__crypt_with_keyword(plaintext, keyword)
+    def crypt(self, data: str, key: str=None) -> str:
+        # Method to encrypt or decrypt data with key
+        self.__language_validation(data, key)
+        data = data.upper()
+        if key:
+            result = self.__crypt_with_key(data, key)
         else:
-            ciphertext = self.__crypt_without_keyword(plaintext)
-        if to_lower:
-            ciphertext = ciphertext.lower()
-        return ciphertext
+            result = self.__crypt_without_key(data)
+        return result
 
-    def __crypt_with_keyword(self, plaintext: str, keyword: str) -> str:
-        if keyword.islower():
-            keyword = keyword.upper()
-        keyword = self.__modify_keyword(plaintext, keyword)
-        ciphertext = self.__crypto_algorithm(plaintext, keyword)
-        return ciphertext
+    def __crypt_with_key(self, data: str, key: str) -> str:
+        key = key.upper()
+        # If key is shorter than data then you need to expand it
+        key = self.__modify_key(data, key)
+        # Start the main algorithm
+        result = self.__crypto_algorithm(data, key)
+        return result
 
-    def __punctuation_validation(self, plaintext: str, keyword: str) -> None:
-        no_punct = re.compile(f'[{re.escape(string.punctuation)}\s]')
-        in_plaintext = no_punct.findall(plaintext)
-        in_keyword = no_punct.findall(keyword) if keyword is not None else False
-        if in_plaintext or in_keyword:
-            raise ValueError
-
-    def __language_validation(self, plaintext: str, keyword: str) -> None:
-        #print(plaintext)
+    def __language_validation(self, data: str, key: str) -> None:
+        # Validate that data and choosen language are equal
+        # Compile to regex patterns
+        # For english, russian and punctuation
         en_lang = re.compile('[a-zA-Z]')
+        punct = re.compile(f'[{re.escape(string.punctuation)}\s]')
         ru_lang = re.compile('[а-яА-Я]')
+        # Rules to validate
         en_rules = [self.__chosen_lang == 'en',
-                    not ru_lang.findall(plaintext)]
+                    (not ru_lang.findall(data)) or punct.findall(data)]
         ru_rules = [self.__chosen_lang == 'ru',
-                    not en_lang.findall(plaintext)]
-        if keyword:
-            en_rules.append(not ru_lang.findall(keyword))
-            ru_rules.append(not en_lang.findall(keyword))
+                    (not en_lang.findall(data)) or punct.findall(data)]
+        if key is not None:
+            # If we have the key then also validate it
+            en_rules.append((not ru_lang.findall(key)) or punct.findall(key))
+            ru_rules.append((not en_lang.findall(key)) or punct.findall(key))
         if all(en_rules) and all(ru_rules):
             raise ValueError
 
-    def __case_validation(self, plaintext: str, keyword: str) -> None:
-        plain_upper_or_digit = [plaintext.isupper(), plaintext.isdigit()]
-        plain_upper = [self.__chosen_case == 'upper', any(plain_upper_or_digit)]
-        plain_lower_or_digit = [plaintext.islower(), plaintext.isdigit()]
-        plain_lower = [self.__chosen_case == 'lower', any(plain_lower_or_digit)]
-        if keyword:
-            key_upper_or_digit = [keyword.isupper(), keyword.isdigit()]
-            key_upper = [all(plain_upper), any(key_upper_or_digit)]
-            key_lower_or_digit = [keyword.islower(), keyword.isdigit()]
-            key_lower = [all(plain_lower), any(key_lower_or_digit)]
-            check_case = [all(key_upper), all(key_lower)]
-        else:
-            check_case = [all(plain_lower), all(plain_upper)]
-        if not any(check_case):
-            raise ValueError
+    def __modify_key(self, data: str, key: str) -> str:
+        # Addition of the key
+        key_len = len(key)
+        data_len = len(data)
+        if key_len != data_len:
+            count = data_len // key_len
+            mod = data_len % key_len
+            key = key * count + key[:mod]
+        return key
 
-    def __modify_keyword(self, plaintext: str, keyword: str) -> str:
-        keyword_len = len(keyword)
-        plaintext_len = len(plaintext)
-        if keyword_len != plaintext_len:
-            count = plaintext_len // keyword_len
-            mod = plaintext_len % keyword_len
-            keyword = keyword * count + keyword[:mod]
-        return keyword
-
-    def __crypto_algorithm(self, plaintext: str, keyword: str) -> str:
-        ciphertext = []
-        self.__bin_plain = []
+    def __crypto_algorithm(self, data: str, key: str) -> str:
+        # Main algorithm to encrypt or decrypt data
+        result = []
+        # Lists to store binary view of data, key, and result
+        self.__bin_data = []
         self.__bin_key = []
-        self.__bin_cipher = []
-        for plain, key in zip(plaintext, keyword):
-            plain_ind = self.__alphabet.index(plain)
-            self.__bin_plain.append(self.__to_binary(plain_ind))
+        self.__bin_result = []
+        for data, key in zip(data, key):
+            data_ind = self.__alphabet.index(data)
+            self.__bin_data.append(self.__to_binary(data_ind))
             key_ind = self.__alphabet.index(key)
             self.__bin_key.append(self.__to_binary(key_ind))
-            cipher_ind = plain_ind ^ key_ind
-            self.__bin_cipher.append(self.__to_binary(cipher_ind))
-            ciphertext.append(self.__alphabet[cipher_ind])
-        ciphertext = ''.join(ciphertext)
-        self.__bin_plain = '|'.join(self.__bin_plain)
+            result_ind = data_ind ^ key_ind
+            self.__bin_result.append(self.__to_binary(result_ind))
+            result.append(self.__alphabet[result_ind])
+        result = ''.join(result)
+        self.__bin_data = '|'.join(self.__bin_data)
         self.__bin_key = '|'.join(self.__bin_key)
-        self.__bin_cipher = '|'.join(self.__bin_cipher)
-        return ciphertext
+        self.__bin_result = '|'.join(self.__bin_result)
+        return result
 
-    def __crypt_without_keyword(self, plaintext: str) -> str:
-        keyword = self.__create_keyword(len(plaintext))
-        #self.__key_validation(keyword)
-        return self.__crypto_algorithm(plaintext, keyword)
+    def __crypt_without_key(self, data: str) -> str:
+        # Method to crypt without key
+        # Create a new key
+        key = self.__create_key(len(data))
+        # Save it within the field
+        self.__key = key
+        # Execute the algorithm
+        return self.__crypto_algorithm(data, key)
 
-    def __create_keyword(self, plaintext_len: int) -> List:
-        half = plaintext_len // 2
+    def __create_key(self, key_len: int) -> str:
+        # Generation of the key
+        half = key_len // 2
         zeros = '0' * half * self.__ALPH_ONE_CHR
-        ones = '1' * (plaintext_len - half) * self.__ALPH_ONE_CHR
-        keyword = list(zeros + ones)
-        random.shuffle(keyword)
-        keyword_parts = []
-        for i in range(0, len(keyword), self.__ALPH_ONE_CHR):
-            keyword_parts.append(keyword[i: i + self.__ALPH_ONE_CHR])
-        binary_view = keyword_parts
-        keyword = []
-        for part in keyword_parts:
-            cipher_ind = int(''.join(part), 2)
-            keyword.append(self.__alphabet[cipher_ind])
-        self.__bin_keyword = '|'.join(keyword)
-        return keyword
-
-    # def __key_validation(self, keyword: List) -> List:
-    #     keyword_parts = []
-    #     for i in range(0, len(keyword), self.__ALPH_ONE_CHR):
-    #         keyword_parts.append(keyword[i: i + self.__ALPH_ONE_CHR])
-    #     binary_view = keyword_parts
-    #     for part in keyword_parts:
-    #         num = int(''.join(part), 2)
-    #     return binary_view
+        ones = '1' * (key_len - half) * self.__ALPH_ONE_CHR
+        key = list(zeros + ones)
+        random.shuffle(key)
+        key_parts = []
+        for i in range(0, len(key), self.__ALPH_ONE_CHR):
+            key_parts.append(''.join(key[i: i + self.__ALPH_ONE_CHR]))
+        binary_view = key_parts.copy()
+        key = []
+        for part in key_parts:
+            result_ind = int(''.join(part), 2)
+            key.append(self.__alphabet[result_ind])
+        self.__bin_key = '|'.join(binary_view)
+        return ''.join(key)
 
     def __to_binary(self, number: int) -> List:
-        # # Конвертирование числа в бинарное представление
-        # binary = []
-        # # Пока не получим единицу при делении на 2
-        # while b != 1:
-        #     # Добавляем остаток в список
-        #     binary.append(b % 2)
-        #     # Делим нацело
-        #     b //= 2
-        # # В конце добавляем единицу
-        # binary.append(b)
-        # # Переворачиваем список и получаем бинарный вид
-        # binary.reverse()
-        # # Вид в списке поэтому -> List
-        # return binary
+        # Convert to binary view
         return str(bin(number))[2:]
 
-    def __get_all_binary(self) -> Tuple:
-        return self.__bin_plain, self.__bin_key, self.__bin_cipher
+    @property
+    def key(self) -> str:
+        return self.__key
+
+    @property
+    def bin_key(self) -> str:
+        return self.__bin_key
+
+    @property
+    def bin_data(self) -> str:
+        return self.__bin_data
+
+    @property
+    def bin_result(self) -> str:
+        return self.__bin_result
+
+    def generate_key(self, key_len: int) -> str:
+        # Generate key without execution of main crypt algorithm
+        return self.__create_key(key_len)

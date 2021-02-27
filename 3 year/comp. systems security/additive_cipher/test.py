@@ -3,13 +3,14 @@ from backend import AdditiveCipher
 
 
 class TestBackend(unittest.TestCase):
+    """Class to test AdditiveCipher crypt method"""
     def test_crypt_smaller_key(self):
         self.__check('HELLOWORLDZZZZZ1231231232', 'HELLO', 'en',
-                        'KEY SMALLER THAN PLAINTEXT')
+                        'KEY SMALLER THAN data')
 
     def test_crypt_bigger_key(self):
         self.__check('HELLOWORLD', 'HELLOWORLD12312312312', 'en',
-                        'KEY BIGGER THAN PLAINTEXT')
+                        'KEY BIGGER THAN data')
 
     def test_crypt_en_upper(self):
         self.__check('HELLOWORLD111', 'WORLDHELLO222', 'en',  'EN UPPER')
@@ -27,9 +28,9 @@ class TestBackend(unittest.TestCase):
         self.__check('привет,мир!', 'мир,привет&', 'ru',
                             'ALL WITH PUNCTUATION')
 
-    def test_crypt_plaintext_with_punct(self):
+    def test_crypt_data_with_punct(self):
         self.__check_raise('привет, мир!', 'мирпривет111', 'ru',
-                            'PLAINTEXT WITH PUNCTUATION')
+                            'data WITH PUNCTUATION')
 
     def test_crypt_different_lang(self):
         self.__check_raise('HELLOWORLD', 'WORLDHELLO', 'ru',
@@ -54,28 +55,27 @@ class TestBackend(unittest.TestCase):
     def test_crypt_ruslan(self):
         self.__check('Z9', '99', 'en',  'RUSLAN TEST')
 
-    # def test_crypt_without_keyword_differ_case(self):
-    #     self.__check_raise('HELLOasdfdsaf', None, 'en',
-    #                         'WITHOUT KEYWORD AND DIFFERENT LANG')
-    #
-    # def test_crypt_without_keyword(self):
-    #     self.__check('HELLOWORLDHELLOWORLD', None, 'en',
-    #                     'WITHOUT KEYWORD')
+    def test_crypt_without_key(self):
+        self.__check('HELLOWORLDHELLOWORLD', None, 'en',
+                        'WITHOUT key')
 
-    def __check(self, plaintext: str, keyword: str, lang: str,
-                 log_message:str):
-        answer = self.__execute_method(plaintext, keyword, lang)
-        self.assertEqual(answer, plaintext)
+    def __check(self, data: str, key: str, lang: str, log_message:str) -> None:
+        # Main method of tests
+        answer = self.__execute_crypt(data, key, lang)
+        self.assertEqual(answer, data)
         print('\n[+] ' + log_message)
 
-    def __execute_method(self, plaintext: str, keyword: str, lang: str) -> str:
+    def __execute_crypt(self, data: str, key: str, lang: str) -> str:
+        # Method to exectu all needed operations with the object
         cipher = AdditiveCipher(lang)
-        ciphertext = cipher.crypt(plaintext, keyword)
-        answer = cipher.crypt(ciphertext, keyword)
+        ciphertext = cipher.crypt(data, key)
+        if not key:
+            key = cipher.key
+        answer = cipher.crypt(ciphertext, key)
         return answer
 
-    def __check_raise(self, plaintext: str, keyword: str, lang: str,
-                         log_message: str):
-        self.assertRaises(ValueError, self.__execute_method, plaintext, keyword,
-                            lang)
+    def __check_raise(self, data: str, key: str, lang: str,
+                                                    log_message: str) -> None:
+        # Method with different assert that will check if there was an exception
+        self.assertRaises(ValueError, self.__execute_crypt, data, key, lang)
         print('\n[+] ' + log_message)
