@@ -135,7 +135,7 @@ class AdditiveCipher:
         self.__bin_key = '|'.join(binary_view)
         return ''.join(key)
 
-    def __to_binary(self, number: int) -> List:
+    def __to_binary(self, number: int) -> str:
         # Convert to binary view
         return str(bin(number))[2:]
 
