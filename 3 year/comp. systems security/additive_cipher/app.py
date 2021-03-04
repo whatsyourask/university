@@ -101,9 +101,11 @@ class Application:
         self.__flush(self._gen_key_field)
         self.__flush(self._gen_bin_key_field)
         data = self._plaintext_field.get("1.0", END)[:-1]
-        key_len = len(data)
         # Generate key from cipher object
-        key = self._chosen_cipher.generate_key(key_len)
+        try:
+            key = self._chosen_cipher.generate_key(data)
+        except ValueError:
+            self.__process_exception()
         # Also get a binary view of key
         bin_key = self._chosen_cipher.bin_key
         # Insert in the fields

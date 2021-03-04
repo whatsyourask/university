@@ -57,11 +57,25 @@ class TestBackend(unittest.TestCase):
 
     def test_crypt_without_key(self):
         self.__check('HELLOWORLDHELLOWORLD', None, 'en',
-                        'WITHOUT key')
+                        'WITHOUT KEY')
+
+    def test_crypt_valid_punct_lang(self):
+        self.__check('./.,/,/.,/../,', None, 'ru', 'PUNCTUATION + LANG')
+
+    def test_crypt_valid_punct_diff_lang_from_chosen(self):
+        self.__check('./././sa././.sa/dfas/./.', None, 'en',
+                        'DIFF LANG FROM CHOSEN + PUNCTUATION')
+                        
+    def test_generate_key_with_diff_lang(self):
+        cipher = AdditiveCipher('ru')
+        self.assertRaises(ValueError, cipher.generate_key, 'asdfsadfsad')
+        print('\n[+] GENERATE KEY WITH DIFF LANG')
 
     def __check(self, data: str, key: str, lang: str, log_message:str) -> None:
         # Main method of tests
         answer = self.__execute_crypt(data, key, lang)
+        answer = answer.lower()
+        data = data.lower()
         self.assertEqual(answer, data)
         print('\n[+] ' + log_message)
 

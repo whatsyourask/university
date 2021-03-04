@@ -52,23 +52,29 @@ class AdditiveCipher:
         result = self.__crypto_algorithm(data, key)
         return result
 
-    def __language_validation(self, data: str, key: str) -> None:
+    def __language_validation(self, data: str, key: str=None) -> None:
         # Validate that data and choosen language are equal
         # Compile to regex patterns
         # For english, russian and punctuation
         en_lang = re.compile('[a-zA-Z]')
         punct = re.compile(f'[{re.escape(string.punctuation)}\s]')
         ru_lang = re.compile('[а-яА-Я]')
+        print(self.__chosen_lang)
+        print(punct.findall(data))
+        print(not ru_lang.findall(data))
         # Rules to validate
         en_rules = [self.__chosen_lang == 'en',
-                    (not ru_lang.findall(data)) or punct.findall(data)]
+            (not ru_lang.findall(data)) or punct.findall(data)]
         ru_rules = [self.__chosen_lang == 'ru',
-                    (not en_lang.findall(data)) or punct.findall(data)]
+            (not en_lang.findall(data)) or punct.findall(data)]
         if key is not None:
             # If we have the key then also validate it
             en_rules.append((not ru_lang.findall(key)) or punct.findall(key))
             ru_rules.append((not en_lang.findall(key)) or punct.findall(key))
+        print(all(en_rules))
+        print(all(ru_rules))
         if all(en_rules) and all(ru_rules):
+            print('raise?')
             raise ValueError
 
     def __modify_key(self, data: str, key: str) -> str:
@@ -149,6 +155,8 @@ class AdditiveCipher:
     def bin_result(self) -> str:
         return self.__bin_result
 
-    def generate_key(self, key_len: int) -> str:
+    def generate_key(self, data: str) -> str:
         # Generate key without execution of main crypt algorithm
+        self.__language_validation(data)
+        key_len = len(data)
         return self.__create_key(key_len)
