@@ -2,47 +2,76 @@ from typing import List
 
 
 class ExtendedEuclideanAlgorithm:
-    def __init__(self, a: int, b: int) -> None:
-        self.__a = a
-        self.__b = b
+    @property
+    def x(self) -> int:
+        return self.__x
+
+    @property
+    def y(self) -> int:
+        return self.__y
+
+    @x.setter
+    def x(self, x: int) -> None:
+        self.__x = x
+
+    @y.setter
+    def y(self, y: int) -> None:
+        self.__y = y
 
     def algorithm(self) -> List:
-        a = self.__b
-        b = self.__b
+        a = self.__x
+        b = self.__y
         div_arr = []
-        a_arr = [a]
-        b_arr = [b]
-        mod_arr = []
         while True:
             mod = a % b
-            mod_arr.append(mod)
             div = a // b
             div_arr.append(div)
             if not mod:
                 break
             a, b = b, mod
-            a_arr.append(a)
-            b_arr.append(b)
         div_arr[-1] = None
-        return a_arr, b_arr, mod_arr, div_arr
+        x = 0
+        y = 1
+        copy_div_arr = div_arr[:]
+        copy_div_arr.pop()
+        while copy_div_arr:
+            last = copy_div_arr.pop()
+            x, y = y, x - y * last
+        return x, y, b
 
 
 class FastModularExponentiation:
-    def __init__(self, n: int, a: int, b: int) -> None:
+    @property
+    def n(self) -> int:
+        return self.__n
+
+    @property
+    def a(self) -> int:
+        return self.__a
+
+    @property
+    def b(self) -> int:
+        return self.__b
+
+    @n.setter
+    def n(self, n: int) -> None:
         self.__n = n
+
+    @a.setter
+    def a(self, a: int) -> None:
         self.__a = a
+
+    @b.setter
+    def b(self, b: int) -> None:
         self.__b = b
 
     def __to_binary(self) -> List:
         # Convert to binary view
-        return list(bin(self.__b)[2:])
+        return list(map(lambda x: int(x), bin(self.__b)[2:]))
 
-    def algorthm(self) -> None:
+    def algorithm(self) -> int:
         binary_b = self.__to_binary()
-        temp_arr = [self.__a]
-        temp = a
+        temp = self.__a
         for e in binary_b[1:]:
-            temp = (self.__a * (temp ** 2)) % self.__n if e else (temp ** 2) % \
-                                                                        self.__n
-            temp_arr.append(temp)
-        return temp, zip(binary, temp_arr)
+            temp = (self.__a * (temp ** 2)) % self.__n if int(e) else (temp ** 2) % self.__n
+        return temp
