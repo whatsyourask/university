@@ -1,0 +1,22 @@
+# University
+
+University programs and materials.🥸
+
+## 1 year
+
+* [OOP basics](https://github.com/whatsyourask/University/tree/master/1%20year/Data%20Stuctures%20and%20Algorithms "https://github.com/whatsyourask/University/tree/master/1%20year/Data%20Stuctures%20and%20Algorithms")
+* [Programming languages](https://github.com/whatsyourask/University/blob/master/1%20year/Matrix.py "https://github.com/whatsyourask/University/blob/master/1%20year/Matrix.py")
+
+## 2 year
+
+* [Operating systems course](https://github.com/whatsyourask/University/tree/master/2%20year/Operating%20systems%20course "https://github.com/whatsyourask/University/tree/master/2%20year/Operating%20systems%20course")
+* [Technologies and methods of programming](https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine "https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine")
+* [Machine Learning](https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine "https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine")
+
+## 3 year
+
+* [Information theory](https://github.com/whatsyourask/University/tree/master/3%20year/information%20theory "https://github.com/whatsyourask/University/tree/master/3%20year/information%20theory")
+* [Databases](https://github.com/whatsyourask/University/tree/master/3%20year/databases "https://github.com/whatsyourask/University/tree/master/3%20year/databases")
+* [Computer graphics](https://github.com/whatsyourask/University/tree/master/3%20year/computer%20graphics "https://github.com/whatsyourask/University/tree/master/3%20year/computer%20graphics")
+* [Computer systems security](https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20systems%20security "https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20systems%20security")
+* [Theoretical Foundations of Computer Security](https://github.com/whatsyourask/University/tree/master/3%20year/botcb "https://github.com/whatsyourask/University/tree/master/3%20year/botcb")
