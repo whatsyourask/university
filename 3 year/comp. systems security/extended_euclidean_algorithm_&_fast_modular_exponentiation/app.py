@@ -69,8 +69,8 @@ class Application:
 
     def _process_exception(self) -> None:
         # Method to create a new window on top of main window
-        self._window = self._gui.toplevel_window("300x100", "Error", "Okay",
-                                                    self.__okay_button_handler)
+        self._gui.message_box('Ошибка', 'Неверные данные')
+        
     def __okay_button_handler(self) -> None:
         # Method to clear fields and close the top window
         self._clear_all()
