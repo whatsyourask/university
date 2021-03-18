@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from typing import Tuple
 import matplotlib.pyplot as plt
 
@@ -87,12 +87,15 @@ class GraphicUI:
         radio.grid(column=column, row=row, sticky=sticky)
         return radio
 
-    def toplevel_window(self, geometry, title, button_text, command):
-        toplevel = Toplevel(self.__root)
-        toplevel.resizable(0, 0)
-        toplevel.geometry(geometry)
-        toplevel.title(title)
-        button = ttk.Button(toplevel, text=button_text, command=command)
-        button.pack()
-        toplevel.grab_set()
-        return toplevel
+    # def toplevel_window(self, geometry, title, button_text, command):
+    #     toplevel = Toplevel(self.__root)
+    #     toplevel.resizable(0, 0)
+    #     toplevel.geometry(geometry)
+    #     toplevel.title(title)
+    #     button = ttk.Button(toplevel, text=button_text, command=command)
+    #     button.pack()
+    #     toplevel.grab_set()
+    #     return toplevel
+
+    def message_box(self, title: str, message: str) -> None:
+        messagebox.showerror(title, message)
