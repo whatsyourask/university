@@ -47,16 +47,47 @@ class SolovayStrassen:
             a = randint(2, n - 1)
             if gcd(a, n) > 1:
                 return False
-            if not (a ^ ((n - 1) // 2) == (legendre_symbol(a, n) % n)):
+            symbol = legenre_symbol(a, n)
+            if symbol == -1:
+                symbol += n
+            else:
+                symbol %= n
+            if not (a ^ ((n - 1) // 2) == symbol):
                 return False
         return True
 
 
-def legendre_symbol(a: int, p: int):
-    print(a, p)
+def legenre_symbol(a: int, p: int):
+    # if gcd(a, b) != 1:
+    #     return 0
+    # answ = 1
+    # if a < 0:
+    #     a = -a
+    #     if b % 4 == 3:
+    #         answ = -answ
+    # if a != 0:
+    #     t = 0
+    #     while not a % 2:
+    #         t += 1
+    #         a = a // 2
+    #     if t % 2:
+    #         if b % 8 == 3 or b % 8 == 5:
+    #             answ = -answ
+    #     if a % 4 == b % 4 == 3:
+    #         answ = -answ
+    # return answ
+    if p < 2:
+        raise ValueError
+    if a == 0:
+        return 0
     if a == 1:
         return 1
-    if not a % 2:
-        return legendre_symbol(a // 2, p) * ((-1) ^ ((p ^ 2 - 1) // 8))
+    if a % 2 == 0:
+        result = legenre_symbol(a // 2, p)
+        if ((p * p - 1) & 8) != 0:
+            result = -result
     else:
-        return legendre_symbol(p % a, a) * ((-1) ^ ((a - 1) * (p - 1) // 4))
+        result = legenre_symbol(p % a, a)
+        if ((a - 1) * (p - 1) & 4) != 0:
+            result = -result
+    return result

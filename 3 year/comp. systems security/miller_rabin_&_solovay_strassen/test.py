@@ -1,4 +1,4 @@
-from backend import MillerRabin, SolovayStrassen, legendre_symbol
+from backend import MillerRabin, SolovayStrassen, legenre_symbol
 import unittest
 
 
@@ -26,5 +26,28 @@ class TestLegenreSymbol(unittest.TestCase):
     def test1(self) -> None:
         self.__validate_method(30, 23, -1)
 
+    def test2(self) -> None:
+        self.__validate_method(150, 1009, 1)
+
     def __validate_method(self, a: int, p: int, answer: int) -> None:
-        self.assertEqual(legendre_symbol(a, p), answer)
+        self.assertEqual(legenre_symbol(a, p), answer)
+
+
+class TestSolovayStrassen(unittest.TestCase):
+    def test1(self) -> None:
+        self.__validate_method(13214124123, 10, False)
+
+    def test2(self) -> None:
+        self.__validate_method(131241234235125152, 423, False)
+
+    def test_equal_2(self) -> None:
+        self.__check_raise(2, 10)
+
+    def test_less_than_2(self) -> None:
+        self.__check_raise(-5, 10)
+
+    def __check_raise(self, n: int, k: int) -> None:
+        self.assertRaises(ValueError, SolovayStrassen.test, n, k)
+
+    def __validate_method(self, n: int, k: int, answer: bool) -> None:
+        self.assertEqual(SolovayStrassen.test(n, k), answer)
