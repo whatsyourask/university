@@ -28,7 +28,9 @@ class MillerRabin:
                 continue
             fme.a = x_0
             fme.b = 2
-            for i in range(s - 1):
+            if s == 0:
+                s += 1
+            for i in range(1, s):
                 x_i = fme.algorithm()
                 fme.a = x_i
                 if x_i == n - 1:
@@ -45,19 +47,17 @@ class SolovayStrassen:
             raise ValueError
         for round in range(count):
             a = randint(2, n - 1)
-            if gcd(a, n) > 1:
-                return False
-            symbol = legenre_symbol(a, n)
-            if symbol == -1:
-                symbol += n
+            x = legendre_symbol(a, n)
+            if x == -1:
+                x += n
             else:
-                symbol %= n
-            if not (a ^ ((n - 1) // 2) == symbol):
+                x %= n
+            if x == 0 or (a ^ ((n - 1) // 2) == x):
                 return False
         return True
 
 
-def legenre_symbol(a: int, p: int):
+def legendre_symbol(a: int, p: int):
     # if gcd(a, b) != 1:
     #     return 0
     # answ = 1
@@ -83,11 +83,11 @@ def legenre_symbol(a: int, p: int):
     if a == 1:
         return 1
     if a % 2 == 0:
-        result = legenre_symbol(a // 2, p)
+        result = legendre_symbol(a // 2, p)
         if ((p * p - 1) & 8) != 0:
             result = -result
     else:
-        result = legenre_symbol(p % a, a)
+        result = legendre_symbol(p % a, a)
         if ((a - 1) * (p - 1) & 4) != 0:
             result = -result
     return result

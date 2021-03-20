@@ -39,8 +39,9 @@ class Application:
         self._res_field = self._gui.text(2, 5, width, 5, W)
         self._gui.button('Miller-Rabin generation', 3, 4, width, W,
                             self._miller_rabin_generate_number)
-        self._gui.button('Solovay-Strassen generation', 3, 5, width, W, None)
-        self._gui.button('Clear', 3, 5, width, W, None)
+        self._gui.button('Solovay-Strassen generation', 3, 5, width, W,
+                            self._solovay_strassen_generate_number)
+        self._gui.button('Clear', 3, 6, width, W, self._clear)
 
     def _miller_rabin_test(self):
         try:
@@ -66,10 +67,29 @@ class Application:
 
     def _miller_rabin_generate_number(self):
         try:
+            self._res_field.delete("1.0", END)
             bits = int(self._bits_field.get())
             num = randbits(bits)
-            while MillerRabin.test(num, int(log2(num))):
+            while not MillerRabin.test(num, int(log2(num))):
                 num = randbits(bits)
-            self._res_field.set(str(num))
+            self._res_field.insert(INSERT, str(num))
         except ValueError:
             self._process_exception()
+
+    def _solovay_strassen_generate_number(self):
+        try:
+            self._res_field.delete("1.0", END)
+            bits = int(self._bits_field.get())
+            num = randbits(bits)
+            while not SolovayStrassen.test(num, int(log2(num))):
+                num = randbits(bits)
+            self._res_field.insert(INSERT, str(num))
+        except ValueError:
+            self._process_exception()
+
+    def _clear(self):
+        self._res_field.delete("1.0", END)
+        self._num_field.set('')
+        self._rounds_field.set('')
+        self._answ_field.set('')
+        self._bits_field.set('')
