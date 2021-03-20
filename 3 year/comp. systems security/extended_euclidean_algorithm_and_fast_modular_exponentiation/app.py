@@ -43,6 +43,7 @@ class Application:
         self._b2_field, _ = self._gui.entry(StringVar(), 4, 5, width, W)
         self._gui.label('GCD: ', 3, 6, E)
         self._gcd_field, _ = self._gui.entry(StringVar(), 4, 6, width, W)
+        self._gui.button('Clear', 2, 7, width, W, self.__clear)
 
 
     def _fast_mod_exp(self) -> None:
@@ -70,11 +71,14 @@ class Application:
     def _process_exception(self) -> None:
         # Method to create a new window on top of main window
         self._gui.message_box('Ошибка', 'Неверные данные')
-        
+
     def __okay_button_handler(self) -> None:
         # Method to clear fields and close the top window
         self._clear_all()
         self._window.destroy()
+
+    def __clear(self) -> None:
+        self._clear_all()
 
     def _clear_all(self) -> None:
         self._clear(self._n_field)
