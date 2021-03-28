@@ -1,4 +1,13 @@
 from backend import Parser
+from typing import List
+
+
+def write_to(file, data: List) -> None:
+    open(file, 'w').write('\n'.join(data))
+
+
+def output_count(description, data: List) -> None:
+    print(description + ': ' + str(len(data)))
 
 
 def main():
@@ -8,26 +17,41 @@ def main():
     http_begin = "HTTP/*.*\" "
     _401 = http_begin + "401"
     _401_results = parser.findall(_401)
-    print(_401_results)
+    write_to('401.txt', _401_results)
+    output_count('401', _401_results)
     _403 = http_begin + "403"
     _403_results = parser.findall(_403)
-    print(_403_results)
+    write_to('403.txt', _403_results)
+    output_count('403', _403_results)
     sql_select = "select +.+ +from"
     sql_select_results = parser.findall(sql_select)
-    print(sql_select_results)
+    write_to('selects.txt', sql_select_results)
+    output_count('selects', sql_select_results)
     sql_drop = "drop +.+"
     sql_drop_results = parser.findall(sql_drop)
-    print(sql_drop_results)
+    write_to('drop.txt', sql_drop_results)
+    output_count('drop', sql_drop_results)
     sql_insert = "insert +into +.+ +values\(.+\)"
     sql_insert_results = parser.findall(sql_insert)
-    print(sql_insert_results)
+    write_to('inserts.txt', sql_insert_results)
+    output_count('inserts', sql_insert_results)
     sql_exec = "exec +.+"
     sql_exec_results = parser.findall(sql_exec)
-    print(sql_exec_results)
+    write_to('execs.txt', sql_exec_results)
+    output_count('execs', sql_exec_results)
     sql_delay = "(delay|sleep)\(.+\)"
+    sql_delay_results = parser.findall(sql_delay)
+    write_to('delays.txt', sql_delay_results)
+    output_count('delays', sql_delay_results)
+    # _200 = http_begin + "200"
+    # _200_results = parser.findall(_200)
+    # # print(_200_results)
+    # dos_parser = Parser(_200_results)
     url = " (/.+)+ HTTP/"
-    times = ":\d{2}:\d{2}:\d{2}"
+    times = "(:)(\d{2})" * 2 + " "
     dos_results = parser.find_by_time(url, times)
+    write_to('dos.txt', dos_results)
+    output_count('dos', dos_results)
 
 
 if __name__=='__main__':
