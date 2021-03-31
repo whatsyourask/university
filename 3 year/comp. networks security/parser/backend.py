@@ -26,17 +26,26 @@ class Parser:
         times = list(map(lambda group: (int(group[1]), int(group[3])),
                          self.searchall(time_regex)))
         urls_len = len(urls)
-        matched = []
-        for i in range(urls_len - 9):
-            #print(i, urls[i])
-            for j in range(1, 10):
-                if urls[i] != urls[i + j]:
+        # #print(urls)
+        # print(len(urls))
+        # print(len(times))
+        # print(len(self.__data))
+        # print(urls[0])
+        # print(times[0])
+        requests_counts = [1 for i in range(urls_len)]
+        for i in range(urls_len):
+            for j in range(i + 1, urls_len):
+                if self.__time_diff(times[i], times[j]):
+                    if urls[i] == urls[j]:
+                        requests_counts[i] += 1
+                else:
                     break
-                if j == 9:
-                    if self.__time_diff(times[i], times[i + j]):
-                        matched.append(self.__data[i])
-                    i += 9
+        matched = []
+        for i in range(urls_len):
+            if requests_counts[i] > 10:
+                matched.append(self.__data[i])
         return matched
+
 
     def searchall(self, regex: str) -> List:
         # Find substring with search and regex for it
@@ -49,4 +58,6 @@ class Parser:
 
     def __time_diff(self, first: Tuple, last: Tuple) -> bool:
         # Just check if the difference between first and last request
-        return True if (last[3] - first[3]) <= 3 else False
+        secs_diff = last[0] - first[0] == 0 and last[1] - first[1] <= 3
+        one_min_diff = last[0] - first[0] == 1 and last[1] + 60 - first[1] <= 3
+        return True if (secs_diff or one_min_diff) else False

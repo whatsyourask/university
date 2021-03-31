@@ -43,12 +43,8 @@ def main():
     sql_delay_results = parser.findall(sql_delay)
     write_to('delays.txt', sql_delay_results)
     output_count('delays', sql_delay_results)
-    # _200 = http_begin + "200"
-    # _200_results = parser.findall(_200)
-    # # print(_200_results)
-    # dos_parser = Parser(_200_results)
-    url = " (/.+)+ HTTP/"
-    times = "(:)(\d{2})" * 2 + " "
+    url = " (/.*) HTTP/"
+    times = "(:)(\d{1,2})" * 2 + " "
     dos_results = parser.find_by_time(url, times)
     write_to('dos.txt', dos_results)
     output_count('dos', dos_results)
