@@ -26,12 +26,7 @@ class Parser:
         times = list(map(lambda group: (int(group[1]), int(group[3])),
                          self.searchall(time_regex)))
         urls_len = len(urls)
-        # #print(urls)
-        # print(len(urls))
-        # print(len(times))
-        # print(len(self.__data))
-        # print(urls[0])
-        # print(times[0])
+
         requests_counts = [1 for i in range(urls_len)]
         for i in range(urls_len):
             for j in range(i + 1, urls_len):
