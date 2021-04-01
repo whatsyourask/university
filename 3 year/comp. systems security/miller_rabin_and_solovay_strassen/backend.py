@@ -58,24 +58,6 @@ class SolovayStrassen:
 
 
 def legendre_symbol(a: int, p: int):
-    # if gcd(a, b) != 1:
-    #     return 0
-    # answ = 1
-    # if a < 0:
-    #     a = -a
-    #     if b % 4 == 3:
-    #         answ = -answ
-    # if a != 0:
-    #     t = 0
-    #     while not a % 2:
-    #         t += 1
-    #         a = a // 2
-    #     if t % 2:
-    #         if b % 8 == 3 or b % 8 == 5:
-    #             answ = -answ
-    #     if a % 4 == b % 4 == 3:
-    #         answ = -answ
-    # return answ
     if p < 2:
         raise ValueError
     if a == 0:

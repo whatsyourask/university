@@ -74,6 +74,7 @@ class Application:
                 num = randbits(bits)
             self._res_field.insert(INSERT, str(num))
         except ValueError:
+            print(num)
             self._process_exception()
 
     def _solovay_strassen_generate_number(self):
