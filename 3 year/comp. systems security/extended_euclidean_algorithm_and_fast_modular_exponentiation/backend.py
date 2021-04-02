@@ -37,6 +37,8 @@ class ExtendedEuclideanAlgorithm:
         while copy_div_arr:
             last = copy_div_arr.pop()
             x, y = y, x - y * last
+        if y < 0:
+            y += self.__x
         return x, y, b
 
 
