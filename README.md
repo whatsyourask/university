@@ -18,7 +18,7 @@ University programs and materials.🥸
 * [Information theory](https://github.com/whatsyourask/University/tree/master/3%20year/information%20theory "https://github.com/whatsyourask/University/tree/master/3%20year/information%20theory")
 * [Databases](https://github.com/whatsyourask/University/tree/master/3%20year/databases "https://github.com/whatsyourask/University/tree/master/3%20year/databases")
 * [Computer graphics](https://github.com/whatsyourask/University/tree/master/3%20year/computer%20graphics "https://github.com/whatsyourask/University/tree/master/3%20year/computer%20graphics")
-* [Computer systems security](https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20systems%20security "https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20systems%20security")
+* [Computer security](https://github.com/whatsyourask/University/tree/master/3%20year/computer%20security "https://github.com/whatsyourask/University/tree/master/3%20year/computer%20security")
 * [Theoretical Foundations of Computer Security](https://github.com/whatsyourask/University/tree/master/3%20year/botcb "https://github.com/whatsyourask/University/tree/master/3%20year/botcb")
 * [Computer network security](https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security "https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security")
 * [Cisco](https://github.com/whatsyourask/University/tree/master/3%20year/cisco "https://github.com/whatsyourask/University/tree/master/3%20year/cisco")
