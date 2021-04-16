@@ -37,7 +37,9 @@ class RSA:
         self._e = e
         return e
 
-    def generate_private_key(self) -> int:
+    def generate_private_key(self, e=None) -> int:
+        if e:
+            self._e = e
         # To generate private key
         eea = ExtendedEuclideanAlgorithm()
         eea.x = self._euler_func
