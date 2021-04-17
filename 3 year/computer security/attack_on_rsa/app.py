@@ -2,6 +2,7 @@ import sys
 # To import FastModularExponentiation
 sys.path.insert(0, '..')
 from additive_cipher.gui import *
+from backend import AttackOnRSA
 
 
 class Application:
@@ -31,7 +32,32 @@ class Application:
         self._gui.label('d', 1, 6, E)
         self._d_field, _ = self._gui.entry(StringVar(), 2, 6, width, W)
         self._gui.label('Decrypted text', 1, 7, W)
-        self._encrypted_field = self._gui.text(2, 7, width, 5, W)
+        self._decrypted_field = self._gui.text(2, 7, width, 5, W)
+        self._gui.button('Clear', 3, 7, width, W, self._clear)
 
     def _launch_attack(self):
-        pass
+        try:
+            self._decrypted_field.delete("1.0", END)
+            e = int(self._e_field.get())
+            n = int(self._n_field.get())
+            encrypted = self._encrypted_field.get("1.0", END)[:-1]
+            p, q, d, decrypted = AttackOnRSA.attack(e, n, encrypted)
+            self._decrypted_field.insert(INSERT, decrypted)
+            self._p_field.set(p)
+            self._q_field.set(q)
+            self._d_field.set(d)
+        except ValueError:
+            self._process_exception()
+
+    def _process_exception(self) -> None:
+        # Method to create a new window on top of main window
+        self._gui.message_box('Ошибка', 'Неверные данные')
+
+    def _clear(self):
+        self._e_field.set('')
+        self._n_field.set('')
+        self._p_field.set('')
+        self._q_field.set('')
+        self._d_field.set('')
+        self._encrypted_field.delete("1.0", END)
+        self._decrypted_field.delete("1.0", END)
