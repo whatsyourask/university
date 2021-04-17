@@ -5,7 +5,8 @@ from backend import pollards_rho_method, AttackOnRSA
 class TestBackend(unittest.TestCase):
     def __test_pollards_rho_method(self, p: int, q: int):
         n = p * q
-        possible_divisor = pollards_rho_method(n)
+        possible_divisor, iter_count = pollards_rho_method(n)
+        print(iter_count)
         self.assertIn(possible_divisor, (p, q))
         self.assertIn(n / possible_divisor, (p, q))
 

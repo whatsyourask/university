@@ -10,14 +10,15 @@ from typing import Tuple
 class AttackOnRSA:
     @staticmethod
     def attack(e: int, n: int, encrypted: str) -> Tuple:
-        possible_divisor = pollards_rho_method(n)
+        iter_count = 0
+        possible_divisor, iter_count = pollards_rho_method(n)
         second_divisor = n // possible_divisor
         rsa = RSA()
         rsa.n = n
         rsa.euler_func = (possible_divisor - 1) * (second_divisor - 1)
         d = rsa.generate_private_key(e)
         decrypted = rsa.decrypt(encrypted)
-        return possible_divisor, second_divisor, d, decrypted
+        return possible_divisor, second_divisor, d, decrypted, iter_count
 
 
 def pollards_rho_method(n: int) -> int:
@@ -36,6 +37,7 @@ def pollards_rho_method(n: int) -> int:
     # fme.b = 2
     # eea = ExtendedEuclideanAlgorithm()
     # eea.y = n
+    iter_count = 0
     while d == 1:
         #fme.a = x
         x = (pow(x, 2, n) + c + n) % n
@@ -49,6 +51,9 @@ def pollards_rho_method(n: int) -> int:
         # eea.x = abs(x - y)
         d = gcd(abs(x - y), n)
         # _, _, d = eea.algorithm()
+        iter_count += 1
         if d == n:
-            return pollards_rho_method(n)
-    return d
+            d, rec_iter_count = pollards_rho_method(n)
+            iter_count += rec_iter_count
+            return d, iter_count
+    return d, iter_count
