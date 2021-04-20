@@ -26,7 +26,7 @@ class TestBackend(unittest.TestCase):
         self.__test_pollards_rho_method(p, q)
 
     def __test_attack(self, plaintext: str, encrypted: str, e: int, n: int):
-        _, _, _, decrypted = AttackOnRSA.attack(e, n, encrypted)
+        _, _, _, decrypted, _ = AttackOnRSA.attack(e, n, encrypted)
         self.assertEqual(decrypted, plaintext)
 
     def test_attack_15bits(self):

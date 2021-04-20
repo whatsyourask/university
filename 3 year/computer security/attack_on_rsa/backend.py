@@ -4,7 +4,7 @@ from random import randint
 from math import gcd
 from rsa.backend import RSA
 from typing import Tuple
-#from extended_euclidean_algorithm_and_fast_modular_exponentiation.backend import FastModularExponentiation, ExtendedEuclideanAlgorithm
+from extended_euclidean_algorithm_and_fast_modular_exponentiation.backend import FastModularExponentiation, ExtendedEuclideanAlgorithm
 
 
 class AttackOnRSA:
@@ -32,27 +32,28 @@ def pollards_rho_method(n: int) -> int:
     y = x
     c = randint(0, 1) % (n - 1)
     d = 1
-    # fme = FastModularExponentiation()
-    # fme.n = n
-    # fme.b = 2
-    # eea = ExtendedEuclideanAlgorithm()
-    # eea.y = n
+    fme = FastModularExponentiation()
+    fme.n = n
+    fme.b = 2
+    eea = ExtendedEuclideanAlgorithm()
+    eea.y = n
     iter_count = 0
     while d == 1:
-        #fme.a = x
-        x = (pow(x, 2, n) + c + n) % n
-        # x = (fme.algorithm() + c + n) % n
-        # fme.a = y
-        y = (pow(y, 2, n) + c + n) % n
-        # y = (fme.algorithm() + c + n) % n
-        # fme.a = y
-        y = (pow(y, 2, n) + c + n) % n
-        # y = (fme.algorithm() + c + n) % n
-        # eea.x = abs(x - y)
-        d = gcd(abs(x - y), n)
-        # _, _, d = eea.algorithm()
+        # x = (pow(x, 2, n) + c + n) % n
+        # y = (pow(y, 2, n) + c + n) % n
+        # y = (pow(y, 2, n) + c + n) % n
+        # d = gcd(abs(x - y), n)
+        fme.a = x
+        x = (fme.algorithm() + c) % n
+        fme.a = y
+        y = (fme.algorithm() + c) % n
+        fme.a = y
+        y = (fme.algorithm() + c) % n
+        eea.x = abs(x - y)
+        _, _, d = eea.algorithm()
         iter_count += 1
         if d == n:
+            print('d = ', d)
             d, rec_iter_count = pollards_rho_method(n)
             iter_count += rec_iter_count
             return d, iter_count
