@@ -1,9 +1,9 @@
+from auth import *
 from socket import *
-from crypto import *
 import sys
 
 
-class AuthServer:
+class AuthServer(Auth):
     """
     Provides server functionality
     Like interface to work with socket and auth module
@@ -18,16 +18,27 @@ class AuthServer:
         # Start to listen
         self.__socket.listen()
         # Accept a new connection
-        conn, addr = self.__socket.accept()
-        print(f'Connection from {addr[0]}:{addr[1]}.')
-        client_pub_key = conn.recv(1024)
-        #print(client_pub_key)
-        print('Client\'s public key received')
-        rsa, pub_key, priv_key = generate_keys(bits_length)
-        self.__rsa = rsa
-        self.__pub_key = pub_key
-        self.__priv_key = priv_key
-        conn.send(str(pub_key).encode('utf-8'))
+        self.__conn, addr = self.__socket.accept()
+        print(f'Connection from {addr[0]}:{addr[1]}')
+        # Begin a stage one
+        continue_auth = self._auth_stage1()
+        if continue_auth:
+            # if it did okay, go to stage two
+            print('[+] Client\'s public key received.')
+            super()._generate_keys(bits_length)
+            self.__conn.send(str(self._pub_key).encode(self.ENCODING))
+        else:
+            self.__socket.close()
+
+    def _auth_stage1(self) -> bool:
+        """Receive the client's key and check it"""
+        client_pub_key = self.__conn.recv(1024).decode(self.ENCODING)
+        print(client_pub_key)
+        self.__client_pub_key = client_pub_key
+        return super()._check_the_key(client_pub_key)
+
+    def _auth_stage2(self):
+        pass
 
 
 def main():
