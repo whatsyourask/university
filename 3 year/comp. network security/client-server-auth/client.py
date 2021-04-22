@@ -1,9 +1,10 @@
+from auth import *
 from socket import *
-from crypto import *
+from crypto import get_hash
 import sys
 
 
-class AuthClient:
+class AuthClient(Auth):
     """
     Provides client functionality
     Like interface to work with socket and auth module
@@ -27,15 +28,35 @@ class AuthClient:
         self.__socket.connect((self.__addr, self.__port))
         print('Connection established.')
 
-    def authenticate(self, login: str, password: str):
-        rsa, pub_key, priv_key = generate_keys(self.__bits_length)
-        self.__rsa = rsa
-        self.__pub_key = pub_key
-        self.__priv_key = priv_key
-        self.__socket.send(str(pub_key).encode('utf-8'))
-        server_pub_key = self.__socket.recv(1024)
-        # print(server_pub_key)
-        print('Client\'s public key received')
+    def authenticate(self, login: str, password: str) -> None:
+        """Entire authentication"""
+        # Begin a stage one
+        continue_auth = self._auth_stage1()
+        if continue_auth:
+            # If it did okay, go to stage two
+            print('[+] Server\'s public key received.')
+            self.__login = login
+            self.__password = password
+            encrypted = self._auth_stage2()
+        else:
+            self.__socket.close()
+
+    def _auth_stage1(self) -> bool:
+        """Keys generation and obtaining the key from the server"""
+        super()._generate_keys(self.__bits_length)
+        self.__socket.send(str(self._pub_key).encode(self.ENCODING))
+        server_pub_key = self.__socket.recv(1024).decode(self.ENCODING)
+        print(server_pub_key)
+        self.__server_pub_key = server_pub_key
+        return super()._check_the_key(server_pub_key)
+
+    def _auth_stage2(self) -> str:
+        """Encrypt the login:password and send it"""
+        hash = get_hash(self.__password)
+        account = self.__login + ' ' + hash
+        self.__server_pub_key = super()._get_key(self.__server_pub_key)
+        encrypted = self.encrypt_twice(self.__server_pub_key, account)
+        return encrypted
 
 
 def main():
