@@ -47,6 +47,22 @@ class RSA:
         _, self._d, _ = eea.algorithm()
         return self._d
 
+    @property
+    def e(self) -> int:
+        return self._e
+
+    @e.setter
+    def e(self, e: int) -> None:
+        self._e = e
+
+    @property
+    def d(self) -> int:
+        return self._d
+
+    @d.setter
+    def d(self, d: int) -> None:
+        self._d = d
+
     def encrypt(self, cleartext: str) -> str:
         encrypted = ' '.join(list(map(lambda char: self._chr_encrypt(char),
                                       cleartext)))
