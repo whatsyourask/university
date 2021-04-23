@@ -1,9 +1,10 @@
 from auth import *
 from socket import *
 import sys
+from transmission import *
 
 
-class AuthServer(Auth):
+class AuthServer(Auth, Transmission):
     """
     Provides server functionality
     Like interface to work with socket and auth module
@@ -25,20 +26,23 @@ class AuthServer(Auth):
         if continue_auth:
             # if it did okay, go to stage two
             print('[+] Client\'s public key received.')
-            super()._generate_keys(bits_length)
-            self.__conn.send(str(self._pub_key).encode(self.ENCODING))
+            account = self._auth_stage2(bits_length)
+            print(account)
         else:
             self.__socket.close()
 
     def _auth_stage1(self) -> bool:
         """Receive the client's key and check it"""
-        client_pub_key = self.__conn.recv(1024).decode(self.ENCODING)
+        client_pub_key = super().recvall(self.__conn)
         print(client_pub_key)
         self.__client_pub_key = client_pub_key
         return super()._check_the_key(client_pub_key)
 
-    def _auth_stage2(self):
-        pass
+    def _auth_stage2(self, bits_length: int) -> str:
+        super()._generate_keys(bits_length)
+        super().sendall(self.__conn, str(self._pub_key))
+        account = super().recvall(self.__conn)
+        return account
 
 
 def main():

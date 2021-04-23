@@ -2,9 +2,10 @@ from auth import *
 from socket import *
 from crypto import get_hash
 import sys
+from transmission import *
 
 
-class AuthClient(Auth):
+class AuthClient(Auth, Transmission):
     """
     Provides client functionality
     Like interface to work with socket and auth module
@@ -38,14 +39,15 @@ class AuthClient(Auth):
             self.__login = login
             self.__password = password
             encrypted = self._auth_stage2()
+            self._auth_stage3(encrypted)
         else:
             self.__socket.close()
 
     def _auth_stage1(self) -> bool:
         """Keys generation and obtaining the key from the server"""
         super()._generate_keys(self.__bits_length)
-        self.__socket.send(str(self._pub_key).encode(self.ENCODING))
-        server_pub_key = self.__socket.recv(1024).decode(self.ENCODING)
+        super().sendall(self.__socket, str(self._pub_key))
+        server_pub_key = super().recvall(self.__socket)
         print(server_pub_key)
         self.__server_pub_key = server_pub_key
         return super()._check_the_key(server_pub_key)
@@ -53,21 +55,32 @@ class AuthClient(Auth):
     def _auth_stage2(self) -> str:
         """Encrypt the login:password and send it"""
         hash = get_hash(self.__password)
-        account = self.__login + ' ' + hash
+        account = self.__login.encode(self.ENCODING) + b' ' + hash
         self.__server_pub_key = super()._get_key(self.__server_pub_key)
         encrypted = self.encrypt_twice(self.__server_pub_key, account)
         return encrypted
 
+    def _auth_stage3(self, encrypted: str) -> str:
+        super().sendall(self.__socket, str(encrypted))
+        response = super().recvall(self.__socket)
+        if response == 'Successfully logged in.':
+            print('Nice.')
+
 
 def main():
-    try:
-        port = int(sys.argv[1])
-        bits_length = int(sys.argv[2])
-        a_client = AuthClient('', port, bits_length)
-        a_client.connect()
-        a_client.authenticate('user', 'password')
-    except ValueError:
-        print('Usage: python3 client.py <port> <key bits length>')
+    # try:
+    #     port = int(sys.argv[1])
+    #     bits_length = int(sys.argv[2])
+    #     a_client = AuthClient('', port, bits_length)
+    #     a_client.connect()
+    #     a_client.authenticate('user', 'password')
+    # except ValueError:
+    #     print('Usage: \n\tpython3 client.py <port> <key bits length>')
+    port = int(sys.argv[1])
+    bits_length = int(sys.argv[2])
+    a_client = AuthClient('', port, bits_length)
+    a_client.connect()
+    a_client.authenticate('user', 'password')
 
 
 if __name__=='__main__':
