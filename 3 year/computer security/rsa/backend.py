@@ -69,8 +69,12 @@ class RSA:
         return encrypted
 
     def _chr_encrypt(self, char: str) -> str:
-        # To make lambda short
-        return str(pow(ord(char), self._e, self._n))
+        if type(char) == str and len(char) == 1:
+            return str(pow(ord(char), self._e, self._n))
+        elif type(char) == str:
+            return str(pow(int(char), self._e, self._n))
+        else:
+            return str(pow(char, self._e, self._n))
 
     def decrypt(self, encrypted: str) -> str:
         decrypted = ''.join(list(map(lambda seq: self._chr_decrypt(seq),
@@ -79,7 +83,7 @@ class RSA:
 
     def _chr_decrypt(self, seq: str) -> str:
         # To make lambda short
-        return chr(pow(int(seq), self._d, self._n) % self.LAST_ORD)
+        return chr(pow(seq, self._d, self._n) % self.LAST_ORD)
 
 
 def gcd(a, b) -> int:
