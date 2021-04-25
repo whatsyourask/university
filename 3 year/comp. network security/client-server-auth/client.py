@@ -1,6 +1,5 @@
 from auth import *
 from socket import *
-from crypto import get_hash
 import sys
 from transmission import *
 
@@ -45,19 +44,19 @@ class AuthClient(Auth, Transmission):
 
     def _auth_stage1(self) -> bool:
         """Keys generation and obtaining the key from the server"""
-        super()._generate_keys(self.__bits_length)
+        super().generate_keys(self.__bits_length)
         super().sendall(self.__socket, str(self._pub_key))
         server_pub_key = super().recvall(self.__socket)
-        print(server_pub_key)
+        #print(server_pub_key)
         self.__server_pub_key = server_pub_key
         return super()._check_the_key(server_pub_key)
 
     def _auth_stage2(self) -> str:
         """Encrypt the login:password and send it"""
-        hash = get_hash(self.__password)
+        hash = super().get_hash(self.__password)
         account = self.__login.encode(self.ENCODING) + b' ' + hash
         self.__server_pub_key = super()._get_key(self.__server_pub_key)
-        encrypted = self.encrypt_twice(self.__server_pub_key, account)
+        encrypted = super().encrypt_twice(self.__server_pub_key, account)
         return encrypted
 
     def _auth_stage3(self, encrypted: str) -> str:
@@ -68,19 +67,19 @@ class AuthClient(Auth, Transmission):
 
 
 def main():
-    # try:
-    #     port = int(sys.argv[1])
-    #     bits_length = int(sys.argv[2])
-    #     a_client = AuthClient('', port, bits_length)
-    #     a_client.connect()
-    #     a_client.authenticate('user', 'password')
-    # except ValueError:
-    #     print('Usage: \n\tpython3 client.py <port> <key bits length>')
-    port = int(sys.argv[1])
-    bits_length = int(sys.argv[2])
-    a_client = AuthClient('', port, bits_length)
-    a_client.connect()
-    a_client.authenticate('user', 'password')
+    try:
+        port = int(sys.argv[1])
+        bits_length = int(sys.argv[2])
+        a_client = AuthClient('', port, bits_length)
+        a_client.connect()
+        a_client.authenticate('user', 'password')
+    except ValueError:
+        print('Usage: \n\tpython3 client.py <port> <key bits length>')
+    # port = int(sys.argv[1])
+    # bits_length = int(sys.argv[2])
+    # a_client = AuthClient('', port, bits_length)
+    # a_client.connect()
+    # a_client.authenticate('user', 'password')
 
 
 if __name__=='__main__':

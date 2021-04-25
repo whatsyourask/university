@@ -34,15 +34,18 @@ class AuthServer(Auth, Transmission):
     def _auth_stage1(self) -> bool:
         """Receive the client's key and check it"""
         client_pub_key = super().recvall(self.__conn)
-        print(client_pub_key)
+        #print(client_pub_key)
         self.__client_pub_key = client_pub_key
         return super()._check_the_key(client_pub_key)
 
     def _auth_stage2(self, bits_length: int) -> str:
-        super()._generate_keys(bits_length)
+        super().generate_keys(bits_length)
         super().sendall(self.__conn, str(self._pub_key))
         account = super().recvall(self.__conn)
         return account
+
+    def _auth_stage3(self, account: str):
+        pass
 
 
 def main():
