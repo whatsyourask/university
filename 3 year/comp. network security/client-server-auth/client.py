@@ -55,6 +55,7 @@ class AuthClient(Auth, Transmission):
         """Encrypt the login:password and send it"""
         hash = super().get_hash(self.__password)
         account = self.__login.encode(self.ENCODING) + b' ' + hash
+        print(len(account))
         self.__server_pub_key = super()._get_key(self.__server_pub_key)
         encrypted = super().encrypt_twice(self.__server_pub_key, account)
         return encrypted

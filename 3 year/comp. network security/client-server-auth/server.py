@@ -47,6 +47,7 @@ class AuthServer(Auth, Transmission):
 
     def _auth_stage3(self, account: str):
         self.__client_pub_key = super()._get_key(self.__client_pub_key)
+        print(self.__client_pub_key)
         account = super().decrypt_twice(self.__client_pub_key, account)
 
 
