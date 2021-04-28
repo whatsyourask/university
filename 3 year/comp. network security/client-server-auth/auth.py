@@ -64,6 +64,9 @@ class Auth:
         if key:
             self._rsa.d = key[0]
             self._rsa.n = key[1]
+            print('client_pub_key')
+            print(self._rsa.d)
+            print(self._rsa.n)
         return self._rsa.decrypt(data)
 
     def encrypt_twice(self, key: Tuple, data: str) -> str:
@@ -73,7 +76,24 @@ class Auth:
         """
         self._rsa.e = self._priv_key[0]
         encrypted_once = self._encrypt(data).split()
-        #print(encrypted_once)
+        print('encrypted_once: ', encrypted_once)
         encrypted_twice = self._encrypt(encrypted_once, key)
-        #print(encrypted_twice)
+        print('encrypted_twice: ',encrypted_twice)
         return encrypted_twice
+
+    def decrypt_twice(self, key: Tuple, data: str) -> str:
+        """Decrypt twice as with encrypt"""
+        print(data.split())
+        decrypted_once = self._decrypt(data.split())
+        print()
+        print()
+        print()
+        print()
+        print()
+        # print(self._rsa.d)
+        # print(self._rsa.n)
+        # print(self._priv_key)
+        print(decrypted_once)
+        print(decrypted_once.split())
+        decrypted_twice = self._decrypt(decrypted_once.split(), key)
+        print(decrypted_twice)
