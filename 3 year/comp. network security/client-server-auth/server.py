@@ -28,13 +28,14 @@ class AuthServer(Auth, Transmission):
             print('[+] Client\'s public key received.')
             account = self._auth_stage2(bits_length)
             print(account)
+            self._auth_stage3(account)
         else:
             self.__socket.close()
 
     def _auth_stage1(self) -> bool:
         """Receive the client's key and check it"""
         client_pub_key = super().recvall(self.__conn)
-        #print(client_pub_key)
+        print(client_pub_key)
         self.__client_pub_key = client_pub_key
         return super()._check_the_key(client_pub_key)
 
@@ -45,17 +46,22 @@ class AuthServer(Auth, Transmission):
         return account
 
     def _auth_stage3(self, account: str):
-        pass
+        self.__client_pub_key = super()._get_key(self.__client_pub_key)
+        account = super().decrypt_twice(self.__client_pub_key, account)
 
 
 def main():
-    try:
-        a_server = AuthServer()
-        port = int(sys.argv[1])
-        bits_length = int(sys.argv[2])
-        a_server.start('', port, bits_length)
-    except ValueError:
-        print('Usage: python3 server.py <port> <key bits length>')
+    # try:
+    #     a_server = AuthServer()
+    #     port = int(sys.argv[1])
+    #     bits_length = int(sys.argv[2])
+    #     a_server.start('', port, bits_length)
+    # except ValueError:
+    #     print('Usage: python3 server.py <port> <key bits length>')
+    a_server = AuthServer()
+    port = int(sys.argv[1])
+    bits_length = int(sys.argv[2])
+    a_server.start('', port, bits_length)
 
 
 if __name__=='__main__':

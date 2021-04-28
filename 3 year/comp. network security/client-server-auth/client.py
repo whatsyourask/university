@@ -47,7 +47,7 @@ class AuthClient(Auth, Transmission):
         super().generate_keys(self.__bits_length)
         super().sendall(self.__socket, str(self._pub_key))
         server_pub_key = super().recvall(self.__socket)
-        #print(server_pub_key)
+        print(server_pub_key)
         self.__server_pub_key = server_pub_key
         return super()._check_the_key(server_pub_key)
 
