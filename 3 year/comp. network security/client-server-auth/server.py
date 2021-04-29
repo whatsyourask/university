@@ -9,6 +9,7 @@ class AuthServer(Auth, Transmission):
     Provides server functionality
     Like interface to work with socket and auth module
     """
+    FAILURE = 'Authentication failed.'
     def start(self, address: str, port: int, bits_length: int) -> None:
         """Start the server"""
         # Creata a socket object
@@ -16,18 +17,18 @@ class AuthServer(Auth, Transmission):
         # Bind it to specified address and port
         self.__socket.bind((address, port))
         print('Listening...')
+        self._get_accounts()
         # Start to listen
         self.__socket.listen()
         # Accept a new connection
         self.__conn, addr = self.__socket.accept()
-        print(f'Connection from {addr[0]}:{addr[1]}')
+        print(f'[+] Connection from {addr[0]}:{addr[1]}')
         # Begin a stage one
         continue_auth = self._auth_stage1()
         if continue_auth:
             # if it did okay, go to stage two
             print('[+] Client\'s public key received.')
             account = self._auth_stage2(bits_length)
-            print(account)
             self._auth_stage3(account)
         else:
             self.__socket.close()
@@ -35,7 +36,6 @@ class AuthServer(Auth, Transmission):
     def _auth_stage1(self) -> bool:
         """Receive the client's key and check it"""
         client_pub_key = super().recvall(self.__conn)
-        print(client_pub_key)
         self.__client_pub_key = client_pub_key
         return super()._check_the_key(client_pub_key)
 
@@ -47,8 +47,18 @@ class AuthServer(Auth, Transmission):
 
     def _auth_stage3(self, account: str):
         self.__client_pub_key = super()._get_key(self.__client_pub_key)
-        print(self.__client_pub_key)
-        account = super().decrypt_twice(self.__client_pub_key, account)
+        account = super().decrypt_twice(self.__client_pub_key, account).split(b'\n')
+        if account[0] not in self.__accounts.keys():
+            super().sendall(self.__conn, super().encrypted_twice(self.__client_pub_key, self.FAILURE))
+
+    def _get_accounts(self):
+        accounts = list(map(lambda user_pass: user_pass.split(b' '),
+                        open('accounts.txt', 'rb').read().split(b'\n')))
+        temp_dict = {}
+        for item in accounts:
+            if len(item) > 1:
+                temp_dict[item[0]] = item[1]
+        self.__accounts = temp_dict.copy()
 
 
 def main():
