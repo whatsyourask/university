@@ -67,10 +67,10 @@ class AuthClient(Auth, Transmission):
         encrypted_response = super().recvall(self.__socket)
         print(encrypted_response)
         response = super().decrypt_twice(self.__server_pub_key, encrypted_response)
-        print('response: ', response)
-        if response == b'Successfully logged in.':
+        print('response: ', response.decode(super().ENCODING))
+        if response == super().SUCCESS:
             print('Nice.')
-        else:
+        if response == super().FAILURE:
             print('Not nice...')
 
 

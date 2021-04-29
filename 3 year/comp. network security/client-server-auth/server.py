@@ -9,7 +9,6 @@ class AuthServer(Auth, Transmission):
     Provides server functionality
     Like interface to work with socket and auth module
     """
-    FAILURE = 'Authentication failed.'
     def start(self, address: str, port: int, bits_length: int) -> None:
         """Start the server"""
         # Creata a socket object
@@ -48,8 +47,13 @@ class AuthServer(Auth, Transmission):
     def _auth_stage3(self, account: str):
         self.__client_pub_key = super()._get_key(self.__client_pub_key)
         account = super().decrypt_twice(self.__client_pub_key, account).split(b'\n')
+        print(self.__accounts.keys())
+        print(account[0])
+        print(account[0] not in self.__accounts.keys())
         if account[0] not in self.__accounts.keys():
-            super().sendall(self.__conn, super().encrypted_twice(self.__client_pub_key, self.FAILURE))
+            response = super().encrypt_twice(self.__client_pub_key, super().FAILURE)
+            print(response)
+            super().sendall(self.__conn, response)
 
     def _get_accounts(self):
         accounts = list(map(lambda user_pass: user_pass.split(b' '),

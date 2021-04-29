@@ -10,6 +10,8 @@ from typing import Tuple
 
 class Auth:
     """Class to share common functionality"""
+    FAILURE = b'Failed to log on.'
+    SUCCESS = b'Successfully logged in.'
     def _generate_keys(self, bits_length: int) -> Tuple:
         p = miller_rabin_generate(bits_length)
         q = miller_rabin_generate(bits_length)
@@ -67,6 +69,12 @@ class Auth:
         self._rsa.n = self._priv_key[1]
         encrypted_once = self._encrypt(data).split()
         encrypted_twice = self._encrypt(encrypted_once, key)
+        print('data: ', data)
+        print()
+        print('encrypted_once: ', encrypted_once)
+        print()
+        print('encrypted_twice: ', encrypted_twice)
+        print()
         return encrypted_twice
 
     def _decrypt(self, data: str, key: Tuple=None) -> str:
@@ -83,4 +91,10 @@ class Auth:
         decrypted_once = self._decrypt(data.split())
         decrypted_twice = self._decrypt(decrypted_once.split(), key)
         decrypted_twice = b''.join(list(map(lambda num: chr(int(num) % self._rsa.LAST_ORD).encode(), decrypted_twice.split())))
+        print('data: ', data)
+        print()
+        print('decrypted_once: ', decrypted_once)
+        print()
+        print('decrypted_twice: ', decrypted_twice)
+        print()
         return decrypted_twice
