@@ -41,7 +41,6 @@ class Auth:
         """Extract e and n from the format (e, n)"""
         splited_key = key.split(', ')
         extracted_key = (int(splited_key[0][1:]), int(splited_key[1][:-1]))
-        #print(extracted_key)
         return extracted_key
 
     def _check_the_key(self, key: str) -> bool:
@@ -60,7 +59,6 @@ class Auth:
         return self._rsa.encrypt(data)
 
     def encrypt_twice(self, key: Tuple, data: str) -> str:
-        print(data)
         """Encrypt twice
         First: with your private key
         Second: with public key of another side
@@ -68,10 +66,7 @@ class Auth:
         self._rsa.e = self._priv_key[0]
         self._rsa.n = self._priv_key[1]
         encrypted_once = self._encrypt(data).split()
-        print('encrypted_once: ', encrypted_once)
-        print()
         encrypted_twice = self._encrypt(encrypted_once, key)
-        print('encrypted_twice: ',encrypted_twice)
         return encrypted_twice
 
     def _decrypt(self, data: str, key: Tuple=None) -> str:
@@ -79,34 +74,13 @@ class Auth:
         if key:
             self._rsa.d = key[0]
             self._rsa.n = key[1]
-            print('client_pub_key')
-            print(self._rsa.d)
-            print(self._rsa.n)
         return self._rsa.decrypt(data)
 
     def decrypt_twice(self, key: Tuple, data: str) -> str:
         """Decrypt twice as with encrypt"""
-        #print(data.split())
-        print('priv_key:')
-        print(self._priv_key)
-        print()
         self._rsa.d = self._priv_key[0]
         self._rsa.n = self._priv_key[1]
         decrypted_once = self._decrypt(data.split())
-        print()
-        print()
-        print()
-        print()
-        print()
-        # print(self._rsa.d)
-        # print(self._rsa.n)
-        # print(self._priv_key)
-        print(decrypted_once)
-        print()
-        print(decrypted_once.split())
         decrypted_twice = self._decrypt(decrypted_once.split(), key)
-        print(decrypted_twice)
-        print()
-        decrypted_twice = ''.join(list(map(lambda num: chr(int(num) % self._rsa.LAST_ORD), decrypted_twice.split())))
-        print(decrypted_twice)
-        print(len(decrypted_twice))
+        decrypted_twice = b''.join(list(map(lambda num: chr(int(num) % self._rsa.LAST_ORD).encode(), decrypted_twice.split())))
+        return decrypted_twice

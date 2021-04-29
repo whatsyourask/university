@@ -77,19 +77,12 @@ class RSA:
             return str(pow(char, self._e, self._n))
 
     def decrypt(self, encrypted: str) -> str:
-        print('encrypted:')
-        print(encrypted)
-        print('keys:')
-        print(self._d, self._n)
-        print()
         decrypted = ' '.join(list(map(lambda seq: self._chr_decrypt(seq),
                          encrypted)))
         return decrypted
 
     def _chr_decrypt(self, seq: str) -> str:
         # To make lambda short
-        # print(seq)
-        # print(type(seq))
         return str(pow(int(seq), self._d, self._n))
 
 
