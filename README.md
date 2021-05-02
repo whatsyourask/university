@@ -22,3 +22,4 @@ University programs and materials.🥸
 * [Theoretical Foundations of Computer Security](https://github.com/whatsyourask/University/tree/master/3%20year/botcb "https://github.com/whatsyourask/University/tree/master/3%20year/botcb")
 * [Computer network security](https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security "https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security")
 * [Cisco](https://github.com/whatsyourask/University/tree/master/3%20year/cisco "https://github.com/whatsyourask/University/tree/master/3%20year/cisco")
+* [Algorithms and complexity analysis](https://github.com/whatsyourask/University/tree/master/3%20year/algorithms%20and%20complexity%20analysis "https://github.com/whatsyourask/University/tree/master/3%20year/algorithms%20and%20complexity%20analysis")
