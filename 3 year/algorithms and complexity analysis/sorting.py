@@ -174,26 +174,16 @@ def heap_sort(array: list) -> list:
 
 
 def radix_sort(array: list) -> list:
-    def counting_sort(array: list, place: int):
-        length = len(array)
-        radix = 10
-        result = [0] * length
-        count = [0] * radix
-        for i in range(length):
-            count[(array[i] // place) % radix] += 1
-        for i in range(1, radix):
-            count[i] += count[i - 1]
-        for i in range(length - 1, -1, -1):
-            ind = array[i] // place
-            result[count[ind % radix] - 1] = array[i]
-            count[ind % 10] -= 1
-        for i in range(length):
-            array[i] = result[i]
-    largest = max(array)
-    place = 1
-    while largest // place > 0:
-        counting_sort(array, place)
-        place *= 10
+    length = len(str(max(array)))
+    rang = 10
+    for i in range(length):
+        B = [[] for k in range(rang)] #список длины range, состоящий из пустых списков
+        for x in array:
+            figure = x // 10**i % 10
+            B[figure].append(x)
+        array = []
+        for k in range(rang):
+            array = array + B[k]
     return array
 
 
