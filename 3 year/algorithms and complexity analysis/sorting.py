@@ -173,13 +173,36 @@ def heap_sort(array: list) -> list:
     return array
 
 
+def radix_sort(array: list) -> list:
+    def counting_sort(array: list, place: int):
+        length = len(array)
+        radix = 10
+        result = [0] * length
+        count = [0] * radix
+        for i in range(length):
+            count[(array[i] // place) % radix] += 1
+        for i in range(1, radix):
+            count[i] += count[i - 1]
+        for i in range(length - 1, -1, -1):
+            ind = array[i] // place
+            result[count[ind % radix] - 1] = array[i]
+            count[ind % 10] -= 1
+        for i in range(length):
+            array[i] = result[i]
+    largest = max(array)
+    place = 1
+    while largest // place > 0:
+        counting_sort(array, place)
+        place *= 10
+    return array
+
 
 def ljust_desc(description: str) -> str:
     return description.ljust(20, ' ')
 
 
 def main():
-    array = [5, 7, 10, 1, -5, 125, -52, 25, 10000, 0, 333]
+    array = [5, 7, -3, 10, 1, -5, 125, -52, 25, 10000, 0, 333, -123456]
     print(ljust_desc('initial array:'), array.copy(), '\n')
     print(ljust_desc('Insertion sort:'), insertion_sort(array.copy()))
     print(ljust_desc('Bubble sort:'), bubble_sort(array.copy()))
@@ -188,6 +211,7 @@ def main():
     print(ljust_desc('Quick sort:'), quick_sort(array.copy(), 0, len(array) - 1))
     print(ljust_desc('Merge sort:'), merge_sort(array.copy()))
     print(ljust_desc('Heap sort:'), heap_sort(array.copy()))
+    print(ljust_desc('Radix sort:'), radix_sort(array.copy()))
 
 
 if __name__=='__main__':
