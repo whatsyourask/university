@@ -175,15 +175,15 @@ def heap_sort(array: list) -> list:
 
 def radix_sort(array: list) -> list:
     length = len(str(max(array)))
-    rang = 10
+    radix = 10
     for i in range(length):
-        B = [[] for k in range(rang)] #список длины range, состоящий из пустых списков
-        for x in array:
-            figure = x // 10**i % 10
-            B[figure].append(x)
+        buckets = [[] for k in range(radix)]
+        for item in array:
+            figure = item // radix ** i % radix
+            buckets[figure].append(item)
         array = []
-        for k in range(rang):
-            array = array + B[k]
+        for k in range(radix):
+            array = array + buckets[k]
     return array
 
 
