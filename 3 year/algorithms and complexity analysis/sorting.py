@@ -2,11 +2,6 @@ from typing import List
 
 
 def insertion_sort(array: List) -> List:
-    """
-    1. Iterate from 1 to n
-    2. Compare current with the previous element
-    3. If the current element is smaller, compare the element before the previous element
-    """
     length = len(array)
     for i in range(1, length):
         current = array[i]
@@ -19,11 +14,6 @@ def insertion_sort(array: List) -> List:
 
 
 def bubble_sort(array: List) -> List:
-    """
-    1. Go through from 0 to n - 1
-    2. Consider the last element as an element in the right place and go through elements from 0 to the last element
-    3. Swap if the element found is greater than the next
-    """
     length = len(array)
     for i in range(length):
         for j in range(0, length - i - 1):
@@ -33,11 +23,6 @@ def bubble_sort(array: List) -> List:
 
 
 def selection_sort(array: List) -> List:
-    """
-    1. Go through each element
-    2. Find the minimum element in the remaining
-    3. Swap the first element with the found minimum
-    """
     length = len(array)
     for i in range(length):
         min_ind = i
@@ -49,15 +34,6 @@ def selection_sort(array: List) -> List:
 
 
 def shell_sort(array: List) -> List:
-    """
-    1. Start with a gap equals to n / 2
-    2. Do a gap insertion for this gap size
-    3. Add a[i] to the gap sorted elements
-    4. Make a space at i position
-    5. Shift earlier gap-sorted elements
-    6. Put a[i] that was taken above and place it in the right place
-    7. Keep adding elements until the entire array is gap sorted
-    """
     length = len(array)
     gap = length // 2
     while gap > 0:
@@ -73,45 +49,42 @@ def shell_sort(array: List) -> List:
 
 
 def quick_sort(array: List, start: int, end: int) -> List:
-    """
-    1. If start is less than end then start sorting
-    2. Find the pivot element with partition() function
-    3. Start sorting part before the pivot and after it
-    """
     def partition(array: List, start: int, end: int) -> int:
-        """
-        1. Go from start to end
-        2. Go through elements while each element is less than or equal to the pivot
-        3. Go from the end and search for an element that will be less than the pivot
-        4. If start < end then swap elements at this indices
-        5. After main loop swap pivot with the element at end index
-        """
-        pivot_ind = start
-        pivot = array[pivot_ind]
-        length = len(array)
-        while start < end:
-            while start < length and array[start] <= pivot:
-                start += 1
-            while array[end] > pivot:
-                end -= 1
-            if start < end:
-                array[start], array[end] = array[end], array[start]
-        array[end], array[pivot_ind] = array[pivot_ind], array[end]
-        return end
-    if start < end:
-        pivot = partition(array, start, end)
-        quick_sort(array, start, pivot - 1)
-        quick_sort(array, pivot + 1, end)
+        i = start - 1
+        x = array[end]
+        for j in range(start, end):
+            if array[j] <= x:
+                i += 1
+                array[i], array[j] = array[j], array[i]
+        array[i + 1], array[end] = array[end], array[i + 1]
+        return i + 1
+    length = end - start + 1
+    stack = [0] * length
+    top = -1
+    top += 1
+    stack[top] = start
+    top += 1
+    stack[top] = end
+    while top >= 0:
+        end = stack[top]
+        top -= 1
+        start = stack[top]
+        top -= 1
+        p = partition(array, start, end)
+        if p - 1 > start:
+            top += 1
+            stack[top] = start
+            top += 1
+            stack[top] = p - 1
+        if p + 1 < end:
+            top += 1
+            stack[top] = p + 1
+            top += 1
+            stack[top] = end
     return array
 
 
 def merge_sort(array: List) -> List:
-    """
-    1. If length is greater than 1 then start sorting
-    2. Find the middle of the array
-    3. Divide the array into 2 parts and sort each of them
-    4. Copy results properly in result array and return it
-    """
     length = len(array)
     if length > 1:
         middle = length // 2
@@ -144,19 +117,7 @@ def merge_sort(array: List) -> List:
 
 
 def heap_sort(array: List) -> List:
-    """
-    1. Go from the middle in decrease order and call find_root for each index
-    2. Extract elements with swap and call find_root
-    """
     def find_root(array: List, length: int, ind: int):
-        """
-        1. Initialize the root
-        2. left = 2 * i + 1
-        3. right = 2 * i + 2
-        4. Check if the childs exist and are greater than root
-        5. Change root if needed with swap
-        6. Call find_root again
-        """
         root = ind
         left = 2 * ind + 1
         right = 2 * ind + 2
