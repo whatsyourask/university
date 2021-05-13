@@ -28,17 +28,27 @@ class TestSort:
                                 'date': generate_reversed_sorted_dates}
     sizes = [50, 500, 5000, 50000, 500000]
     types = ['num', 'int', 'str', 'date']
-    equals = '=' * 10
+    filename = 'report.txt'
     def test(self):
-        self.gen_func = self.gen_random_func
-        print('Test with fully random data:')
-        self._test_one_generation()
-        self.gen_func = self.gen_half_sorted_func
-        print('Test with half sorted half random data:')
-        self._test_one_generation()
-        self.gen_func = self.gen_reversed_sorted_func
-        print('Test with reverse order sorted data:')
-        self._test_one_generation()
+        self.f = open(self.filename, 'w')
+        try:
+            self.gen_func = self.gen_random_func
+            print('Test with fully random data:')
+            self.f.write('Test with fully random data:\n')
+            self._test_one_generation()
+            self.gen_func = self.gen_half_sorted_func
+            print('Test with half sorted half random data:')
+            self.f.write('Test with half sorted half random data:\n')
+            self._test_one_generation()
+            self.gen_func = self.gen_reversed_sorted_func
+            print('Test with reverse order sorted data:')
+            self.f.write('Test with reverse order sorted data:\n')
+            self._test_one_generation()
+        except Exception as error:
+            print(error)
+            self.f.write(error + '\n')
+        finally:
+            self.f.close()
 
     def _test_one_generation(self):
         for type in self.types:
@@ -59,6 +69,7 @@ class TestSort:
         end = time()
         diff = (end - start) * 1000
         print(f'{sort_func.__name__}:\n\tsize: {len(data)}\n\ttype: {type(data[0])}\n\ttime: {diff}')
+        self.f.write(f'{sort_func.__name__}:\n\tsize: {len(data)}\n\ttype: {type(data[0])}\n\ttime: {diff}\n')
 
 
 def main():
