@@ -56,8 +56,15 @@ class TestSort:
                 self._test_one_size(size, type)
 
     def _test_one_size(self, data_length: int, type: str) -> None:
-        data = self.gen_func[type](data_length)
+        if self.gen_func[type] in self.gen_half_sorted_func.values():
+            data = self.gen_func[type](data_length, 0.8)
+        else:
+            data = self.gen_func[type](data_length)
         for sort_func in self.sorts:
+            if data_length >= 50000 and sort_func in (insertion_sort, bubble_sort, selection_sort):
+                continue
+            if data_length > 50000 and sort_func == quick_sort:
+                continue
             self._test_one_sort(sort_func, data.copy())
 
     def _test_one_sort(self, sort_func: callable, data: list) -> None:
