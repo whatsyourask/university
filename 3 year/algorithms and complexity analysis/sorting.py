@@ -1,4 +1,7 @@
-def insertion_sort(array: list) -> list:
+from typing import List
+
+
+def insertion_sort(array: List) -> List:
     """
     1. Iterate from 1 to n
     2. Compare current with the previous element
@@ -15,7 +18,7 @@ def insertion_sort(array: list) -> list:
     return array
 
 
-def bubble_sort(array: list) -> list:
+def bubble_sort(array: List) -> List:
     """
     1. Go through from 0 to n - 1
     2. Consider the last element as an element in the right place and go through elements from 0 to the last element
@@ -29,7 +32,7 @@ def bubble_sort(array: list) -> list:
     return array
 
 
-def selection_sort(array: list) -> list:
+def selection_sort(array: List) -> List:
     """
     1. Go through each element
     2. Find the minimum element in the remaining
@@ -45,7 +48,7 @@ def selection_sort(array: list) -> list:
     return array
 
 
-def shell_sort(array: list) -> list:
+def shell_sort(array: List) -> List:
     """
     1. Start with a gap equals to n / 2
     2. Do a gap insertion for this gap size
@@ -69,13 +72,13 @@ def shell_sort(array: list) -> list:
     return array
 
 
-def quick_sort(array: list, start: int, end: int) -> list:
+def quick_sort(array: List, start: int, end: int) -> List:
     """
     1. If start is less than end then start sorting
     2. Find the pivot element with partition() function
     3. Start sorting part before the pivot and after it
     """
-    def partition(array: list, start: int, end: int) -> int:
+    def partition(array: List, start: int, end: int) -> int:
         """
         1. Go from start to end
         2. Go through elements while each element is less than or equal to the pivot
@@ -102,7 +105,7 @@ def quick_sort(array: list, start: int, end: int) -> list:
     return array
 
 
-def merge_sort(array: list) -> list:
+def merge_sort(array: List) -> List:
     """
     1. If length is greater than 1 then start sorting
     2. Find the middle of the array
@@ -140,12 +143,12 @@ def merge_sort(array: list) -> list:
     return array
 
 
-def heap_sort(array: list) -> list:
+def heap_sort(array: List) -> List:
     """
     1. Go from the middle in decrease order and call find_root for each index
     2. Extract elements with swap and call find_root
     """
-    def find_root(array: list, length: int, ind: int):
+    def find_root(array: List, length: int, ind: int):
         """
         1. Initialize the root
         2. left = 2 * i + 1
@@ -173,22 +176,62 @@ def heap_sort(array: list) -> list:
     return array
 
 
-def radix_sort(array: list) -> list:
-    length = len(str(max(array)))
-    radix = 10
-    for i in range(length):
-        buckets = [[] for k in range(radix)]
-        for item in array:
-            figure = item // radix ** i % radix
-            buckets[figure].append(item)
-        array = []
-        for k in range(radix):
-            array = array + buckets[k]
+def count_sort_letters(array, size, col, base):
+    output   = [0] * size
+    count    = [0] * base
+    min_base = 0
+    for item in array:
+        correct_index = min(len(item) - 1, col)
+        letter = ord(item[-(correct_index + 1)]) - min_base
+        count[letter] += 1
+    for i in range(base - 1):
+        count[i + 1] += count[i]
+    for i in range(size - 1, -1, -1):
+        item = array[i]
+        correct_index = min(len(item) - 1, col)
+        letter = ord(item[-(correct_index + 1)]) - min_base
+        output[count[letter] - 1] = item
+        count[letter] -= 1
+    return output
+
+
+def radix_sort_letters(array):
+    size = len(array)
+    max_col = len(max(array, key = len))
+    for col in range(max_col):
+        array = count_sort_letters(array, size, col, 8034)
     return array
 
 
+def radix_sort(array: List) -> List:
+    def counting_sort(array: List[int], place: int, d: int=None):
+        length = len(array)
+        radix = 10
+        result = [0] * length
+        count = [0] * radix
+        for i in range(length):
+            count[(array[i] // place) % radix] += 1
+        for i in range(1, radix):
+            count[i] += count[i - 1]
+        for i in range(length - 1, -1, -1):
+            ind = array[i] // place
+            result[count[ind % radix] - 1] = array[i]
+            count[ind % 10] -= 1
+        for i in range(length):
+            array[i] = result[i]
+    if type(array[0]) == int or type(array[0]) == float:
+        largest = max(array)
+        place = 1
+        while largest // place > 0:
+            counting_sort(array, place)
+            place *= 10
+        return array
+    if type(array[0]) == str:
+        return radix_sort_letters(array)
+
+
 def ljust_desc(description: str) -> str:
-    return description.ljust(20, ' ')
+    return description.ljust(30, ' ')
 
 
 def main():
@@ -202,6 +245,12 @@ def main():
     print(ljust_desc('Merge sort:'), merge_sort(array.copy()))
     print(ljust_desc('Heap sort:'), heap_sort(array.copy()))
     print(ljust_desc('Radix sort:'), radix_sort(array.copy()))
+    str_array = ['bbbbb', 'cccc', 'aaaaaaa', 'zzzzzz', 'eeeee', 'dddd']
+    print(ljust_desc('Radix sort with strings:'), radix_sort(str_array.copy()))
+    str_array = ['Hello', 'world', 'And', 'all', 'Of', 'you', 'friends']
+    print(ljust_desc('Radix sort with strings:'), radix_sort(str_array.copy()))
+    str_array.sort()
+    print(ljust_desc('Python str array sort:'), str_array)
 
 
 if __name__=='__main__':
