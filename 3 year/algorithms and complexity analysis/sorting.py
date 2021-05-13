@@ -85,34 +85,43 @@ def quick_sort(array: List, start: int, end: int) -> List:
 
 
 def merge_sort(array: List) -> List:
-    length = len(array)
-    if length > 1:
-        middle = length // 2
-        left = array[:middle]
-        right = array[middle:]
-        merge_sort(left)
-        merge_sort(right)
-        i = 0
-        j = 0
-        k = 0
-        left_length = len(left)
-        right_length = len(right)
-        while i < left_length and j < right_length:
-            if left[i] < right[j]:
-                array[k] = left[i]
-                i += 1
-            else:
-                array[k] = right[j]
+    def merge(array: List, left: int, middle: int, right: int):
+        n1 = middle - left + 1
+        n2 = right - middle
+        left_part = [0] * n1
+        right_part = [0] * n2
+        for i in range(0, n1):
+            left_part[i] = array[left + i]
+        for i in range(0, n2):
+            right_part[i] = array[middle + i + 1]
+        i, j, k = 0, 0, left
+        while i < n1 and j < n2:
+            if left_part[i] > right_part[j]:
+                array[k] = right_part[j]
                 j += 1
+            else:
+                array[k] = left_part[i]
+                i += 1
             k += 1
-        while i < left_length:
-            array[k] = left[i]
+        while i < n1:
+            array[k] = left_part[i]
             i += 1
             k += 1
-        while j < right_length:
-            array[k] = right[j]
+        while j < n2:
+            array[k] = right_part[j]
             j += 1
             k += 1
+    current_size = 1
+    length = len(array)
+    while current_size < length - 1:
+        left = 0
+        while left < length - 1:
+            middle = min((left + current_size - 1), (length - 1))
+            right = ((2 * current_size + left - 1,
+                    length - 1)[2 * current_size + left - 1 > length - 1])
+            merge(array, left, middle, right)
+            left += current_size * 2
+        current_size = 2 * current_size
     return array
 
 
