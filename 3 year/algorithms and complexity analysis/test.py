@@ -63,7 +63,7 @@ class TestSort:
         for sort_func in self.sorts:
             if data_length >= 50000 and sort_func in (insertion_sort, bubble_sort, selection_sort):
                 continue
-            if data_length > 50000 and sort_func == quick_sort:
+            if data_length > 50000 and sort_func == quick_sort and (type == 'num' or self.gen_func[type] in self.gen_reversed_sorted_func.values()):
                 continue
             self._test_one_sort(sort_func, data.copy())
 

@@ -2,559 +2,567 @@ Test with fully random data:
 insertion_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.09131431579589844
+	time: 0.10609626770019531
 bubble_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.1876354217529297
+	time: 0.22912025451660156
 selection_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.09560585021972656
+	time: 0.1125335693359375
 shell_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.06103515625
+	time: 0.07224082946777344
 quick_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.09799003601074219
+	time: 0.09918212890625
 merge_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.20551681518554688
+	time: 0.20694732666015625
 heap_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.141143798828125
+	time: 0.14209747314453125
 radix_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.08821487426757812
+	time: 0.07367134094238281
 sorted:
 	size: 50
 	type: <class 'int'>
-	time: 0.0064373016357421875
+	time: 0.007152557373046875
 insertion_sort:
 	size: 500
 	type: <class 'int'>
-	time: 8.509397506713867
+	time: 8.52513313293457
 bubble_sort:
 	size: 500
 	type: <class 'int'>
-	time: 18.930912017822266
+	time: 19.894838333129883
 selection_sort:
 	size: 500
 	type: <class 'int'>
-	time: 8.682012557983398
+	time: 9.809494018554688
 shell_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.8451938629150391
+	time: 0.9834766387939453
 quick_sort:
 	size: 500
 	type: <class 'int'>
-	time: 3.416776657104492
+	time: 3.589153289794922
 merge_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.4356842041015625
+	time: 2.498149871826172
 heap_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.449512481689453
+	time: 2.140045166015625
 radix_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.3142356872558594
+	time: 0.26535987854003906
 sorted:
 	size: 500
 	type: <class 'int'>
-	time: 0.0591278076171875
+	time: 0.06031990051269531
 insertion_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 918.8094139099121
+	time: 935.6765747070312
 bubble_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 2228.3718585968018
+	time: 2242.1200275421143
 selection_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 925.4071712493896
+	time: 909.4769954681396
 shell_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 13.351917266845703
+	time: 13.61703872680664
 quick_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 263.0162239074707
+	time: 265.09976387023926
 merge_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 32.347917556762695
+	time: 31.865596771240234
 heap_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 31.370878219604492
+	time: 32.48453140258789
 radix_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 2.646207809448242
+	time: 2.6047229766845703
 sorted:
 	size: 5000
 	type: <class 'int'>
-	time: 0.5197525024414062
+	time: 0.4966259002685547
 shell_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 149.9795913696289
+	time: 165.40217399597168
 quick_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 25360.727071762085
+	time: 26204.009294509888
 merge_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 383.7900161743164
+	time: 396.8846797943115
 heap_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 405.78579902648926
+	time: 424.105167388916
 radix_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 28.729677200317383
+	time: 26.31521224975586
 sorted:
 	size: 50000
 	type: <class 'int'>
-	time: 6.543397903442383
+	time: 5.187273025512695
 shell_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 1836.8747234344482
+	time: 2074.3141174316406
 merge_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 4308.571815490723
+	time: 4296.556711196899
 heap_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 5682.46603012085
+	time: 5205.230236053467
 radix_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 302.31332778930664
+	time: 271.0258960723877
 sorted:
 	size: 500000
 	type: <class 'int'>
-	time: 61.553955078125
+	time: 54.936885833740234
 insertion_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.12636184692382812
+	time: 0.12445449829101562
 bubble_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.2357959747314453
+	time: 0.24056434631347656
 selection_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.14472007751464844
+	time: 0.1361370086669922
 shell_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.07700920104980469
+	time: 0.09846687316894531
 quick_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.08273124694824219
+	time: 0.09226799011230469
 merge_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.2689361572265625
+	time: 0.2815723419189453
 heap_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.17976760864257812
+	time: 0.17571449279785156
 radix_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.15616416931152344
+	time: 0.1475811004638672
 sorted:
 	size: 50
 	type: <class 'int'>
-	time: 0.009298324584960938
+	time: 0.0095367431640625
 insertion_sort:
 	size: 500
 	type: <class 'int'>
-	time: 10.160684585571289
+	time: 9.327173233032227
 bubble_sort:
 	size: 500
 	type: <class 'int'>
-	time: 25.813579559326172
+	time: 25.48813819885254
 selection_sort:
 	size: 500
 	type: <class 'int'>
-	time: 11.984586715698242
+	time: 10.2081298828125
 shell_sort:
 	size: 500
 	type: <class 'int'>
-	time: 1.4119148254394531
+	time: 1.4209747314453125
 quick_sort:
 	size: 500
 	type: <class 'int'>
-	time: 1.0447502136230469
+	time: 1.138925552368164
 merge_sort:
 	size: 500
 	type: <class 'int'>
-	time: 3.2711029052734375
+	time: 2.55584716796875
 heap_sort:
 	size: 500
 	type: <class 'int'>
-	time: 3.9322376251220703
+	time: 2.487659454345703
 radix_sort:
 	size: 500
 	type: <class 'int'>
-	time: 1.5857219696044922
+	time: 1.0881423950195312
 sorted:
 	size: 500
 	type: <class 'int'>
-	time: 0.09703636169433594
+	time: 0.06604194641113281
 insertion_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1231.8148612976074
+	time: 1150.5296230316162
 bubble_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 2523.134469985962
+	time: 2601.5491485595703
 selection_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1077.0072937011719
+	time: 1087.813377380371
 shell_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 28.733253479003906
+	time: 28.03492546081543
 quick_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 14.045238494873047
+	time: 13.339519500732422
 merge_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 34.46650505065918
+	time: 34.972190856933594
 heap_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 36.408185958862305
+	time: 35.72511672973633
 radix_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 11.226654052734375
+	time: 11.24262809753418
 sorted:
 	size: 5000
 	type: <class 'int'>
-	time: 0.7932186126708984
+	time: 0.6861686706542969
 shell_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 419.8148250579834
+	time: 478.2078266143799
 quick_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 186.61999702453613
+	time: 188.04001808166504
 merge_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 418.72119903564453
+	time: 432.7566623687744
 heap_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 517.8759098052979
+	time: 510.7846260070801
 radix_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 147.54581451416016
+	time: 153.40185165405273
 sorted:
 	size: 50000
 	type: <class 'int'>
-	time: 9.052753448486328
+	time: 9.623527526855469
 shell_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 7152.788877487183
+	time: 8153.983592987061
+quick_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 3905.014991760254
 merge_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 5064.076900482178
+	time: 5301.257610321045
 heap_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 6532.074689865112
+	time: 7450.882196426392
 radix_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 2007.7641010284424
+	time: 2227.907657623291
 sorted:
 	size: 500000
 	type: <class 'int'>
-	time: 187.35766410827637
+	time: 191.2240982055664
 insertion_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.12564659118652344
+	time: 0.10418891906738281
 bubble_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.22673606872558594
+	time: 0.20575523376464844
 selection_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.11897087097167969
+	time: 0.13494491577148438
 shell_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.07033348083496094
+	time: 0.07367134094238281
 quick_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.08821487426757812
+	time: 0.08130073547363281
 merge_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.24366378784179688
+	time: 0.2269744873046875
 heap_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.1456737518310547
+	time: 0.15091896057128906
 radix_sort:
 	size: 50
 	type: <class 'str'>
-	time: 104.78591918945312
+	time: 107.88679122924805
 sorted:
 	size: 50
 	type: <class 'str'>
-	time: 0.012159347534179688
+	time: 0.014781951904296875
 insertion_sort:
 	size: 500
 	type: <class 'str'>
-	time: 10.802984237670898
+	time: 11.838436126708984
 bubble_sort:
 	size: 500
 	type: <class 'str'>
-	time: 23.824691772460938
+	time: 24.810314178466797
 selection_sort:
 	size: 500
 	type: <class 'str'>
-	time: 11.853694915771484
+	time: 11.960983276367188
 shell_sort:
 	size: 500
 	type: <class 'str'>
-	time: 1.4095306396484375
+	time: 1.5003681182861328
 quick_sort:
 	size: 500
 	type: <class 'str'>
-	time: 1.2669563293457031
+	time: 1.1146068572998047
 merge_sort:
 	size: 500
 	type: <class 'str'>
-	time: 2.8901100158691406
+	time: 2.6869773864746094
 heap_sort:
 	size: 500
 	type: <class 'str'>
-	time: 2.610921859741211
+	time: 2.325773239135742
 radix_sort:
 	size: 500
 	type: <class 'str'>
-	time: 180.6621551513672
+	time: 184.20791625976562
 sorted:
 	size: 500
 	type: <class 'str'>
-	time: 0.11873245239257812
+	time: 0.12183189392089844
 insertion_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 1235.3622913360596
+	time: 1250.974178314209
 bubble_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 2779.301881790161
+	time: 2721.498966217041
 selection_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 1360.2204322814941
+	time: 1231.5640449523926
 shell_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 34.339189529418945
+	time: 30.681371688842773
 quick_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 19.843101501464844
+	time: 16.842126846313477
 merge_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 47.17564582824707
+	time: 36.333560943603516
 heap_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 46.97585105895996
+	time: 39.064884185791016
 radix_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 899.4553089141846
+	time: 779.0026664733887
 sorted:
 	size: 5000
 	type: <class 'str'>
-	time: 1.7657279968261719
+	time: 1.6453266143798828
 shell_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 501.59192085266113
+	time: 561.5651607513428
 quick_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 216.98451042175293
+	time: 229.08258438110352
 merge_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 483.34693908691406
+	time: 526.167631149292
 heap_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 519.1454887390137
+	time: 572.6337432861328
 radix_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 6360.431909561157
+	time: 7347.602128982544
 sorted:
 	size: 50000
 	type: <class 'str'>
-	time: 26.913881301879883
+	time: 30.008316040039062
 shell_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 7525.895833969116
+	time: 9197.547912597656
+quick_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 2996.6251850128174
 merge_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 5696.315050125122
+	time: 6345.983982086182
 heap_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 6694.773197174072
+	time: 7667.300224304199
 radix_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 64842.34619140625
+	time: 75008.44311714172
 sorted:
 	size: 500000
 	type: <class 'str'>
-	time: 385.12182235717773
+	time: 453.32908630371094
 insertion_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.12254714965820312
+	time: 0.11587142944335938
 bubble_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.24461746215820312
+	time: 0.2315044403076172
 selection_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.13303756713867188
+	time: 0.10251998901367188
 shell_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.08082389831542969
+	time: 0.0762939453125
 quick_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.07748603820800781
+	time: 0.0762939453125
 merge_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.20933151245117188
+	time: 0.2090930938720703
 heap_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.148773193359375
+	time: 0.14925003051757812
 radix_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.010251998901367188
+	time: 0.009059906005859375
 sorted:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.011920928955078125
+	time: 0.008106231689453125
 insertion_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 11.254549026489258
+	time: 10.600805282592773
 bubble_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 22.0944881439209
+	time: 22.987842559814453
 selection_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 11.513710021972656
+	time: 11.818170547485352
 shell_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 1.4014244079589844
+	time: 1.466512680053711
 quick_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 1.173257827758789
+	time: 1.0247230529785156
 merge_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 2.6273727416992188
+	time: 2.64739990234375
 heap_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 2.4106502532958984
+	time: 2.817392349243164
 radix_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.012874603271484375
+	time: 0.025272369384765625
 sorted:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.1068115234375
+	time: 0.10919570922851562
 insertion_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1137.8817558288574
+	time: 1187.5503063201904
 bubble_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 2585.5090618133545
+	time: 2721.799850463867
 selection_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1096.6131687164307
+	time: 1185.425043106079
 shell_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 32.03225135803223
+	time: 30.55715560913086
 quick_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 14.293432235717773
+	time: 15.514135360717773
 merge_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 41.593313217163086
+	time: 40.85040092468262
 heap_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 42.461395263671875
+	time: 37.60361671447754
 radix_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
@@ -562,845 +570,240 @@ radix_sort:
 sorted:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1.5306472778320312
+	time: 1.2822151184082031
 shell_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 431.17237091064453
+	time: 497.0672130584717
 quick_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 200.73556900024414
+	time: 197.78680801391602
 merge_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 444.17524337768555
+	time: 441.7126178741455
 heap_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 480.6663990020752
+	time: 529.7033786773682
 radix_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 0.023365020751953125
+	time: 0.020265579223632812
 sorted:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 18.467187881469727
+	time: 18.932104110717773
 shell_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 7290.068864822388
+	time: 8616.632461547852
+quick_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 2735.6951236724854
 merge_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 5146.197319030762
+	time: 5466.939687728882
 heap_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 6466.507911682129
+	time: 7154.564619064331
 radix_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 0.05269050598144531
+	time: 0.035762786865234375
 sorted:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 333.2536220550537
+	time: 393.28646659851074
 Test with half sorted half random data:
 insertion_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.052928924560546875
+	time: 0.046253204345703125
 bubble_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.15163421630859375
+	time: 0.1544952392578125
 selection_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.10800361633300781
+	time: 0.09822845458984375
 shell_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.05316734313964844
+	time: 0.05125999450683594
 quick_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.09942054748535156
+	time: 0.11324882507324219
 merge_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.20265579223632812
+	time: 0.2052783966064453
 heap_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.1392364501953125
+	time: 0.13971328735351562
 radix_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.0514984130859375
+	time: 0.045299530029296875
 sorted:
 	size: 50
 	type: <class 'int'>
-	time: 0.004291534423828125
+	time: 0.003337860107421875
 insertion_sort:
 	size: 500
 	type: <class 'int'>
-	time: 3.077268600463867
+	time: 3.4782886505126953
 bubble_sort:
 	size: 500
 	type: <class 'int'>
-	time: 13.699769973754883
+	time: 14.740705490112305
 selection_sort:
 	size: 500
 	type: <class 'int'>
-	time: 10.51020622253418
+	time: 9.783744812011719
 shell_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.7348060607910156
+	time: 0.8032321929931641
 quick_sort:
 	size: 500
 	type: <class 'int'>
-	time: 3.534555435180664
+	time: 3.367900848388672
 merge_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.7379989624023438
+	time: 2.341747283935547
 heap_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.4156570434570312
+	time: 2.262592315673828
 radix_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.2777576446533203
+	time: 0.2942085266113281
 sorted:
 	size: 500
 	type: <class 'int'>
-	time: 0.027418136596679688
+	time: 0.02956390380859375
 insertion_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 331.18700981140137
+	time: 324.42641258239746
 bubble_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1525.5486965179443
+	time: 1570.4474449157715
 selection_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 906.3026905059814
+	time: 928.1697273254395
 shell_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 11.753559112548828
+	time: 11.857032775878906
 quick_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 270.0650691986084
+	time: 268.0320739746094
 merge_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 29.682159423828125
+	time: 32.62042999267578
 heap_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 32.12594985961914
+	time: 37.73975372314453
 radix_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 2.6159286499023438
+	time: 2.756357192993164
 sorted:
 	size: 5000
 	type: <class 'int'>
-	time: 0.15306472778320312
+	time: 0.1423358917236328
 shell_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 134.39011573791504
+	time: 143.39327812194824
 quick_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 25714.36047554016
+	time: 26672.584533691406
 merge_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 360.1512908935547
+	time: 349.1969108581543
 heap_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 449.16439056396484
+	time: 439.2540454864502
 radix_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 27.909517288208008
+	time: 26.471376419067383
 sorted:
 	size: 50000
 	type: <class 'int'>
-	time: 1.352548599243164
+	time: 1.4908313751220703
 shell_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 1596.137285232544
+	time: 1807.0025444030762
 merge_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 3997.2612857818604
+	time: 4084.618091583252
 heap_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 5098.7372398376465
+	time: 5397.618532180786
 radix_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 261.02638244628906
+	time: 260.50519943237305
 sorted:
 	size: 500000
 	type: <class 'int'>
-	time: 19.568920135498047
+	time: 19.31929588317871
 insertion_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.06747245788574219
+bubble_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.18644332885742188
+selection_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.11682510375976562
+shell_sort:
 	size: 50
 	type: <class 'int'>
 	time: 0.06651878356933594
-bubble_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.20766258239746094
-selection_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.12755393981933594
-shell_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.06389617919921875
 quick_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.10704994201660156
+	time: 0.10800361633300781
 merge_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.2834796905517578
+	time: 0.2567768096923828
 heap_sort:
 	size: 50
 	type: <class 'int'>
-	time: 0.20647048950195312
+	time: 0.17786026000976562
 radix_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.15926361083984375
-sorted:
-	size: 50
-	type: <class 'int'>
-	time: 0.010967254638671875
-insertion_sort:
-	size: 500
-	type: <class 'int'>
-	time: 4.939556121826172
-bubble_sort:
-	size: 500
-	type: <class 'int'>
-	time: 16.42322540283203
-selection_sort:
-	size: 500
-	type: <class 'int'>
-	time: 14.094114303588867
-shell_sort:
-	size: 500
-	type: <class 'int'>
-	time: 1.4801025390625
-quick_sort:
-	size: 500
-	type: <class 'int'>
-	time: 1.996755599975586
-merge_sort:
-	size: 500
-	type: <class 'int'>
-	time: 2.7434825897216797
-heap_sort:
-	size: 500
-	type: <class 'int'>
-	time: 2.4733543395996094
-radix_sort:
-	size: 500
-	type: <class 'int'>
-	time: 1.1262893676757812
-sorted:
-	size: 500
-	type: <class 'int'>
-	time: 0.029802322387695312
-insertion_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 427.4258613586426
-bubble_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 1792.7320003509521
-selection_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 1099.7114181518555
-shell_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 21.23427391052246
-quick_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 20.442962646484375
-merge_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 31.937122344970703
-heap_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 36.513566970825195
-radix_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 10.958194732666016
-sorted:
-	size: 5000
-	type: <class 'int'>
-	time: 0.23221969604492188
-shell_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 357.58018493652344
-quick_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 290.7299995422363
-merge_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 406.2998294830322
-heap_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 520.512580871582
-radix_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 159.83176231384277
-sorted:
-	size: 50000
-	type: <class 'int'>
-	time: 3.010988235473633
-shell_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 5650.123834609985
-merge_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 5200.740337371826
-heap_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 6346.828460693359
-radix_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 2112.9539012908936
-sorted:
-	size: 500000
-	type: <class 'int'>
-	time: 90.74187278747559
-insertion_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.05936622619628906
-bubble_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.17881393432617188
-selection_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.13399124145507812
-shell_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.06580352783203125
-quick_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.08869171142578125
-merge_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.21529197692871094
-heap_sort:
-	size: 50
-	type: <class 'str'>
-	time: 0.15425682067871094
-radix_sort:
-	size: 50
-	type: <class 'str'>
-	time: 120.6662654876709
-sorted:
-	size: 50
-	type: <class 'str'>
-	time: 0.008821487426757812
-insertion_sort:
-	size: 500
-	type: <class 'str'>
-	time: 4.081010818481445
-bubble_sort:
-	size: 500
-	type: <class 'str'>
-	time: 17.950057983398438
-selection_sort:
-	size: 500
-	type: <class 'str'>
-	time: 14.944314956665039
-shell_sort:
-	size: 500
-	type: <class 'str'>
-	time: 1.6276836395263672
-quick_sort:
-	size: 500
-	type: <class 'str'>
-	time: 1.9152164459228516
-merge_sort:
-	size: 500
-	type: <class 'str'>
-	time: 3.0646324157714844
-heap_sort:
-	size: 500
-	type: <class 'str'>
-	time: 3.648042678833008
-radix_sort:
-	size: 500
-	type: <class 'str'>
-	time: 175.99868774414062
-sorted:
-	size: 500
-	type: <class 'str'>
-	time: 0.049591064453125
-insertion_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 444.0419673919678
-bubble_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 2032.5963497161865
-selection_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 1243.2093620300293
-shell_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 23.08058738708496
-quick_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 22.724628448486328
-merge_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 32.75561332702637
-heap_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 38.49625587463379
-radix_sort:
-	size: 5000
-	type: <class 'str'>
-	time: 697.2873210906982
-sorted:
-	size: 5000
-	type: <class 'str'>
-	time: 0.5095005035400391
-shell_sort:
-	size: 50000
-	type: <class 'str'>
-	time: 416.3401126861572
-quick_sort:
-	size: 50000
-	type: <class 'str'>
-	time: 285.250186920166
-merge_sort:
-	size: 50000
-	type: <class 'str'>
-	time: 444.5614814758301
-heap_sort:
-	size: 50000
-	type: <class 'str'>
-	time: 522.9527950286865
-radix_sort:
-	size: 50000
-	type: <class 'str'>
-	time: 6543.020725250244
-sorted:
-	size: 50000
-	type: <class 'str'>
-	time: 9.806394577026367
-shell_sort:
-	size: 500000
-	type: <class 'str'>
-	time: 6399.53351020813
-merge_sort:
-	size: 500000
-	type: <class 'str'>
-	time: 5475.755453109741
-heap_sort:
-	size: 500000
-	type: <class 'str'>
-	time: 6592.139005661011
-radix_sort:
-	size: 500000
-	type: <class 'str'>
-	time: 67310.80985069275
-sorted:
-	size: 500000
-	type: <class 'str'>
-	time: 191.98131561279297
-insertion_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.03933906555175781
-bubble_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.1552104949951172
-selection_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.12731552124023438
-shell_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.05698204040527344
-quick_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.1304149627685547
-merge_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.23055076599121094
-heap_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.1609325408935547
-radix_sort:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.011920928955078125
-sorted:
-	size: 50
-	type: <class 'datetime.datetime'>
-	time: 0.0054836273193359375
-insertion_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 4.681110382080078
-bubble_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 15.71965217590332
-selection_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 10.683774948120117
-shell_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 1.1496543884277344
-quick_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 1.3537406921386719
-merge_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 2.498626708984375
-heap_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 2.450704574584961
-radix_sort:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 0.015497207641601562
-sorted:
-	size: 500
-	type: <class 'datetime.datetime'>
-	time: 0.04553794860839844
-insertion_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 427.99901962280273
-bubble_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 1893.8655853271484
-selection_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 1116.8849468231201
-shell_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 21.713733673095703
-quick_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 18.137693405151367
-merge_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 31.148910522460938
-heap_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 35.92395782470703
-radix_sort:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 0.014066696166992188
-sorted:
-	size: 5000
-	type: <class 'datetime.datetime'>
-	time: 0.4248619079589844
-shell_sort:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 356.69803619384766
-quick_sort:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 267.78101921081543
-merge_sort:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 393.3696746826172
-heap_sort:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 485.2898120880127
-radix_sort:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 0.045299530029296875
-sorted:
-	size: 50000
-	type: <class 'datetime.datetime'>
-	time: 5.980253219604492
-shell_sort:
-	size: 500000
-	type: <class 'datetime.datetime'>
-	time: 5990.707635879517
-merge_sort:
-	size: 500000
-	type: <class 'datetime.datetime'>
-	time: 5143.9244747161865
-heap_sort:
-	size: 500000
-	type: <class 'datetime.datetime'>
-	time: 6424.0171909332275
-radix_sort:
-	size: 500000
-	type: <class 'datetime.datetime'>
-	time: 0.02956390380859375
-sorted:
-	size: 500000
-	type: <class 'datetime.datetime'>
-	time: 149.58786964416504
-Test with reverse order sorted data:
-insertion_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.012159347534179688
-bubble_sort:
 	size: 50
 	type: <class 'int'>
 	time: 0.13780593872070312
-selection_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.09608268737792969
-shell_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.04076957702636719
-quick_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.2467632293701172
-merge_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.23555755615234375
-heap_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.13780593872070312
-radix_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.04124641418457031
-sorted:
-	size: 50
-	type: <class 'int'>
-	time: 0.0030994415283203125
-insertion_sort:
-	size: 500
-	type: <class 'int'>
-	time: 0.08749961853027344
-bubble_sort:
-	size: 500
-	type: <class 'int'>
-	time: 11.001110076904297
-selection_sort:
-	size: 500
-	type: <class 'int'>
-	time: 10.346651077270508
-shell_sort:
-	size: 500
-	type: <class 'int'>
-	time: 0.6251335144042969
-quick_sort:
-	size: 500
-	type: <class 'int'>
-	time: 25.11739730834961
-merge_sort:
-	size: 500
-	type: <class 'int'>
-	time: 2.2590160369873047
-heap_sort:
-	size: 500
-	type: <class 'int'>
-	time: 2.1038055419921875
-radix_sort:
-	size: 500
-	type: <class 'int'>
-	time: 0.2601146697998047
-sorted:
-	size: 500
-	type: <class 'int'>
-	time: 0.010013580322265625
-insertion_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 1.0335445404052734
-bubble_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 1182.741403579712
-selection_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 929.0149211883545
-shell_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 11.507034301757812
-quick_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 2484.5547676086426
-merge_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 30.961275100708008
-heap_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 32.89198875427246
-radix_sort:
-	size: 5000
-	type: <class 'int'>
-	time: 3.149271011352539
-sorted:
-	size: 5000
-	type: <class 'int'>
-	time: 0.0591278076171875
-shell_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 113.73734474182129
-quick_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 236359.00044441223
-merge_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 347.12982177734375
-heap_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 385.42723655700684
-radix_sort:
-	size: 50000
-	type: <class 'int'>
-	time: 25.803804397583008
-sorted:
-	size: 50000
-	type: <class 'int'>
-	time: 0.46443939208984375
-shell_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 1413.8154983520508
-merge_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 3811.7403984069824
-heap_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 4716.66693687439
-radix_sort:
-	size: 500000
-	type: <class 'int'>
-	time: 261.7533206939697
-sorted:
-	size: 500000
-	type: <class 'int'>
-	time: 5.382537841796875
-insertion_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.0133514404296875
-bubble_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.1087188720703125
-selection_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.09393692016601562
-shell_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.04029273986816406
-quick_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.24938583374023438
-merge_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.2124309539794922
-heap_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.15783309936523438
-radix_sort:
-	size: 50
-	type: <class 'int'>
-	time: 0.1327991485595703
 sorted:
 	size: 50
 	type: <class 'int'>
@@ -1408,271 +811,892 @@ sorted:
 insertion_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.09846687316894531
+	time: 4.375219345092773
 bubble_sort:
 	size: 500
 	type: <class 'int'>
-	time: 10.833740234375
+	time: 16.47663116455078
 selection_sort:
 	size: 500
 	type: <class 'int'>
-	time: 11.159896850585938
+	time: 11.370182037353516
 shell_sort:
 	size: 500
 	type: <class 'int'>
-	time: 0.6840229034423828
+	time: 1.2285709381103516
 quick_sort:
 	size: 500
 	type: <class 'int'>
-	time: 24.53017234802246
+	time: 1.2569427490234375
 merge_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.3958683013916016
+	time: 2.4323463439941406
 heap_sort:
 	size: 500
 	type: <class 'int'>
-	time: 2.5131702423095703
+	time: 2.7506351470947266
 radix_sort:
 	size: 500
 	type: <class 'int'>
-	time: 1.117706298828125
+	time: 1.0759830474853516
 sorted:
 	size: 500
 	type: <class 'int'>
-	time: 0.015020370483398438
+	time: 0.028848648071289062
 insertion_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1.268148422241211
+	time: 412.5397205352783
 bubble_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1413.064956665039
+	time: 1836.9970321655273
 selection_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 1080.6007385253906
+	time: 1149.0228176116943
 shell_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 10.914087295532227
+	time: 23.56886863708496
 quick_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 2432.553291320801
+	time: 19.52815055847168
 merge_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 42.60444641113281
+	time: 33.1723690032959
 heap_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 37.67061233520508
+	time: 39.64877128601074
 radix_sort:
 	size: 5000
 	type: <class 'int'>
-	time: 10.852575302124023
+	time: 14.00446891784668
 sorted:
 	size: 5000
 	type: <class 'int'>
-	time: 0.08440017700195312
+	time: 0.22745132446289062
 shell_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 164.4749641418457
+	time: 427.48475074768066
 quick_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 270161.8618965149
+	time: 312.8209114074707
 merge_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 507.1229934692383
+	time: 419.5685386657715
 heap_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 573.8153457641602
+	time: 525.0811576843262
 radix_sort:
 	size: 50000
 	type: <class 'int'>
-	time: 170.38631439208984
+	time: 173.68221282958984
 sorted:
 	size: 50000
 	type: <class 'int'>
-	time: 1.0516643524169922
+	time: 2.9146671295166016
 shell_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 2566.643238067627
+	time: 6345.348358154297
+quick_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 5227.455615997314
 merge_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 5138.54193687439
+	time: 5555.818796157837
 heap_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 6126.3251304626465
+	time: 6877.531051635742
 radix_sort:
 	size: 500000
 	type: <class 'int'>
-	time: 2174.8368740081787
+	time: 2438.570261001587
 sorted:
 	size: 500000
 	type: <class 'int'>
-	time: 61.34486198425293
+	time: 88.17625045776367
 insertion_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.015497207641601562
+	time: 0.06413459777832031
 bubble_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.13685226440429688
+	time: 0.1823902130126953
 selection_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.12302398681640625
+	time: 0.11873245239257812
 shell_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.04363059997558594
+	time: 0.064849853515625
 quick_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.29277801513671875
+	time: 0.08344650268554688
 merge_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.21839141845703125
+	time: 0.22125244140625
 heap_sort:
 	size: 50
 	type: <class 'str'>
-	time: 0.156402587890625
+	time: 0.15497207641601562
 radix_sort:
 	size: 50
 	type: <class 'str'>
-	time: 110.30697822570801
+	time: 108.96730422973633
 sorted:
 	size: 50
 	type: <class 'str'>
-	time: 0.0073909759521484375
+	time: 0.013828277587890625
 insertion_sort:
 	size: 500
 	type: <class 'str'>
-	time: 0.14901161193847656
+	time: 4.597187042236328
 bubble_sort:
 	size: 500
 	type: <class 'str'>
-	time: 13.981819152832031
+	time: 17.289400100708008
 selection_sort:
 	size: 500
 	type: <class 'str'>
-	time: 16.305923461914062
+	time: 13.73600959777832
 shell_sort:
 	size: 500
 	type: <class 'str'>
-	time: 0.6759166717529297
+	time: 1.2378692626953125
 quick_sort:
 	size: 500
 	type: <class 'str'>
-	time: 31.55207633972168
+	time: 1.9254684448242188
 merge_sort:
 	size: 500
 	type: <class 'str'>
-	time: 3.9246082305908203
+	time: 3.147125244140625
 heap_sort:
 	size: 500
 	type: <class 'str'>
-	time: 3.281831741333008
+	time: 2.556324005126953
 radix_sort:
 	size: 500
 	type: <class 'str'>
-	time: 182.44457244873047
+	time: 190.97614288330078
 sorted:
 	size: 500
 	type: <class 'str'>
-	time: 0.020742416381835938
+	time: 0.05269050598144531
 insertion_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 1.2314319610595703
+	time: 462.1307849884033
 bubble_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 1583.6329460144043
+	time: 2011.0275745391846
 selection_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 1286.370038986206
+	time: 1257.7884197235107
 shell_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 11.5966796875
+	time: 26.655197143554688
 quick_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 2826.464891433716
+	time: 28.635025024414062
 merge_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 32.143354415893555
+	time: 35.2778434753418
 heap_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 39.743900299072266
+	time: 41.2750244140625
 radix_sort:
 	size: 5000
 	type: <class 'str'>
-	time: 690.913200378418
+	time: 780.8229923248291
 sorted:
 	size: 5000
 	type: <class 'str'>
-	time: 0.179290771484375
+	time: 0.6575584411621094
 shell_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 179.2447566986084
+	time: 469.19822692871094
 quick_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 345343.2822227478
+	time: 321.09570503234863
 merge_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 496.54388427734375
+	time: 500.1347064971924
 heap_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 570.4083442687988
+	time: 570.9996223449707
 radix_sort:
 	size: 50000
 	type: <class 'str'>
-	time: 6364.879608154297
+	time: 7405.298471450806
 sorted:
 	size: 50000
 	type: <class 'str'>
-	time: 5.450010299682617
+	time: 9.107589721679688
 shell_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 2990.5946254730225
+	time: 7021.382093429565
+quick_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 4589.004039764404
 merge_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 5393.2318687438965
+	time: 5910.338878631592
 heap_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 6450.935840606689
+	time: 7310.378551483154
 radix_sort:
 	size: 500000
 	type: <class 'str'>
-	time: 69887.8185749054
+	time: 74017.2324180603
 sorted:
 	size: 500000
 	type: <class 'str'>
-	time: 87.68415451049805
+	time: 180.77683448791504
+insertion_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.050067901611328125
+bubble_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.1614093780517578
+selection_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.12111663818359375
+shell_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.06890296936035156
+quick_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.0782012939453125
+merge_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.21123886108398438
+heap_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.17023086547851562
+radix_sort:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.0133514404296875
+sorted:
+	size: 50
+	type: <class 'datetime.datetime'>
+	time: 0.0054836273193359375
+insertion_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 4.4956207275390625
+bubble_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 15.78211784362793
+selection_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 11.230945587158203
+shell_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 1.2359619140625
+quick_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 1.4128684997558594
+merge_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 2.420663833618164
+heap_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 2.534627914428711
+radix_sort:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 0.012874603271484375
+sorted:
+	size: 500
+	type: <class 'datetime.datetime'>
+	time: 0.04649162292480469
+insertion_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 418.06864738464355
+bubble_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 2014.9455070495605
+selection_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 1164.0257835388184
+shell_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 26.012182235717773
+quick_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 23.190975189208984
+merge_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 32.63449668884277
+heap_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 42.53792762756348
+radix_sort:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 0.016450881958007812
+sorted:
+	size: 5000
+	type: <class 'datetime.datetime'>
+	time: 0.42629241943359375
+shell_sort:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 428.5612106323242
+quick_sort:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 329.21481132507324
+merge_sort:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 470.0770378112793
+heap_sort:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 531.1896800994873
+radix_sort:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 0.019550323486328125
+sorted:
+	size: 50000
+	type: <class 'datetime.datetime'>
+	time: 11.47150993347168
+shell_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 6859.649181365967
+quick_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 4800.196886062622
+merge_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 5537.5306606292725
+heap_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 6940.088272094727
+radix_sort:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 0.029325485229492188
+sorted:
+	size: 500000
+	type: <class 'datetime.datetime'>
+	time: 174.1313934326172
+Test with reverse order sorted data:
+insertion_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.0133514404296875
+bubble_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.11754035949707031
+selection_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.11038780212402344
+shell_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.04172325134277344
+quick_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.31280517578125
+merge_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.1976490020751953
+heap_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.14662742614746094
+radix_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.041484832763671875
+sorted:
+	size: 50
+	type: <class 'int'>
+	time: 0.0030994415283203125
+insertion_sort:
+	size: 500
+	type: <class 'int'>
+	time: 0.09965896606445312
+bubble_sort:
+	size: 500
+	type: <class 'int'>
+	time: 10.323047637939453
+selection_sort:
+	size: 500
+	type: <class 'int'>
+	time: 9.314537048339844
+shell_sort:
+	size: 500
+	type: <class 'int'>
+	time: 0.6787776947021484
+quick_sort:
+	size: 500
+	type: <class 'int'>
+	time: 24.948835372924805
+merge_sort:
+	size: 500
+	type: <class 'int'>
+	time: 2.485990524291992
+heap_sort:
+	size: 500
+	type: <class 'int'>
+	time: 2.0720958709716797
+radix_sort:
+	size: 500
+	type: <class 'int'>
+	time: 0.2715587615966797
+sorted:
+	size: 500
+	type: <class 'int'>
+	time: 0.011444091796875
+insertion_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 0.9057521820068359
+bubble_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 1181.9822788238525
+selection_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 914.8259162902832
+shell_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 11.846303939819336
+quick_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 2496.319055557251
+merge_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 28.517484664916992
+heap_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 31.564712524414062
+radix_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 2.529621124267578
+sorted:
+	size: 5000
+	type: <class 'int'>
+	time: 0.051021575927734375
+shell_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 135.55312156677246
+quick_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 235534.38305854797
+merge_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 325.6039619445801
+heap_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 379.15873527526855
+radix_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 26.497840881347656
+sorted:
+	size: 50000
+	type: <class 'int'>
+	time: 0.537872314453125
+shell_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 1527.6694297790527
+merge_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 3675.7588386535645
+heap_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 4618.362665176392
+radix_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 256.4973831176758
+sorted:
+	size: 500000
+	type: <class 'int'>
+	time: 5.095005035400391
+insertion_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.012874603271484375
+bubble_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.12493133544921875
+selection_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.10943412780761719
+shell_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.050067901611328125
+quick_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.308990478515625
+merge_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.20813941955566406
+heap_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.16021728515625
+radix_sort:
+	size: 50
+	type: <class 'int'>
+	time: 0.1347064971923828
+sorted:
+	size: 50
+	type: <class 'int'>
+	time: 0.0040531158447265625
+insertion_sort:
+	size: 500
+	type: <class 'int'>
+	time: 0.09703636169433594
+bubble_sort:
+	size: 500
+	type: <class 'int'>
+	time: 10.732889175415039
+selection_sort:
+	size: 500
+	type: <class 'int'>
+	time: 9.798765182495117
+shell_sort:
+	size: 500
+	type: <class 'int'>
+	time: 0.7064342498779297
+quick_sort:
+	size: 500
+	type: <class 'int'>
+	time: 24.0323543548584
+merge_sort:
+	size: 500
+	type: <class 'int'>
+	time: 2.2819042205810547
+heap_sort:
+	size: 500
+	type: <class 'int'>
+	time: 2.482175827026367
+radix_sort:
+	size: 500
+	type: <class 'int'>
+	time: 1.1126995086669922
+sorted:
+	size: 500
+	type: <class 'int'>
+	time: 0.009775161743164062
+insertion_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 1.1756420135498047
+bubble_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 1342.498779296875
+selection_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 1081.040382385254
+shell_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 11.301755905151367
+quick_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 2451.63631439209
+merge_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 30.46107292175293
+heap_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 37.488698959350586
+radix_sort:
+	size: 5000
+	type: <class 'int'>
+	time: 10.892629623413086
+sorted:
+	size: 5000
+	type: <class 'int'>
+	time: 0.07772445678710938
+shell_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 156.92591667175293
+quick_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 262981.1134338379
+merge_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 459.4094753265381
+heap_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 506.4537525177002
+radix_sort:
+	size: 50000
+	type: <class 'int'>
+	time: 144.43016052246094
+sorted:
+	size: 50000
+	type: <class 'int'>
+	time: 1.089334487915039
+shell_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 2573.6992359161377
+merge_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 5023.261547088623
+heap_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 6039.690732955933
+radix_sort:
+	size: 500000
+	type: <class 'int'>
+	time: 2088.968276977539
+sorted:
+	size: 500000
+	type: <class 'int'>
+	time: 45.09925842285156
+insertion_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.013828277587890625
+bubble_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.13446807861328125
+selection_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.12063980102539062
+shell_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.04792213439941406
+quick_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.2884864807128906
+merge_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.21600723266601562
+heap_sort:
+	size: 50
+	type: <class 'str'>
+	time: 0.15163421630859375
+radix_sort:
+	size: 50
+	type: <class 'str'>
+	time: 106.67181015014648
+sorted:
+	size: 50
+	type: <class 'str'>
+	time: 0.0095367431640625
+insertion_sort:
+	size: 500
+	type: <class 'str'>
+	time: 0.10800361633300781
+bubble_sort:
+	size: 500
+	type: <class 'str'>
+	time: 13.171195983886719
+selection_sort:
+	size: 500
+	type: <class 'str'>
+	time: 11.91091537475586
+shell_sort:
+	size: 500
+	type: <class 'str'>
+	time: 0.7424354553222656
+quick_sort:
+	size: 500
+	type: <class 'str'>
+	time: 26.964664459228516
+merge_sort:
+	size: 500
+	type: <class 'str'>
+	time: 2.3717880249023438
+heap_sort:
+	size: 500
+	type: <class 'str'>
+	time: 2.608060836791992
+radix_sort:
+	size: 500
+	type: <class 'str'>
+	time: 174.30949211120605
+sorted:
+	size: 500
+	type: <class 'str'>
+	time: 0.021219253540039062
+insertion_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 1.0495185852050781
+bubble_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 1522.9203701019287
+selection_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 1262.7520561218262
+shell_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 12.53199577331543
+quick_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 2752.7530193328857
+merge_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 32.89437294006348
+heap_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 40.44079780578613
+radix_sort:
+	size: 5000
+	type: <class 'str'>
+	time: 709.7086906433105
+sorted:
+	size: 5000
+	type: <class 'str'>
+	time: 0.18477439880371094
+shell_sort:
+	size: 50000
+	type: <class 'str'>
+	time: 187.3455047607422
+quick_sort:
+	size: 50000
+	type: <class 'str'>
+	time: 343138.5235786438
+merge_sort:
+	size: 50000
+	type: <class 'str'>
+	time: 422.75524139404297
+heap_sort:
+	size: 50000
+	type: <class 'str'>
+	time: 533.8332653045654
+radix_sort:
+	size: 50000
+	type: <class 'str'>
+	time: 6539.287328720093
+sorted:
+	size: 50000
+	type: <class 'str'>
+	time: 4.95600700378418
+shell_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 3115.718364715576
+merge_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 5343.979835510254
+heap_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 6444.832801818848
+radix_sort:
+	size: 500000
+	type: <class 'str'>
+	time: 72085.07966995239
+sorted:
+	size: 500000
+	type: <class 'str'>
+	time: 68.3290958404541
 insertion_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
@@ -1680,148 +1704,148 @@ insertion_sort:
 bubble_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.1270771026611328
+	time: 0.11396408081054688
 selection_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.1266002655029297
+	time: 0.13399124145507812
 shell_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.04506111145019531
+	time: 0.04100799560546875
 quick_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.2799034118652344
+	time: 0.28252601623535156
 merge_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.20837783813476562
+	time: 0.2048015594482422
 heap_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.15687942504882812
+	time: 0.1518726348876953
 radix_sort:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.010967254638671875
+	time: 0.010728836059570312
 sorted:
 	size: 50
 	type: <class 'datetime.datetime'>
-	time: 0.0040531158447265625
+	time: 0.0030994415283203125
 insertion_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.10538101196289062
+	time: 0.11897087097167969
 bubble_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 13.107061386108398
+	time: 12.848138809204102
 selection_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 10.866403579711914
+	time: 11.454582214355469
 shell_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.6597042083740234
+	time: 0.6678104400634766
 quick_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 25.950193405151367
+	time: 26.413440704345703
 merge_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 2.7763843536376953
+	time: 2.3908615112304688
 heap_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 2.6786327362060547
+	time: 2.6748180389404297
 radix_sort:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.025510787963867188
+	time: 0.0069141387939453125
 sorted:
 	size: 500
 	type: <class 'datetime.datetime'>
-	time: 0.022172927856445312
+	time: 0.015974044799804688
 insertion_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1.2116432189941406
+	time: 1.012563705444336
 bubble_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1714.6565914154053
+	time: 1449.4762420654297
 selection_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 1233.7260246276855
+	time: 1170.2868938446045
 shell_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 12.436389923095703
+	time: 10.73598861694336
 quick_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 2828.7692070007324
+	time: 2642.9359912872314
 merge_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 47.8825569152832
+	time: 30.709505081176758
 heap_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 39.74103927612305
+	time: 38.848876953125
 radix_sort:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 0.025272369384765625
+	time: 0.015497207641601562
 sorted:
 	size: 5000
 	type: <class 'datetime.datetime'>
-	time: 0.1380443572998047
+	time: 0.1385211944580078
 shell_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 228.81841659545898
+	time: 214.4300937652588
 quick_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 312482.1283817291
+	time: 291581.90083503723
 merge_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 469.2118167877197
+	time: 380.38182258605957
 heap_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 542.5755977630615
+	time: 490.30017852783203
 radix_sort:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 0.023365020751953125
+	time: 0.017642974853515625
 sorted:
 	size: 50000
 	type: <class 'datetime.datetime'>
-	time: 2.170085906982422
+	time: 2.026081085205078
 shell_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 2688.981533050537
+	time: 2523.5307216644287
 merge_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 5718.674659729004
+	time: 4972.560882568359
 heap_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 7191.040515899658
+	time: 7058.952569961548
 radix_sort:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 0.05030632019042969
+	time: 0.03504753112792969
 sorted:
 	size: 500000
 	type: <class 'datetime.datetime'>
-	time: 90.81459045410156
+	time: 75.83880424499512
