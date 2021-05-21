@@ -36,11 +36,11 @@ class AuthClient(Auth, Transmission):
             # If it did okay, go to stage two
             print('[+] Server\'s public key received.')
             if not login and not password:
-                self.__login = input('Login: ')
-                self.__password = input('Password: ')
+                self._get_credentials()
             else:
                 self.__login = password
                 self.__password = password
+            self.__server_pub_key = super()._get_key(self.__server_pub_key)
             encrypted = self._auth_stage2()
             self._auth_stage3(encrypted)
         else:
@@ -57,21 +57,54 @@ class AuthClient(Auth, Transmission):
     def _auth_stage2(self) -> str:
         """Encrypt the login:password and send it"""
         hash = super().get_hash(self.__password)
+        #print(hash)
         account = self.__login.encode(self.ENCODING) + b'\n' + hash
-        self.__server_pub_key = super()._get_key(self.__server_pub_key)
         encrypted = super().encrypt_twice(self.__server_pub_key, account)
         return encrypted
 
     def _auth_stage3(self, encrypted: str) -> str:
         super().sendall(self.__socket, str(encrypted))
-        encrypted_response = super().recvall(self.__socket)
-        print(encrypted_response)
-        response = super().decrypt_twice(self.__server_pub_key, encrypted_response)
-        print('response: ', response.decode(super().ENCODING))
+        response = self._get_response()
+        # print('response: ', response.decode(super().ENCODING))
+        print(f'\n[RESPONSE]: {response.decode()}\n')
         if response == super().SUCCESS:
-            print('Nice.')
+            self._negotiate()
         if response == super().FAILURE:
-            print('Not nice...')
+            self._get_credentials()
+            encrypted = self._auth_stage2()
+            self._auth_stage3(encrypted)
+        # print(self._pub_key)
+        # print(self._priv_key)
+
+    def _get_response(self) -> str:
+        encrypted_response = super().recvall(self.__socket)
+        # print('encrypted_response: ', encrypted_response)
+        # print()
+        saved_server_pub_key = self.__server_pub_key
+        saved_priv_key = self._priv_key
+        self._priv_key = self.__server_pub_key
+        self.__server_pub_key = saved_priv_key
+        response = super().decrypt_twice(self.__server_pub_key, encrypted_response)
+        self._priv_key = saved_priv_key
+        self.__server_pub_key = saved_server_pub_key
+        return response
+
+    def _get_credentials(self) -> None:
+        self.__login = input('Login: ')
+        self.__password = input('Password: ')
+
+    def _negotiate(self):
+        print('\n\tChat started.\n' + '=' * 30 + '\n')
+        try:
+            while True:
+                data = input('[Client]: ')
+                encrypted_data = super().encrypt_twice(self.__server_pub_key, data)
+                super().sendall(self.__socket, str(encrypted_data))
+                response = self._get_response()
+                print(f'[Server]: {response.decode()}')
+        except KeyboardInterrupt:
+            self.__socket.shutdown(SHUT_RDWR)
+            self.__socket.close()
 
 
 def main():
