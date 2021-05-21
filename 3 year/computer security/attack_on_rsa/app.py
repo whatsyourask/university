@@ -4,6 +4,7 @@ sys.path.insert(0, '..')
 from additive_cipher.gui import *
 from backend import AttackOnRSA
 from time import time
+import sys
 
 
 class Application:
@@ -47,7 +48,16 @@ class Application:
             n = int(self._n_field.get())
             encrypted = self._encrypted_field.get("1.0", END)[:-1]
             time_start = time()
-            p, q, d, decrypted, iter_count = AttackOnRSA.attack(e, n, encrypted)
+            print(sys.argv)
+            print(len(sys.argv))
+            if len(sys.argv) > 1 and sys.argv[1] == '1':
+                aor = AttackOnRSA()
+                attack = aor.threading_attack
+                print('AttackOnRSA.threading_attack')
+            else:
+                attack = AttackOnRSA.attack
+                print('AttackOnRSA.attack')
+            p, q, d, decrypted, iter_count = attack(e, n, encrypted)
             time_end = time()
             time_diff = time_end - time_start
             self._p_field.set(p)
