@@ -4,6 +4,7 @@ from scapy.layers.inet import IP, TCP, UDP
 
 def send_packets(dst: str, dport: int, sport: int, protocol):
     for last_octet in range(100):
+        send(IP(src=f'192.168.88.{last_octet}', dst=dst) / protocol(sport=sport, dport=dport))
         if last_octet == 50:
             for i in range(100):
                 send(IP(src=f'192.168.88.{last_octet}', dst=dst) / protocol(sport=sport, dport=dport))
