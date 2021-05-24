@@ -24,32 +24,23 @@ class AttackOnRSA:
         return possible_divisor, second_divisor, d, decrypted, iter_count
 
     def threading_pollards_rho_method(self, seed_val: float) -> None:
-        #print(seed_val)
         seed(seed_val)
         x = randint(1, self.n - 2)
+        power = randint(2, 4)
         y = 1
         iter_count = 0
         stage = 2
         d = 1
-        #print('not_found', self._not_found)
         while d == 1 and self._not_found:
-            #print('CYCLE')
             if iter_count == stage:
                 y = x
                 stage *= 2
-            #print('CICLE2')
-            x = (x * x + 1) % self.n
-            #print('CICLE3')
-            #print('CICLE4')
-            #print(d)
+            x = (x ** power + 1) % self.n
             d = gcd(self.n, abs(x - y))
             iter_count += 1
-            #print('CICLE5')
-        #print('results: ', self.results)
         if self._not_found:
             self._not_found = False
             self.results.append((d, iter_count))
-        #print('EXITING')
 
     def threading_attack(self, e: int, n: int, encrypted: str) -> Tuple:
         iter_count = 0
@@ -64,11 +55,7 @@ class AttackOnRSA:
             thread.start()
             threads.append(thread)
         for thread in threads:
-            #print('ALIVE?', thread.isAlive())
             thread.join()
-        #print('here')
-        #print(self.results)
-        #print('NOT FOUND !!!', self._not_found)
         possible_divisor, iter_count = self.results[0]
         second_divisor = n // possible_divisor
         rsa = RSA()
