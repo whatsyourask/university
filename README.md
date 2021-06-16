@@ -11,7 +11,7 @@ University programs and materials.🥸
 
 * [Operating systems course](https://github.com/whatsyourask/University/tree/master/2%20year/Operating%20systems%20course "https://github.com/whatsyourask/University/tree/master/2%20year/Operating%20systems%20course")
 * [Technologies and methods of programming](https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine "https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine")
-* [Machine Learning](https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine "https://github.com/whatsyourask/University/tree/master/2%20year/enigma-machine")
+* [Machine Learning](https://github.com/whatsyourask/university/tree/master/2%20year/machine-learning "https://github.com/whatsyourask/university/tree/master/2%20year/machine-learning")
 
 ## 3 year
 
