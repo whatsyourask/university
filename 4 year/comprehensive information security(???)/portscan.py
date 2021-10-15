@@ -18,19 +18,22 @@ class Scanner:
             print('Scan report for ', target)
             for port in self.ports:
                 #print(target, port)
-                buf = ''
+                buf = b''
                 try:
-                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        #print(target, port)
-                        s.connect((target, port))
-                        print(port, 'open')
-                        s.settimeout(self.timeout // 1000)
-                        s.send(b'AAAAAAAAAA')
-                        buf = s.recv(self.RECV_LEN)
-                        s.settimeout(None)
-                except (ConnectionRefusedError, BlockingIOError):
-                    pass
-                    #print(port, 'TCP', buf)
+                    s = socket.create_connection((target, port), self.timeout // 1000)
+                    s.sendall(b'AAAAA')
+                    buf = s.recv(1024)
+                    print(f'{port}/tcp open')
+                except Exception:
+                    print(f'{port}/tcp closed')
+                    # with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    #     #print(target, port)
+                    #     s.connect((target, port))
+                    #     print(port, 'open')
+                    #     s.settimeout(self.timeout // 1000)
+                    #     s.send(b'AAAAAAAAAA')
+                    #     buf = s.recv(self.RECV_LEN)
+                    #     s.settimeout(None)
 
     def _udp_scan(self):
         ...
