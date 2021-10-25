@@ -13,59 +13,61 @@ function check_arg() {
 
 function find_ips() {
   ips=($(nslookup $1 | grep -E "Address: ([0-9]{1,3}\.){3}([0-9]{1,3})" | cut -f2 -d' ' | tr '\n' ' '))
-
   if [ ${#ips[@]} -gt 1 ]
   then
-    printf "[IP addres]:"
+    printf "[IP address]:"
     for ip in ${ips[@]};
     do
       printf "\n\t${green}${ip}${clear}"
     done
     printf "\n"
   else
-    printf "[IP addres]:\n\t${green}${ips}${clear}\n"
+    printf "[IP address]:\n\t${green}${ips}${clear}\n"
   fi
-  
-  return $ips
+}
+
+function find_net_range() {
+  net_ranges=($(whois $1 | grep "NetRange: " | cut -d' ' -f8-10))
+  if [ ${#net_ranges[@]} == 0 ]
+  then
+    net_range=($(whois $1 | grep "inetnum: " | cut -d' ' -f8-11))
+    printf "simple"
+    printf "\t${green}${net_range[$i]}"
+    printf "\t\n"
+  else
+    #printf "hard"
+    for net_range in ${net_ranges[@]};
+    do
+      net_range_len=${#net_range[@]}
+      i=0
+      diff=2
+      while [[ $i -lt $net_range_len ]]; do
+        new_net_range=(${new_net_range[@]} ${net_range[$i]})
+        # printf "${clear}${net_range[$i]}"
+        # printf "\t${green}${net_range[$i]}"
+        printf "\n${net_range[$i]}"
+        i=$i+$diff
+        if [ $diff == 2 ]
+        then
+          diff=1
+          #printf " - "
+        else
+          diff=2
+          printf "\t\n"
+        fi
+      done
+      #printf "\n"
+    done
+    printf "\n"
+  fi
 }
 
 domain=$1
-
 check_arg $domain
-
 printf "Script started enumeration on ${green}${domain}${clear}\n\n"
-
-ips=$(find_ips $domain)
-
-echo ${ips[@]}
-
-net_range=($(whois ${ips[0]} | grep "NetRange: " | cut -d' ' -f8-10))
-
-if [ ${#net_range[@]} == 0 ]
-then
-  net_range=($(whois ${ip[0]} | grep "inetnum: " | cut -d' ' -f8-11))
-else
-  exit
-fi
-
-#echo ${net_range[@]}
-
+find_ips $domain
 printf "[IP ranges]:\n"
-net_range_len=${#net_range[@]}
-i=0
-diff=2
-while [[ $i -lt $net_range_len ]]; do
-  new_net_range=(${new_net_range[@]} ${net_range[$i]})
-  printf "\t${green}${net_range[$i]}"
-  i=$i+$diff
-  if [ $diff == 2 ]
-  then
-    diff=1
-    #printf " - "
-  else
-    diff=2
-    printf "\t\n"
-  fi
+for ip in ${ips[@]};
+do
+  find_net_range $ip
 done
-
-#echo ${new_net_range[@]}
