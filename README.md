@@ -1,6 +1,6 @@
 # University
 
-University programs and materials.🥸
+University programs and materials.
 
 ## 1 year
 
