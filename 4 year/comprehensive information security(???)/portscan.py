@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import socket
 import argparse
 import re
@@ -6,7 +7,10 @@ import socket
 
 
 class Scanner:
-    RECV_LEN = 1024
+    '''
+    Class to scan TCP and UDP ports
+    '''
+    RECV_LEN = 4096
     def __init__(self, type, targets, ports, timeout):
         self.type = type
         self.targets = targets
@@ -14,43 +18,85 @@ class Scanner:
         self.timeout = timeout
 
     def _tcp_scan(self):
-        opened_ports = {}
+        # For each ips for each port connect and check timeout
+        self.opened_ports = {}
         for target in self.targets:
-            opened_ports[target] = []
-            print('Scan report for ', target)
+            self.opened_ports[target] = []
             for port in self.ports:
-                print(target, port)
-                with socket.socket(socket.AF_INET, type) as s:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                     s.settimeout(self.timeout / 1000)
                     try:
                         s.connect((target, port))
-                        opened_ports[target].append(port)
+                        self.opened_ports[target].append(port)
                     except:
-                        pass
-        print(opened_ports)
+                        continue
+        self.pretty_output('tcp')
 
     def _udp_scan(self):
-        opened_ports = {}
-        message = 'Hello, world!!!'
+        # As with tcp scan, but also try to send and receive some data
+        self.opened_ports = {}
+        message = 'ping'
         for target in self.targets:
-            opened_ports[target] = []
-            print('Scan report for ', target)
+            self.opened_ports[target] = []
             for port in self.ports:
-                print(target, port)
+                # First method, didn't work out
+                # with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) as s:
+                #     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                #     s.settimeout(self.timeout / 1000)
+                #     sock1 = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+                #     try:
+                #         s.sendto(message.encode('utf-8'), (target, port))
+                #         sock1.settimeout(1)
+                #         data, addr = sock1.recvfrom(self.RECV_LEN)
+                #         if data:
+                #             self.opened_ports[target].append(port)
+                #     except socket.timeout:
+                #         serv = self.get_service_name(port, 'udp')
+                #         if not serv:
+                #             pass
+                #         else:
+                #             self.opened_ports[target].append(port)
                 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) as s:
                     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                    #s.settimeout(self.timeout / 1000)
+                    s.settimeout(self.timeout / 1000)
                     try:
-                        s.sendto(message.encode('utf-8'), (target, port))
-                        data = s.recvfrom(1024)
+                        s.connect((target, port))
+                        s.send(b' \r\n ')
+                        data = s.recv(self.RECV_LEN)
+                        print(data)
                         if data:
-                            opened_ports[target].append(port)
+                            self.opened_ports[target].append(port)
                     except:
-                        pass
-        print(opened_ports)
+                        continue
+        self.pretty_output('udp')
+
+    def get_service_name(self, port, proto):
+        # try to determine a service based on port number
+        try:
+            name = socket.getservbyport(int(port), proto)
+        except:
+            return None
+        return name
+
+    def pretty_output(self, proto):
+        # Output in nmap-style.
+        for host in self.opened_ports.keys():
+            print(f'Scan report for {host}\n')
+            if len(self.opened_ports[host]) > 0:
+                print("PORT    STATE   SERVICE")
+                for port in self.opened_ports[host]:
+                    service = self.get_service_name(port, proto)
+                    if service:
+                        print(f'{port}/tcp  open    {service}')
+                    else:
+                        print(f'{port}/tcp  open')
+                print()
+            else:
+                print('All ports are closed.\n')
 
     def run(self):
+        # run scan based on type
         if self.type == 'T':
             self._tcp_scan()
         else:
@@ -58,11 +104,13 @@ class Scanner:
 
 
 def create_ports_range(ports):
+    # to create a list of ports
     start, end = map(int, ports.split('-'))
     return [port for port in range(start, end + 1)]
 
 
 def create_ip_range(ip_start, ip_end):
+    # to create a list of ip from start to end
     ip_list = ip_start.split('.')
     start_last_octet = int(ip_list[-1])
     end_last_octet = int(ip_end.split('.')[-1])
@@ -92,11 +140,13 @@ def validate_ports(ports):
 
 
 def validate_args(ip_start, ip_end, ports):
-    #validate_ips(ip_start, ip_end)
+    # check ports for example
+    # also tried to verify ips, but then decided not to do so
     validate_ports(ports)
 
 
 def parse_args():
+    # To create interface for cli tool
     parser = argparse.ArgumentParser(prog='portscan.py',
                                      usage='',
                                      description='Port scanner like nmap.',
