@@ -23,3 +23,9 @@ University programs and materials.
 * [Computer network security](https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security "https://github.com/whatsyourask/University/tree/master/3%20year/comp.%20network%20security")
 * [Cisco](https://github.com/whatsyourask/University/tree/master/3%20year/cisco "https://github.com/whatsyourask/University/tree/master/3%20year/cisco")
 * [Algorithms and complexity analysis](https://github.com/whatsyourask/University/tree/master/3%20year/algorithms%20and%20complexity%20analysis "https://github.com/whatsyourask/University/tree/master/3%20year/algorithms%20and%20complexity%20analysis")
+
+## 4 year
+
+* [Coding Theory](https://github.com/whatsyourask/university/tree/master/4%20year/coding%20theory "https://github.com/whatsyourask/university/tree/master/4%20year/coding%20theory")
+* [Comprehensive Information Security(???)](https://github.com/whatsyourask/university/tree/master/4%20year/comprehensive%20information%20security(%3F%3F%3F) "https://github.com/whatsyourask/university/tree/master/4%20year/comprehensive%20information%20security(%3F%3F%3F)")
+* [Digital Signal Processing](https://github.com/whatsyourask/university/tree/master/4%20year/digital%20signal%20processing "https://github.com/whatsyourask/university/tree/master/4%20year/digital%20signal%20processing")
