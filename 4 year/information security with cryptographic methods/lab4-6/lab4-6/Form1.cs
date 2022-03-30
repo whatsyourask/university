@@ -102,11 +102,17 @@ namespace lab4_6
             {
                 ErrorHandler(ex);
             }*/
-            BigInteger p = Convert.ToInt64(textBox5.Text);
-                BigInteger a = Convert.ToInt64(textBox6.Text);
-                BigInteger b = Convert.ToInt64(textBox7.Text);
-                BigInteger x = PollardsRhoAlgorithmForLogarithms(p, a, b);
+            try
+            {
+                BigInteger a = Convert.ToInt64(textBox5.Text);
+                BigInteger b = Convert.ToInt64(textBox6.Text);
+                BigInteger p = Convert.ToInt64(textBox7.Text);
+                BigInteger x = PollardsRhoAlgorithmForLogarithms(a, b, p);
                 textBox8.Text = Convert.ToString(x);
+            } catch (Exception ex)
+            {
+                ErrorHandler(ex);
+            }
         }
         static int modInverse(BigInteger a, BigInteger m)
         {
@@ -116,74 +122,65 @@ namespace lab4_6
                     return x;
             return 1;
         }
-        private BigInteger PollardsRhoAlgorithmForLogarithms(BigInteger p, BigInteger a, BigInteger b)
+        private BigInteger PollardsRhoAlgorithmForLogarithms(BigInteger g, BigInteger h, BigInteger p)
         {
-            a %= p;
-            b %= p;
-            BigInteger n = p - 1;
-            List<BigInteger> h_seq = new List<BigInteger>();
-            List<BigInteger> x_seq = new List<BigInteger>();
-            List<BigInteger> y_seq = new List<BigInteger>();
-            BigInteger x_i = 0, y_i = 0, h_i = 1;
-            int i = 0;
-            Dictionary<BigInteger, BigInteger> s_table = new Dictionary<BigInteger, BigInteger>();
-            while (true)
+            BigInteger q = (long)((p - 1) / 2);
+            BigInteger x = g * h;
+            BigInteger a = 1;
+            BigInteger b = 1;
+            BigInteger X = x;
+            BigInteger A = a;
+            BigInteger B = b;
+
+            for (int i = 1; i < p; i++)
             {
-                h_seq.Add(h_i);
-                x_seq.Add(x_i);
-                y_seq.Add(y_i);
-                i += 1;
-                if (0 <= h_i && h_i < (long)(p / 3)) // G1
-                {
-                    h_i = (b * h_i) % p;
-                    y_i = (y_i + 1) % n;
-                } else if ((long)(p / 3) <= h_i && (h_i < 2 * (long)(p / 3))) // G2
-                {
-                    h_i = (h_i * h_i) % p;
-                    x_i = (x_i * 2) % n;
-                    y_i = (y_i * 2) % n;
-                } else
-                {
-                    h_i = (a * h_i) % p;
-                    x_i = (x_i + 1) % n;
-                }
-                BigInteger tmp = i - 1, m = 0;
-                while (tmp != 0 && tmp % 2 != 0)
-                {
-                    tmp = (long)(tmp / 2);
-                    m += 1;
-                }
-                s_table[m] = i - 1;
-                BigInteger t = -1;
-                foreach(var item in s_table)
-                {
-                    if (h_seq[(int)item.Value] == h_i)
-                        t = item.Value;
-                }
-                if (t != -1)
-                {
-                    BigInteger x_diff = (x_i - x_seq[(int)t]) % n;
-                    BigInteger y_diff = (y_i - y_seq[(int)t]) % n;
-                    if (x_diff == 0 && y_diff == 0) {
-                        return 0;
-                    }
-                    if (BigInteger.GreatestCommonDivisor(y_diff, n) == 1)
-                    {
-                        return (-x_diff * modInverse(y_diff, n)) % n;
-                    }
-                    BigInteger d = BigInteger.GreatestCommonDivisor(y_diff, n);
-                    BigInteger n_0 = (long)(n / d);
-                    BigInteger log_0 = (-x_diff * modInverse(y_diff, n)) % n_0;
-                    for (int j = 0; j < d; j++)
-                    {
-                        BigInteger log = log_0 + j * n_0;
-                        if (BigInteger.ModPow(a, log, p) == (b % p))
-                        {
-                            return log % n;
-                        }
-                    }
-                }
+                BigInteger[] temp = xab(x, a, b, new BigInteger[] { g, h, p, q });
+                x = temp[0];
+                a = temp[1];
+                b = temp[2];
+                temp = xab(X, A, B, new BigInteger[] {g, h, p, q});
+                X = temp[0];
+                A = temp[1];
+                B = temp[2];
+                temp = xab(X, A, B, new BigInteger[] {g, h, p, q});
+                X = temp[0];
+                A = temp[1];
+                B = temp[2];
+                if (x == X)
+                    break;
             }
+            BigInteger nom = a - A;
+            BigInteger denom = B - b;
+            BigInteger rev = (modInverse(denom, q) * nom) % q;
+            if (verify(g, h, p, rev))
+                return rev;
+            return rev + q;
+        }
+        private BigInteger[] xab(BigInteger x, BigInteger a, BigInteger b, BigInteger[] arr)
+        {
+            BigInteger sub = x % 3;
+            BigInteger g = arr[0], h = arr[1], p = arr[2], q = arr[3];
+            if (sub == 0)
+            {
+                x = x * g % p;
+                a = (a + 1) % q;
+            }
+            if (sub == 1)
+            {
+                x = x * h % p;
+                b = (b + 1) % q;
+            }
+            if (sub == 2)
+            {
+                x = x * x % p;
+                a = a * 2 % q;
+                b = b * 2 % q;
+            }
+            return new BigInteger[] {x, a, b};
+        }
+        private bool verify(BigInteger g, BigInteger h, BigInteger p, BigInteger rev)
+        {
+            return BigInteger.ModPow(g, rev, p) == h;
         }
     }
 }
